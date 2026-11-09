@@ -1,0 +1,24 @@
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.003 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       61 GFLOP/s
+    for comparison: naive     73 GFLOP/s, cuBLAS     42 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.007 ms      124 GFLOP/s
+    for comparison: naive    131 GFLOP/s, cuBLAS    154 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.517 ms     1037 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4273 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.511 ms     1066 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4131 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.545 ms     1043 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5177 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     7.138 ms       34 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    261 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     4.459 ms     1102 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4996 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    18.370 ms     1070 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6186 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    13.756 ms     1072 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5867 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS

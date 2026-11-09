@@ -1,0 +1,1059 @@
+2026-11-09T03:24:22+00:00
+saxa.inf.ed.ac.uk
+Slurm job: 3707553
+ae01d2939b2bae74c9ee3adcf0d82d05963e7d4d
+ M csrc/task3_gemm.cu
+ M csrc/task4_attention.cu
+?? docs/task34-validation.md
+?? run_task34.sbatch
+?? tests/test_task34_edges.cu
+GPU 0: NVIDIA H200 (UUID: GPU-6096d4d6-542b-1e8d-ea2a-4c1eeeef9c83)
+  MIG 1g.18gb     Device  0: (UUID: MIG-f2781732-bee9-543b-ba3f-f50a0291ceb2)
+name, driver_version, memory.total [MiB]
+NVIDIA H200, 595.91.07, 143771 MiB
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+NVIDIA (R) Compute Sanitizer
+Copyright (c) 2020-2025 NVIDIA Corporation
+Version 2025.1.0.0 (build 35583870) (public-release)
+NVCCFLAGS=-O3 -std=c++17 -lineinfo -diag-suppress 177
+SM=90
+Python 3.11.18
+No broken requirements found.
+annotated-doc==0.0.5
+anyio==4.16.0
+certifi==2026.10.23
+click==8.5.1
+cuda-bindings==12.9.4
+cuda-pathfinder==1.6.0
+filelock==4.2.4
+fsspec==2026.9.0
+h11==0.16.0
+hf-xet==1.8.0
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.33.0
+idna==3.20
+Jinja2==3.1.6
+markdown-it-py==4.2.0
+MarkupSafe==3.0.3
+mdurl==0.1.2
+mpmath==1.3.0
+networkx==3.6.1
+numpy==2.4.6
+nvidia-cublas-cu12==12.8.4.1
+nvidia-cuda-cupti-cu12==12.8.90
+nvidia-cuda-nvrtc-cu12==12.8.93
+nvidia-cuda-runtime-cu12==12.8.90
+nvidia-cudnn-cu12==9.10.2.21
+nvidia-cufft-cu12==11.3.3.83
+nvidia-cufile-cu12==1.13.1.3
+nvidia-curand-cu12==10.3.9.90
+nvidia-cusolver-cu12==11.7.3.90
+nvidia-cusparse-cu12==12.5.8.93
+nvidia-cusparselt-cu12==0.7.1
+nvidia-nccl-cu12==2.27.5
+nvidia-nvjitlink-cu12==12.8.93
+nvidia-nvshmem-cu12==3.4.5
+nvidia-nvtx-cu12==12.8.90
+packaging==26.3
+pip==26.2.2
+Pygments==2.21.0
+PyYAML==6.0.3
+regex==2026.11.9
+rich==15.0.0
+safetensors==0.8.0
+setuptools==84.2.1
+shellingham==1.5.4
+sympy==1.14.0
+tokenizers==0.22.2
+torch==2.10.0+cu128
+tqdm==4.70.1
+transformers==5.0.0
+triton==3.6.0
+typer==0.28.0
+typer-slim==0.24.0
+typing_extensions==4.16.0
+wheel==0.48.0
+Python executable: /home/s2487016/.conda/envs/mls-asr/bin/python
+torch 2.10.0+cu128 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/torch/__init__.py
+transformers 5.0.0 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/transformers/__init__.py
+numpy 2.4.6 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/numpy/__init__.py
+safetensors 0.8.0 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/safetensors/__init__.py
+huggingface_hub 1.33.0 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/huggingface_hub/__init__.py
+Model snapshot: /home/s2487016/.cache/huggingface/hub/models--zai-org--GLM-ASR-Nano-2512/snapshots/61ba4e0b3309b6656edea3e93e419f7bd5c61957
+
+>>> build
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -shared /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/libasr_kernels.so
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task1_rope.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/test_task1_rope -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task3_gemm.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/test_task3_gemm -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task2_helpers.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/test_task2_helpers -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task34_edges.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/test_task34_edges -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> correctness-all
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny (2 x 3 tokens, Hq=3, Hk=1)      PASS  max_err=1.03e-07     0.002 ms      0.8 GB/s ( 0% of peak)
+odd sizes, partial rotation          PASS  max_err=1.02e-07     0.002 ms      8.1 GB/s ( 1% of peak)
+audio encoder (partial, 32/64)       PASS  max_err=1.91e-07     0.053 ms    288.7 GB/s (51% of peak)
+text decoder (GQA 16/4, full)        PASS  max_err=1.73e-07     0.006 ms    212.4 GB/s (38% of peak)
+
+Task 1 (RoPE): ALL PASS
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.8 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    212.9 GB/s (38% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.059 ms    259.0 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.4 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      1.9 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    238.1 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       85 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.005 ms      193 GFLOP/s
+    for comparison: naive    129 GFLOP/s, cuBLAS    156 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.611 ms      879 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4269 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.766 ms      912 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4134 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.828 ms      881 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5177 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     4.060 ms       60 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    262 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     5.255 ms      935 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4995 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    21.101 ms      932 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6182 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    16.023 ms      920 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5867 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.014 ms       17 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.008 ms       76 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.028 ms       88 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.008 ms       25 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.027 ms       22 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.062 ms      270 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    20.711 ms      556 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> helpers
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+helper reductions, 32 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 64 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 128 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 256 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 512 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 1024 threads      PASS  max_err=0.00e+00     0.000 ms  
+MaxSum empty + empty                 PASS
+MaxSum identities and stable merges  PASS  max_err=1.12e-07     0.000 ms  
+
+Task 2 helpers: ALL PASS
+
+>>> edges
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+GELU without bias, tile boundary     PASS  max_err=3.67e-08
+exact output tiles, partial K        PASS  max_err=6.60e-08
+96 dimensions, GQA, spare warp       PASS  max_err=3.84e-07
+96 dimensions, shifted causal        PASS  max_err=1.85e-07
+single key, batched GQA              PASS  max_err=0.00e+00
+
+Task 3/4 boundary cases: ALL PASS
+
+>>> task3_gemm-memcheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07
+odd sizes, bias + GELU               PASS  max_err=7.70e-07
+
+Task 3 (tiled GEMM): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> task3_gemm-racecheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07
+odd sizes, bias + GELU               PASS  max_err=7.70e-07
+
+Task 3 (tiled GEMM): ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+
+>>> task3_gemm-synccheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07
+odd sizes, bias + GELU               PASS  max_err=7.70e-07
+
+Task 3 (tiled GEMM): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> task4_attention-memcheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08
+several tiles, peaky scores          PASS  max_err=4.97e-07
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07
+causal, seq_q = seq_k                PASS  max_err=5.16e-07
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07
+causal, one new query                PASS  max_err=3.39e-07
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07
+
+Task 4 (attention): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> task4_attention-racecheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08
+several tiles, peaky scores          PASS  max_err=4.97e-07
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07
+causal, seq_q = seq_k                PASS  max_err=5.16e-07
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07
+causal, one new query                PASS  max_err=3.39e-07
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07
+
+Task 4 (attention): ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+
+>>> task4_attention-synccheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08
+several tiles, peaky scores          PASS  max_err=4.97e-07
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07
+causal, seq_q = seq_k                PASS  max_err=5.16e-07
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07
+causal, one new query                PASS  max_err=3.39e-07
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07
+
+Task 4 (attention): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> edges-memcheck
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+GELU without bias, tile boundary     PASS  max_err=3.67e-08
+exact output tiles, partial K        PASS  max_err=6.60e-08
+96 dimensions, GQA, spare warp       PASS  max_err=3.84e-07
+96 dimensions, shifted causal        PASS  max_err=1.85e-07
+single key, batched GQA              PASS  max_err=0.00e+00
+
+Task 3/4 boundary cases: ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> edges-racecheck
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+GELU without bias, tile boundary     PASS  max_err=3.67e-08
+exact output tiles, partial K        PASS  max_err=6.60e-08
+96 dimensions, GQA, spare warp       PASS  max_err=3.84e-07
+96 dimensions, shifted causal        PASS  max_err=1.85e-07
+single key, batched GQA              PASS  max_err=0.00e+00
+
+Task 3/4 boundary cases: ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+
+>>> edges-synccheck
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+GELU without bias, tile boundary     PASS  max_err=3.67e-08
+exact output tiles, partial K        PASS  max_err=6.60e-08
+96 dimensions, GQA, spare warp       PASS  max_err=3.84e-07
+96 dimensions, shifted causal        PASS  max_err=1.85e-07
+single key, batched GQA              PASS  max_err=0.00e+00
+
+Task 3/4 boundary cases: ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> model-none
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=torch  reduce=torch  gemm=torch  attention=torch  provided=torch
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 99.2 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   1332.3 ms  (13 tokens)
+  run 2:   1331.5 ms  (13 tokens)
+  run 3:   1331.7 ms  (13 tokens)
+
+GPU time per operation, one transcription (1417.4 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       torch       2757     1112.2   78.5%
+  attention    torch        396      161.9   11.4%
+  rope         torch        396      115.3    8.1%
+  rmsnorm      torch        741       17.9    1.3%
+  silu_mul     torch        364        5.5    0.4%
+  layernorm    torch         65        3.5    0.2%
+  embedding    torch         13        0.5    0.0%
+  im2col       torch          2        0.3    0.0%
+  softmax      torch         13        0.3    0.0%
+
+Time: 1331.9 ms per transcription (+/- 0.3 ms), 102.5 ms per token
+Peak GPU memory: 8.90 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+
+>>> model-task12
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=cuda  reduce=cuda  gemm=torch  attention=torch  provided=cuda
+Library: /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 17.7 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   1294.2 ms  (13 tokens)
+  run 2:   1295.4 ms  (13 tokens)
+  run 3:   1294.6 ms  (13 tokens)
+
+GPU time per operation, one transcription (1374.0 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       torch       2757     1112.2   80.9%
+  attention    torch        396      238.7   17.4%
+  rmsnorm      cuda         741        6.2    0.5%
+  silu_mul     cuda         364        5.5    0.4%
+  rope         cuda         396        4.7    0.3%
+  layernorm    cuda          65        4.0    0.3%
+  softmax      cuda          13        1.8    0.1%
+  embedding    cuda          13        0.6    0.0%
+  im2col       cuda           2        0.3    0.0%
+
+Time: 1294.7 ms per transcription (+/- 0.5 ms), 99.6 ms per token
+Peak GPU memory: 8.90 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+
+>>> model-task123
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=cuda  reduce=cuda  gemm=cuda  attention=torch  provided=cuda
+Library: /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 16.7 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   5145.0 ms  (13 tokens)
+  run 2:   5144.8 ms  (13 tokens)
+  run 3:   5145.0 ms  (13 tokens)
+
+GPU time per operation, one transcription (5143.4 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       cuda        2757     4959.1   96.4%
+  attention    torch        396      160.6    3.1%
+  rmsnorm      cuda         741        6.5    0.1%
+  silu_mul     cuda         364        5.9    0.1%
+  rope         cuda         396        4.7    0.1%
+  layernorm    cuda          65        4.0    0.1%
+  softmax      cuda          13        1.8    0.0%
+  embedding    cuda          13        0.5    0.0%
+  im2col       cuda           2        0.3    0.0%
+
+Time: 5144.9 ms per transcription (+/- 0.1 ms), 395.8 ms per token
+Peak GPU memory: 8.90 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+
+>>> model-all
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=cuda  reduce=cuda  gemm=cuda  attention=cuda  provided=cuda
+Library: /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 12.2 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   5672.4 ms  (13 tokens)
+  run 2:   5672.4 ms  (13 tokens)
+  run 3:   5671.6 ms  (13 tokens)
+
+GPU time per operation, one transcription (5672.3 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       cuda        2757     4960.0   87.4%
+  attention    cuda         396      688.6   12.1%
+  rmsnorm      cuda         741        6.5    0.1%
+  silu_mul     cuda         364        5.9    0.1%
+  rope         cuda         396        4.7    0.1%
+  layernorm    cuda          65        4.0    0.1%
+  softmax      cuda          13        1.8    0.0%
+  embedding    cuda          13        0.5    0.0%
+  im2col       cuda           2        0.3    0.0%
+
+Time: 5672.1 ms per transcription (+/- 0.4 ms), 436.3 ms per token
+Peak GPU memory: 8.56 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+
+>>> build-gemm-8
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-8 tests/test_task3_gemm.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-8/test_task3_gemm -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-gemm-32
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-32 tests/test_task3_gemm.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-32/test_task3_gemm -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-gemm-unpadded
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-gemm-unpadded tests/test_task3_gemm.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/gemm-unpadded/test_task3_gemm -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-attn-1
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-1 tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-1/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-attn-2
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-2 tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-2/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-attn-8
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-8 tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-8/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-attn-16
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16 -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-16 tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-16/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-attn-unpadded
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded/task2_reduce.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded/task1_rope.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded/task3_gemm.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded/task4_attention.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded -c /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded/provided.cu -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/src-attn-unpadded tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task1_rope.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task2_reduce.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task3_gemm.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/task4_attention.o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/obj/provided.o -o /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/attn-unpadded/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> variant-gemm-8-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       82 GFLOP/s
+    for comparison: naive     72 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.006 ms      157 GFLOP/s
+    for comparison: naive    132 GFLOP/s, cuBLAS    155 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.914 ms      587 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4268 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     2.687 ms      599 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4136 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     2.729 ms      590 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5173 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     2.910 ms       83 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    259 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     8.109 ms      606 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4994 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    32.457 ms      606 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6185 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    24.415 ms      604 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5867 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-16-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       85 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.005 ms      192 GFLOP/s
+    for comparison: naive    131 GFLOP/s, cuBLAS    154 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.611 ms      879 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4278 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.767 ms      912 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4134 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.828 ms      881 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5178 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     4.060 ms       60 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    262 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     5.253 ms      936 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4984 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    21.101 ms      932 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6180 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    16.024 ms      920 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5865 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-32-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.003 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       62 GFLOP/s
+    for comparison: naive     72 GFLOP/s, cuBLAS     41 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.007 ms      124 GFLOP/s
+    for comparison: naive    130 GFLOP/s, cuBLAS    153 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.518 ms     1037 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4267 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.511 ms     1066 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4138 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.544 ms     1043 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5177 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     7.138 ms       34 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    260 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     4.460 ms     1102 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4981 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    18.372 ms     1070 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6184 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    13.756 ms     1072 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5864 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-unpadded-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       59 GFLOP/s
+    for comparison: naive     70 GFLOP/s, cuBLAS     41 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.006 ms      139 GFLOP/s
+    for comparison: naive    130 GFLOP/s, cuBLAS    155 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     1.397 ms      384 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4280 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     4.124 ms      391 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4132 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     4.182 ms      385 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5173 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     9.803 ms       25 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    260 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05    12.473 ms      394 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4998 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    49.997 ms      393 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6186 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    37.622 ms      392 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5866 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-attn-1-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.007 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.033 ms        7 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.016 ms       37 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.116 ms       22 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.016 ms       12 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.085 ms        7 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.547 ms       31 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07   126.028 ms       91 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-2-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.020 ms       11 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.010 ms       57 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.047 ms       54 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.010 ms       18 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.046 ms       13 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.167 ms      101 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    40.930 ms      281 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-4-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.014 ms       17 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.008 ms       77 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.028 ms       88 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.008 ms       25 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.027 ms       22 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.062 ms      270 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    20.712 ms      556 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-8-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       19 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.007 ms       84 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.021 ms      121 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       29 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.018 ms       32 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.044 ms      378 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.044 ms      676 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-16-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       18 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.006 ms       93 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.017 ms      151 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       27 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.015 ms       38 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.040 ms      415 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.079 ms      675 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-unpadded-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.022 ms       10 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.014 ms       41 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.062 ms       40 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.011 ms       17 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.037 ms       16 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.221 ms       76 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07   106.064 ms      109 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-unpadded-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.022 ms       10 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.014 ms       41 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.062 ms       40 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.011 ms       17 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.037 ms       16 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.220 ms       76 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07   106.063 ms      109 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-16-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       19 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.007 ms       91 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.017 ms      151 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       27 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.015 ms       38 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.041 ms      414 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.081 ms      674 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-8-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       19 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.007 ms       84 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.021 ms      122 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       29 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.018 ms       32 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.044 ms      381 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.043 ms      676 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-4-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.014 ms       17 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.008 ms       77 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.028 ms       89 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.008 ms       25 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.027 ms       22 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.062 ms      270 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    20.712 ms      556 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-2-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.020 ms       11 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.010 ms       57 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.047 ms       54 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.010 ms       18 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.046 ms       13 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.167 ms      101 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    40.929 ms      281 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-1-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.007 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.033 ms        7 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.016 ms       37 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.116 ms       22 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.016 ms       12 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.085 ms        7 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.547 ms       31 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07   126.152 ms       91 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-gemm-unpadded-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       59 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     42 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.006 ms      139 GFLOP/s
+    for comparison: naive    130 GFLOP/s, cuBLAS    150 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     1.397 ms      384 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4279 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     4.124 ms      391 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4131 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     4.182 ms      385 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5181 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     9.802 ms       25 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    260 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05    12.473 ms      394 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4987 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    49.998 ms      393 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6185 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    37.621 ms      392 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5867 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-32-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.003 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       61 GFLOP/s
+    for comparison: naive     73 GFLOP/s, cuBLAS     42 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.007 ms      124 GFLOP/s
+    for comparison: naive    131 GFLOP/s, cuBLAS    154 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.517 ms     1037 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4273 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.511 ms     1066 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4131 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.545 ms     1043 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5177 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     7.138 ms       34 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    261 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     4.459 ms     1102 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4996 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    18.370 ms     1070 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6186 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    13.756 ms     1072 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5867 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-16-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       85 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     40 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.005 ms      191 GFLOP/s
+    for comparison: naive    131 GFLOP/s, cuBLAS    156 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.610 ms      880 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4274 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.767 ms      912 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4132 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.829 ms      881 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5181 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     4.060 ms       60 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    261 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     5.255 ms      935 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4979 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    21.101 ms      932 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6182 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    16.023 ms      920 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5865 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-8-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       82 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.006 ms      156 GFLOP/s
+    for comparison: naive    133 GFLOP/s, cuBLAS    155 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.915 ms      587 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4277 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     2.687 ms      599 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4132 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     2.729 ms      590 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5173 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     2.910 ms       83 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    264 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     8.109 ms      606 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4997 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    32.457 ms      606 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6187 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    24.414 ms      604 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5868 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-8-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       82 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.006 ms      156 GFLOP/s
+    for comparison: naive    132 GFLOP/s, cuBLAS    156 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.915 ms      587 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4274 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     2.687 ms      599 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4132 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     2.729 ms      590 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5176 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     2.910 ms       83 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    260 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     8.109 ms      606 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4988 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    32.457 ms      606 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6185 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    24.417 ms      604 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5867 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-16-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       85 GFLOP/s
+    for comparison: naive     73 GFLOP/s, cuBLAS     41 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.005 ms      192 GFLOP/s
+    for comparison: naive    132 GFLOP/s, cuBLAS    153 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.611 ms      879 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4278 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.767 ms      912 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4130 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.828 ms      881 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5178 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     4.060 ms       60 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    262 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     5.255 ms      935 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   5004 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    21.100 ms      932 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6185 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    16.023 ms      920 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5865 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-32-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.003 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       61 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     42 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.007 ms      124 GFLOP/s
+    for comparison: naive    131 GFLOP/s, cuBLAS    152 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     0.518 ms     1036 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4269 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     1.511 ms     1066 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4132 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     1.544 ms     1043 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5177 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     7.139 ms       34 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    260 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05     4.460 ms     1102 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4991 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    18.373 ms     1070 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6186 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    13.757 ms     1072 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5869 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-gemm-unpadded-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.004 ms       59 GFLOP/s
+    for comparison: naive     71 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.006 ms      139 GFLOP/s
+    for comparison: naive    130 GFLOP/s, cuBLAS    155 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.14e-05     1.397 ms      384 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4277 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=0.00e+00     4.124 ms      391 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4130 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.72e-05     4.182 ms      385 GFLOP/s
+    for comparison: naive    109 GFLOP/s, cuBLAS   5172 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     9.803 ms       25 GFLOP/s
+    for comparison: naive     58 GFLOP/s, cuBLAS    263 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=1.01e-05    12.473 ms      394 GFLOP/s
+    for comparison: naive    111 GFLOP/s, cuBLAS   4996 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07    50.000 ms      393 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   6185 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.57e-05    37.622 ms      392 GFLOP/s
+    for comparison: naive    110 GFLOP/s, cuBLAS   5866 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+
+>>> variant-attn-1-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.007 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.033 ms        7 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.016 ms       37 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.116 ms       22 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.016 ms       12 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.085 ms        7 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.547 ms       31 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07   126.120 ms       91 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-2-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.020 ms       11 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.010 ms       57 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.047 ms       54 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.010 ms       18 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.046 ms       13 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.167 ms      101 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    40.947 ms      281 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-4-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.014 ms       17 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.008 ms       76 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.028 ms       89 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.008 ms       25 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.027 ms       22 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.062 ms      270 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    20.712 ms      556 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-8-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       19 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.007 ms       84 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.021 ms      121 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       29 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.018 ms       32 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.044 ms      381 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.045 ms      676 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-16-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       19 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.006 ms       91 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.017 ms      151 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       27 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.015 ms       38 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.041 ms      412 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.081 ms      674 GFLOP/s
+
+Task 4 (attention): ALL PASS
+
+>>> variant-attn-unpadded-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.005 ms        0 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.022 ms       10 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.014 ms       41 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.062 ms       40 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.011 ms       17 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.037 ms       16 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.217 ms       77 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07   106.063 ms      109 GFLOP/s
+
+Task 4 (attention): ALL PASS
+Task 3/4 validation complete. Default source unchanged by experiments.
+Logs: /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553

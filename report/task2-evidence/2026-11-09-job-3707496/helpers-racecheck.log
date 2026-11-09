@@ -1,0 +1,14 @@
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+helper reductions, 32 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 64 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 128 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 256 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 512 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 1024 threads      PASS  max_err=0.00e+00     0.000 ms  
+MaxSum empty + empty                 PASS
+MaxSum identities and stable merges  PASS  max_err=1.12e-07     0.000 ms  
+
+Task 2 helpers: ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)

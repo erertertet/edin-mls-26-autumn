@@ -1,0 +1,9 @@
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny (2 x 3 tokens, Hq=3, Hk=1)      PASS  max_err=1.79e-07     0.002 ms      0.8 GB/s ( 0% of peak)
+odd sizes, partial rotation          PASS  max_err=5.99e-07     0.002 ms      8.0 GB/s ( 1% of peak)
+audio encoder (partial, 32/64)       FAIL  max_err=1.94e-04
+    52077 of 3840000 checked values are wrong. First: index 107984, got -0.00307077, expected -0.00305963
+text decoder (GQA 16/4, full)        PASS  max_err=9.13e-06     0.005 ms    262.1 GB/s (47% of peak)
+
+Task 1 (RoPE): SOME CASES FAILED

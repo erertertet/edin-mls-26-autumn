@@ -1,0 +1,12 @@
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=8.15e-08     0.004 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.012 ms       19 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.007 ms       84 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=5.16e-07     0.021 ms      121 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.007 ms       29 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.018 ms       32 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.044 ms      378 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07    17.044 ms      676 GFLOP/s
+
+Task 4 (attention): ALL PASS

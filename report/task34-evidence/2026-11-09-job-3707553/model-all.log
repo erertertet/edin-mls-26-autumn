@@ -1,0 +1,28 @@
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=cuda  reduce=cuda  gemm=cuda  attention=cuda  provided=cuda
+Library: /home/s2487016/mls-worktrees/task3-task4/hw1-asr/build/task34-validation/3707553/default/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 12.2 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   5672.4 ms  (13 tokens)
+  run 2:   5672.4 ms  (13 tokens)
+  run 3:   5671.6 ms  (13 tokens)
+
+GPU time per operation, one transcription (5672.3 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       cuda        2757     4960.0   87.4%
+  attention    cuda         396      688.6   12.1%
+  rmsnorm      cuda         741        6.5    0.1%
+  silu_mul     cuda         364        5.9    0.1%
+  rope         cuda         396        4.7    0.1%
+  layernorm    cuda          65        4.0    0.1%
+  softmax      cuda          13        1.8    0.0%
+  embedding    cuda          13        0.5    0.0%
+  im2col       cuda           2        0.3    0.0%
+
+Time: 5672.1 ms per transcription (+/- 0.4 ms), 436.3 ms per token
+Peak GPU memory: 8.56 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS

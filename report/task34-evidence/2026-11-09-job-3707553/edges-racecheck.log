@@ -1,0 +1,11 @@
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+GELU without bias, tile boundary     PASS  max_err=3.67e-08
+exact output tiles, partial K        PASS  max_err=6.60e-08
+96 dimensions, GQA, spare warp       PASS  max_err=3.84e-07
+96 dimensions, shifted causal        PASS  max_err=1.85e-07
+single key, batched GQA              PASS  max_err=0.00e+00
+
+Task 3/4 boundary cases: ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)

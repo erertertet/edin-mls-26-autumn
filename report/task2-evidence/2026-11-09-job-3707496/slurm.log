@@ -1,0 +1,812 @@
+2026-11-09T02:37:24+00:00
+saxa.inf.ed.ac.uk
+Slurm job: 3707496
+17e638c540aa521d31e5de1d482b1c94b6c422ba
+ M csrc/task2_reduce.cu
+ M csrc/task2_reduce.cuh
+?? run_task2.sbatch
+?? tests/test_task2_helpers.cu
+GPU 0: NVIDIA H200 (UUID: GPU-6096d4d6-542b-1e8d-ea2a-4c1eeeef9c83)
+  MIG 1g.18gb     Device  0: (UUID: MIG-f2781732-bee9-543b-ba3f-f50a0291ceb2)
+name, driver_version, memory.total [MiB]
+NVIDIA H200, 595.91.07, 143771 MiB
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+NVIDIA (R) Compute Sanitizer
+Copyright (c) 2020-2025 NVIDIA Corporation
+Version 2025.1.0.0 (build 35583870) (public-release)
+NVCCFLAGS=-O3 -std=c++17 -lineinfo -diag-suppress 177
+SM=90
+Python 3.11.18
+annotated-doc==0.0.5
+anyio==4.16.0
+certifi==2026.10.23
+click==8.5.1
+cuda-bindings==12.9.4
+cuda-pathfinder==1.6.0
+filelock==4.2.4
+fsspec==2026.9.0
+h11==0.16.0
+hf-xet==1.8.0
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.33.0
+idna==3.20
+Jinja2==3.1.6
+markdown-it-py==4.2.0
+MarkupSafe==3.0.3
+mdurl==0.1.2
+mpmath==1.3.0
+networkx==3.6.1
+numpy==2.4.6
+nvidia-cublas-cu12==12.8.4.1
+nvidia-cuda-cupti-cu12==12.8.90
+nvidia-cuda-nvrtc-cu12==12.8.93
+nvidia-cuda-runtime-cu12==12.8.90
+nvidia-cudnn-cu12==9.10.2.21
+nvidia-cufft-cu12==11.3.3.83
+nvidia-cufile-cu12==1.13.1.3
+nvidia-curand-cu12==10.3.9.90
+nvidia-cusolver-cu12==11.7.3.90
+nvidia-cusparse-cu12==12.5.8.93
+nvidia-cusparselt-cu12==0.7.1
+nvidia-nccl-cu12==2.27.5
+nvidia-nvjitlink-cu12==12.8.93
+nvidia-nvshmem-cu12==3.4.5
+nvidia-nvtx-cu12==12.8.90
+packaging==26.3
+pip==26.2.2
+Pygments==2.21.0
+PyYAML==6.0.3
+regex==2026.11.9
+rich==15.0.0
+safetensors==0.8.0
+setuptools==84.2.1
+shellingham==1.5.4
+sympy==1.14.0
+tokenizers==0.22.2
+torch==2.10.0+cu128
+tqdm==4.70.1
+transformers==5.0.0
+triton==3.6.0
+typer==0.28.0
+typer-slim==0.24.0
+typing_extensions==4.16.0
+wheel==0.48.0
+Python executable: /home/s2487016/.conda/envs/mls-asr/bin/python
+torch 2.10.0+cu128 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/torch/__init__.py
+transformers 5.0.0 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/transformers/__init__.py
+numpy 2.4.6 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/numpy/__init__.py
+safetensors 0.8.0 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/safetensors/__init__.py
+huggingface_hub 1.33.0 /home/s2487016/.conda/envs/mls-asr/lib/python3.11/site-packages/huggingface_hub/__init__.py
+Model snapshot: /home/s2487016/.cache/huggingface/hub/models--zai-org--GLM-ASR-Nano-2512/snapshots/61ba4e0b3309b6656edea3e93e419f7bd5c61957
+
+>>> build
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -shared /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/libasr_kernels.so
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task1_rope.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task1_rope -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task3_gemm.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task3_gemm -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task4_attention.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task4_attention -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task2_helpers.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task2_helpers -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> task1-regression
+/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task1_rope
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+tiny (2 x 3 tokens, Hq=3, Hk=1)      PASS  max_err=1.03e-07     0.002 ms      0.8 GB/s ( 0% of peak)
+odd sizes, partial rotation          PASS  max_err=1.02e-07     0.002 ms      8.1 GB/s ( 1% of peak)
+audio encoder (partial, 32/64)       PASS  max_err=1.91e-07     0.053 ms    288.9 GB/s (51% of peak)
+text decoder (GQA 16/4, full)        PASS  max_err=1.73e-07     0.006 ms    216.1 GB/s (38% of peak)
+
+Task 1 (RoPE): ALL PASS
+
+>>> correctness
+/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/test_task2_reduce
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.7 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    215.5 GB/s (38% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.060 ms    258.0 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      1.9 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    238.6 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> helpers
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+helper reductions, 32 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 64 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 128 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 256 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 512 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 1024 threads      PASS  max_err=0.00e+00     0.000 ms  
+MaxSum empty + empty                 PASS
+MaxSum identities and stable merges  PASS  max_err=1.12e-07     0.000 ms  
+
+Task 2 helpers: ALL PASS
+
+>>> memcheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=3.68e-07
+rmsnorm, text decoder                PASS  max_err=4.35e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> helpers-memcheck
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+helper reductions, 32 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 64 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 128 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 256 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 512 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 1024 threads      PASS  max_err=0.00e+00     0.000 ms  
+MaxSum empty + empty                 PASS
+MaxSum identities and stable merges  PASS  max_err=1.12e-07     0.000 ms  
+
+Task 2 helpers: ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> racecheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=3.68e-07
+rmsnorm, text decoder                PASS  max_err=4.35e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+
+>>> helpers-racecheck
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+helper reductions, 32 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 64 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 128 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 256 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 512 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 1024 threads      PASS  max_err=0.00e+00     0.000 ms  
+MaxSum empty + empty                 PASS
+MaxSum identities and stable merges  PASS  max_err=1.12e-07     0.000 ms  
+
+Task 2 helpers: ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+
+>>> synccheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=3.68e-07
+rmsnorm, text decoder                PASS  max_err=4.35e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> helpers-synccheck
+========= COMPUTE-SANITIZER
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+helper reductions, 32 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 64 threads        PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 128 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 256 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 512 threads       PASS  max_err=0.00e+00     0.000 ms  
+helper reductions, 1024 threads      PASS  max_err=0.00e+00     0.000 ms  
+MaxSum empty + empty                 PASS
+MaxSum identities and stable merges  PASS  max_err=1.12e-07     0.000 ms  
+
+Task 2 helpers: ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> model-task1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=cuda  reduce=torch  gemm=torch  attention=torch  provided=cuda
+Library: /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 84.9 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   1304.8 ms  (13 tokens)
+  run 2:   1304.4 ms  (13 tokens)
+  run 3:   1305.6 ms  (13 tokens)
+
+GPU time per operation, one transcription (1402.9 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       torch       2757     1112.0   79.3%
+  attention    torch        396      258.0   18.4%
+  rmsnorm      torch        741       17.9    1.3%
+  silu_mul     cuda         364        5.5    0.4%
+  rope         cuda         396        4.8    0.3%
+  layernorm    torch         65        3.5    0.2%
+  embedding    cuda          13        0.6    0.0%
+  im2col       cuda           2        0.3    0.0%
+  softmax      torch         13        0.3    0.0%
+
+Time: 1305.0 ms per transcription (+/- 0.5 ms), 100.4 ms per token
+Peak GPU memory: 8.90 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+
+>>> model-task1-task2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90)
+Kernels: rope=cuda  reduce=cuda  gemm=torch  attention=torch  provided=cuda
+Library: /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/default/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 19.1 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   1294.5 ms  (13 tokens)
+  run 2:   1295.0 ms  (13 tokens)
+  run 3:   1294.7 ms  (13 tokens)
+
+GPU time per operation, one transcription (1384.7 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       torch       2757     1112.5   80.3%
+  attention    torch        396      249.0   18.0%
+  rmsnorm      cuda         741        6.2    0.5%
+  silu_mul     cuda         364        5.5    0.4%
+  rope         cuda         396        4.7    0.3%
+  layernorm    cuda          65        4.0    0.3%
+  softmax      cuda          13        1.8    0.1%
+  embedding    cuda          13        0.6    0.0%
+  im2col       cuda           2        0.3    0.0%
+
+Time: 1294.7 ms per transcription (+/- 0.2 ms), 99.6 ms per token
+Peak GPU memory: 8.90 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+
+>>> build-32
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-32 tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/32/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-64
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-64 tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/64/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-128
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-128 tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/128/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-512
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-512 tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/512/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-1024
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024 -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-1024 tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/1024/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-atomic
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-atomic tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/atomic/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> build-no-barrier
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier/task1_rope.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier/task2_reduce.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier/task3_gemm.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier/task4_attention.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier -c /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier/provided.cu -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -I/home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/src-no-barrier tests/test_task2_reduce.cu /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task1_rope.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task2_reduce.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task3_gemm.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/task4_attention.o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/obj/provided.o -o /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496/no-barrier/test_task2_reduce -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+
+>>> variant-32-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.003 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.012 ms      3.2 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=3.83e-07     0.023 ms     45.0 GB/s ( 8% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.014 ms      2.8 GB/s ( 0% of peak)
+layernorm, audio encoder             PASS  max_err=5.52e-07     0.093 ms    165.5 GB/s (29% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.011 ms      2.2 GB/s ( 0% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.012 ms      1.3 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.005 ms      1.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=5.23e-10     0.772 ms      0.6 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=1.13e-09     0.040 ms     52.6 GB/s ( 9% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-64-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.007 ms      5.7 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.013 ms     81.5 GB/s (14% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.008 ms      4.9 GB/s ( 1% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.057 ms    267.8 GB/s (48% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.55e-09     0.007 ms      3.7 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.007 ms      2.3 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.4 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=2.80e-10     0.381 ms      1.2 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=1.12e-09     0.021 ms     98.7 GB/s (18% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-128-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.51e-07     0.004 ms      8.9 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.007 ms    141.0 GB/s (25% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.005 ms      7.7 GB/s ( 1% of peak)
+layernorm, audio encoder             PASS  max_err=5.17e-07     0.056 ms    272.4 GB/s (48% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.004 ms      5.7 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.89e-08     0.005 ms      3.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.7 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=1.35e-10     0.193 ms      2.5 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=8.85e-10     0.012 ms    170.4 GB/s (30% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-256-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.6 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    214.0 GB/s (38% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.060 ms    257.8 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.5 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.3 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    237.8 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-512-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     15.7 GB/s ( 3% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.004 ms    279.8 GB/s (50% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.003 ms     14.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.17e-07     0.075 ms    205.6 GB/s (36% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.14e-09     0.003 ms      9.0 GB/s ( 2% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.95e-08     0.003 ms      5.2 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.7 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.050 ms      9.4 GB/s ( 2% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.008 ms    252.5 GB/s (45% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-1024-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.002 ms     16.8 GB/s ( 3% of peak)
+rmsnorm, text decoder                PASS  max_err=3.95e-07     0.005 ms    225.3 GB/s (40% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.003 ms     14.7 GB/s ( 3% of peak)
+layernorm, audio encoder             PASS  max_err=5.62e-07     0.114 ms    134.3 GB/s (24% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      9.1 GB/s ( 2% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.95e-08     0.003 ms      5.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=4.02e-11     0.029 ms     16.4 GB/s ( 3% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    223.3 GB/s (40% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-atomic-run-1
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.004 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=5.72e-07     0.014 ms      2.9 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=1.10e-06     0.017 ms     62.9 GB/s (11% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.060 ms    257.6 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.7 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    237.6 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-atomic-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.004 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=4.88e-07     0.014 ms      2.9 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=9.78e-07     0.017 ms     63.2 GB/s (11% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.059 ms    258.5 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    238.4 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-1024-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.002 ms     16.8 GB/s ( 3% of peak)
+rmsnorm, text decoder                PASS  max_err=3.95e-07     0.005 ms    227.1 GB/s (40% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.003 ms     14.6 GB/s ( 3% of peak)
+layernorm, audio encoder             PASS  max_err=5.62e-07     0.114 ms    134.3 GB/s (24% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      8.9 GB/s ( 2% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.95e-08     0.003 ms      5.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=4.02e-11     0.029 ms     16.3 GB/s ( 3% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    222.8 GB/s (40% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-512-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.003 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     15.6 GB/s ( 3% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.004 ms    276.4 GB/s (49% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.003 ms     13.7 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.17e-07     0.075 ms    205.5 GB/s (36% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.14e-09     0.003 ms      9.2 GB/s ( 2% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.95e-08     0.003 ms      5.2 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.2 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.050 ms      9.5 GB/s ( 2% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.008 ms    252.7 GB/s (45% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-256-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.2 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.6 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    214.7 GB/s (38% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.059 ms    258.2 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.2 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    237.9 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-128-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.51e-07     0.004 ms      8.9 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.007 ms    140.8 GB/s (25% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.005 ms      7.8 GB/s ( 1% of peak)
+layernorm, audio encoder             PASS  max_err=5.17e-07     0.056 ms    272.2 GB/s (48% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.004 ms      5.7 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.89e-08     0.005 ms      3.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.8 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=1.35e-10     0.192 ms      2.5 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=8.85e-10     0.012 ms    169.8 GB/s (30% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-64-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.007 ms      5.7 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.013 ms     81.7 GB/s (15% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.008 ms      4.9 GB/s ( 1% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.057 ms    268.1 GB/s (48% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.55e-09     0.007 ms      3.7 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.007 ms      2.3 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.5 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=2.80e-10     0.382 ms      1.2 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=1.12e-09     0.021 ms     98.8 GB/s (18% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-32-run-2
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.003 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.012 ms      3.2 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=3.83e-07     0.023 ms     44.9 GB/s ( 8% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.014 ms      2.8 GB/s ( 0% of peak)
+layernorm, audio encoder             PASS  max_err=5.52e-07     0.092 ms    166.2 GB/s (30% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.011 ms      2.2 GB/s ( 0% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.012 ms      1.3 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.005 ms      1.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=5.23e-10     0.773 ms      0.6 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=1.13e-09     0.040 ms     52.6 GB/s ( 9% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-32-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.012 ms      3.2 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=3.83e-07     0.023 ms     44.9 GB/s ( 8% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.014 ms      2.8 GB/s ( 0% of peak)
+layernorm, audio encoder             PASS  max_err=5.52e-07     0.092 ms    166.4 GB/s (30% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.011 ms      2.2 GB/s ( 0% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.012 ms      1.3 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.005 ms      1.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=5.23e-10     0.773 ms      0.6 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=1.13e-09     0.040 ms     52.6 GB/s ( 9% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-64-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.007 ms      5.7 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.013 ms     82.0 GB/s (15% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.008 ms      4.9 GB/s ( 1% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.057 ms    267.9 GB/s (48% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.55e-09     0.007 ms      3.7 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.007 ms      2.3 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.5 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=2.80e-10     0.381 ms      1.2 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=1.12e-09     0.021 ms     98.9 GB/s (18% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-128-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.51e-07     0.004 ms      8.9 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.007 ms    141.0 GB/s (25% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.005 ms      7.9 GB/s ( 1% of peak)
+layernorm, audio encoder             PASS  max_err=5.17e-07     0.056 ms    272.6 GB/s (48% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.004 ms      5.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.89e-08     0.005 ms      3.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.003 ms      1.7 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=1.35e-10     0.192 ms      2.5 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=8.85e-10     0.012 ms    169.4 GB/s (30% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-256-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.7 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    214.2 GB/s (38% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.0 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.059 ms    259.3 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.4 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    238.6 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-512-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     15.6 GB/s ( 3% of peak)
+rmsnorm, text decoder                PASS  max_err=4.18e-07     0.004 ms    278.9 GB/s (50% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.003 ms     13.7 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.17e-07     0.074 ms    206.4 GB/s (37% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.14e-09     0.003 ms      8.9 GB/s ( 2% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.95e-08     0.003 ms      5.2 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.2 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.050 ms      9.5 GB/s ( 2% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.008 ms    253.0 GB/s (45% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-1024-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     14.1 GB/s ( 3% of peak)
+rmsnorm, text decoder                PASS  max_err=3.95e-07     0.005 ms    226.5 GB/s (40% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.003 ms     14.5 GB/s ( 3% of peak)
+layernorm, audio encoder             PASS  max_err=5.62e-07     0.114 ms    134.3 GB/s (24% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      9.0 GB/s ( 2% of peak)
+softmax, large inputs (+-100)        PASS  max_err=1.95e-08     0.003 ms      5.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=4.02e-11     0.029 ms     16.4 GB/s ( 3% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    222.9 GB/s (40% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> variant-atomic-run-3
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.004 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=4.88e-07     0.014 ms      2.9 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=1.16e-06     0.017 ms     63.4 GB/s (11% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     10.8 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.060 ms    257.3 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.5 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.4 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      1.9 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    238.9 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+
+>>> atomic-memcheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=7.02e-07
+rmsnorm, text decoder                PASS  max_err=9.50e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> atomic-racecheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=3.11e-07
+rmsnorm, text decoder                PASS  max_err=1.09e-06
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+
+>>> atomic-synccheck
+========= COMPUTE-SANITIZER
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=4.88e-07
+rmsnorm, text decoder                PASS  max_err=9.02e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= ERROR SUMMARY: 0 errors
+
+>>> no-barrier-test
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.1 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.8 GB/s ( 2% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    216.4 GB/s (38% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.3 GB/s ( 2% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.059 ms    258.9 GB/s (46% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 1% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.5 GB/s ( 1% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.097 ms      4.9 GB/s ( 1% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.009 ms    237.6 GB/s (42% of peak)
+
+Task 2 (reductions): ALL PASS
+No-barrier ordinary test passed; this does not prove absence of races.
+
+>>> no-barrier-racecheck
+========= COMPUTE-SANITIZER
+========= Error: Race reported between Read access at block_reduce_sum(float)+0x320 in task2_reduce.cuh:48
+=========     and Write access at block_reduce_sum(float)+0x690 in task2_reduce.cuh:46 [160 hazards]
+========= 
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=3.68e-07
+rmsnorm, text decoder                PASS  max_err=4.35e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= RACECHECK SUMMARY: 1 hazard displayed (1 error, 0 warnings)
+Racecheck rejected the experimental no-barrier variant.
+Task 2 validation complete. Default source and correct synchronization retained.
+Logs: /home/s2487016/mls-worktrees/task2-reductions/hw1-asr/build/task2-validation/3707496

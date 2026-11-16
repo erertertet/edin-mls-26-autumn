@@ -84,6 +84,18 @@ Before paid calls, verify the actual cluster interpreters and installed packages
 
 The pilot is complete only when all four models have transcripts for the frozen eight recordings and all 64 retrieval cells are validated. Inspect per-query changes, including numbers/proper names and threshold crossings. Transcript disagreement alone does not establish which ASR is correct without an independent reference. Eight queries cannot establish general model superiority.
 
+## Reproduction
+
+The runner is `rag/extensions/asr_retrieval_pilot.py`; `rag/extensions/run_asr_retrieval_pilot.sbatch` runs targeted validation, builds the existing CUDA library on the allocated GPU and executes the pilot. Use the separate RAG environment with `rag/extensions/asr-pilot-constraints.txt`; preserve the supplied ASR environment. The runner reuses existing `CourseData`, `LocalEncoder`, `ExactDenseRetriever`, `ASRAdapter`, `recall_at_k`, Hugging Face Tokenizers and the declared OpenAI SDK. The new code only composes these components and records the paired experiment.
+
+After course assets and the pinned tokenizer have been prepared on the login node, submit from the clean PR checkout root:
+
+```bash
+sbatch rag/extensions/run_asr_retrieval_pilot.sbatch
+```
+
+The default output directory is `rag/results/asr-four-model-pilot-20261116/`. Keep the private cluster credential in `$HOME/.config/edin-mls/openrouter.env` with mode 600. It contains only `OPENROUTER_API_KEY`; the runner does not change ELM configuration. The program has no automatic paid POST retries.
+
 ## References
 
 - [Course RAG setup](../rag/README.md)

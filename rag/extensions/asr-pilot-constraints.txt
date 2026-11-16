@@ -1,0 +1,10 @@
+# Reuse the prepared course ASR environment; install RAG packages in a separate venv.
+numpy==2.4.6
+torch==2.10.0+cu128
+transformers==5.0.0
+tokenizers==0.22.2
+huggingface-hub==1.33.0
+sentence-transformers==6.3.0
+openai==3.52.0
+python-dotenv==1.2.4
+httpx2==2.16.2

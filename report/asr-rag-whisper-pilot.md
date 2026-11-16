@@ -1,21 +1,93 @@
-# Codex prompt for the Whisper ASR retrieval pilot
+# Four-model ASR × retrieval pilot
 
-请在 `erertertet/edin-mls-26-autumn` 里运行一个 ASR × RAG 小样本实验，遵循仓库的 `AGENTS.md`，在 Edinburgh Slurm 计算节点上执行转录和检索。
+This protocol supersedes the original two-model Whisper pilot. The first run is an eight-query pilot on Edinburgh Slurm compute nodes, following `AGENTS.md`.
 
-**Research question**
+## Research question
 
-> How does replacing GLM-ASR-Nano with Whisper large-v3 affect evidence recall for fixed top-5 and similarity-cutoff retrieval on the same spoken queries?
+> How does ASR model choice affect evidence recall and retrieved-context token cost under fixed top-5 and absolute similarity-cutoff retrieval on the same spoken queries?
 
-1. 从课程 dev split 里选有音频和至少一条正相关标注（qrels）的查询。按 query ID 排序，用 Python `random.Random(26)` 无放回抽取 8 条，在看转录或检索结果前记录所选 ID 和音频哈希。
-2. 对同一批音频分别得到 GLM-ASR-Nano 和 `openai/whisper-large-v3` 的转录。能确认缓存与同一份音频匹配时，可直接复用 GLM-ASR 转录，否则用仓库已有 ASR adapter 补跑。Whisper 使用转录模式，记录模型 revision 和解码设置。两种转录都是实验输入。
-3. 两种转录都用同一个 `enc_a` 编码，对同一批 24,000 条课程文档完整计算余弦相似度。每份排序分别取 **fixed top-5** 和 **绝对 cutoff ≥ 0.8925**。cutoff 无命中时返回 top-1，排序并列沿用 corpus row order。沿用报告参数，四组共用同一份 qrels。首轮做到检索即可。
-4. 用每条查询找回的相关文档数除以该查询的正相关标注文档总数，然后对相同的有效配对查询取平均。给出下面两行表，并用 **Whisper − GLM-ASR** 报变化的百分点。正值表示换成 Whisper 后召回提高。
+The comparison tests the effect of changing the upstream transcript with retrieval parameters held fixed. It does not assume that the ASR leaderboard order predicts downstream retrieval quality.
 
-| 检索方式 | GLM-ASR 平均召回率 | Whisper 平均召回率 | 变化（百分点） |
-| --- | ---: | ---: | ---: |
-| Fixed top-5 | | | |
-| Absolute cutoff 0.8925 | | | |
+## Frozen design
 
-把两份转录、每条查询的最高相似度、返回文档数、召回率、运行命令和 Slurm job ID 保存在集群实验目录。失败或缺失的查询单独报告，汇总注明完成的配对数。最后说哪种策略的变化幅度更大。若两份转录有数字或专名分歧，可以用个例解释检索变化。这个 pilot 的结论限于抽到的音频、两款模型和固定检索参数。两份转录的分歧只表明模型输出不同，判断哪份转录正确需要独立参考。
+| ASR arm | Execution / model ID |
+| --- | --- |
+| GLM-ASR-Nano | Existing course ASR adapter on the Slurm GPU; record the GLM snapshot and `ASR_CUDA` setting |
+| Whisper large-v3 | OpenRouter `openai/whisper-large-v3` |
+| MAI-Transcribe 2 | OpenRouter `microsoft/mai-transcribe-2` |
+| Voxtral Small Transcribe 3 | OpenRouter `mistralai/voxtral-small-transcribe-3-0` |
 
-参照 [RAG 设置](../rag/README.md)、[全库排序实现](../rag/extensions/prepare_uncapped_rankings.py)、[当前 cutoff 实验记录](rag-threshold-controls-results.md) 和 [Whisper large-v3 模型卡](https://huggingface.co/openai/whisper-large-v3)。
+Each transcript is evaluated with **fixed top-5** and **absolute cosine similarity >= 0.8925**, producing eight ASR/policy settings. The encoder, corpus, qrels, audio and token counter are common to all settings. Do not retune the cutoff for an ASR model or select models/queries from observed retrieval results.
+
+### Sampling and provenance
+
+1. Use the course dev split. Eligible queries must have an existing audio file and at least one positive qrel. Check that all positive qrel record IDs exist in the common corpus.
+2. Sort eligible query IDs and select eight without replacement using `random.Random(26).sample(sorted_ids, 8)`.
+3. Before transcription or retrieval, save the ordered selection, eligible-ID list/hash, audio paths relative to the dataset, audio SHA256, duration and WAV properties. Save the qrels, manifest, corpus, corpus-vector and record-ID mapping hashes.
+4. Freeze the manifest on disk. A resumed run must match it exactly. Do not replace failed queries with convenient alternatives.
+5. The original dev data informed the existing cutoff. This is an exploratory pilot on reused dev data, not an independent confirmatory test.
+
+### Transcription
+
+- Run all experiment code, transcription and retrieval inside the Slurm allocation. Use the login node only for login, synchronization and environment preparation. Never use the local computer's GPU.
+- Reuse the course `ASRAdapter` for GLM. Prefer a fresh transcription of the eight recordings; a cache is acceptable only when its provenance binds the transcript to the same audio SHA256, model and decoding settings. Mark cached timings separately.
+- Send the exact same audio bytes to the three OpenRouter models through `POST /api/v1/audio/transcriptions`. Use transcription rather than translation. Keep the language setting common; for the English course query recordings use `language=en`.
+- Request plain transcripts, without domain hints, qrels, reference answers, custom vocabularies, diarization or audio-event tags. Record every effective decoding/formatting option. Request verbatim output where the provider supports it; record unsupported options instead of claiming equivalent decoding implementations.
+- Record requested model IDs, the model/endpoint catalogue snapshot, returned provider/version/request IDs when available, raw response JSON, transcript, wall time and usage/cost. A requested slug alone is not proof of an immutable model revision. Record unavailable provenance fields as unavailable.
+- Use one saved transcript per audio/model for both retrieval policies. Randomize the 24 external transcription tasks with a fixed recorded seed; no generation or LLM judging is part of this pilot.
+- Save completed requests before continuing and reuse them on resume. Disable hidden automatic POST retries; explicitly log any later retry. A timed-out request may still have been billed.
+
+### Retrieval
+
+1. Encode every transcript with the same supplied `enc_a` using the existing `LocalEncoder`; record model files and encoding settings. Do not reuse GLM query vectors for another model's transcript.
+2. Reuse the supplied `ExactDenseRetriever` corpus vectors and ID mapping. Compute the full exact cosine ranking over all **24,000** records, as in `prepare_uncapped_rankings.py`.
+3. Use stable descending similarity order with corpus row order as the tie breaker.
+4. Fixed top-5 returns the first five records. The cutoff returns every record with score >= 0.8925, with **top-1 fallback** if none qualify. No candidate-count cap or silent truncation applies.
+5. Score every setting against the same original query's positive qrels, not against a question relabelled from its new transcript.
+
+## Metrics and accounting
+
+For each query, ASR and retrieval rule:
+
+- **Evidence recall:** number of retrieved positive-qrel records / total positive-qrel records for that original query.
+- **Context token cost:** sum of the token counts of the individual retrieved document texts, using one pinned Mistral Small 4 tokenizer for every arm, `add_special_tokens=False`. Reuse the report tokenizer metadata and revision `a11f36bebf709121056b1dbcc943d1c6afbe494d`; verify its repository/path and file hash before running.
+- This additive document-text measure excludes the question transcript, system text, labels, separators and chat framing. It is not a measured full LLM prompt count or an API bill.
+- Also retain selected record IDs/scores, relevant hits, returned-document count, top similarity, cutoff fallback, transcript token count, encoding/retrieval times and ASR service cost.
+- Keep GLM GPU inference timings separate from external API wall times, which include network/provider overhead. Cached outputs have no newly measured inference latency.
+
+Use the same complete four-model query intersection for the primary eight-row summary. Report failures, missing cells and the number of complete paired queries. Do not substitute zero recall for failed transcription. If fewer than eight queries complete, mark the pilot partial.
+
+| ASR | Retrieval | Complete paired queries | Mean recall (%) | Recall change vs GLM (pp) | Mean context tokens | Token change vs GLM | Mean documents |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GLM-ASR-Nano | top-5 | | | 0 | | 0 | |
+| Whisper large-v3 | top-5 | | | | | | |
+| MAI-Transcribe 2 | top-5 | | | | | | |
+| Voxtral Small Transcribe 3 | top-5 | | | | | | |
+| GLM-ASR-Nano | cutoff 0.8925 | | | 0 | | 0 | |
+| Whisper large-v3 | cutoff 0.8925 | | | | | | |
+| MAI-Transcribe 2 | cutoff 0.8925 | | | | | | |
+| Voxtral Small Transcribe 3 | cutoff 0.8925 | | | | | | |
+
+Changes are **candidate ASR minus GLM**, paired by query and retrieval rule. Positive recall change means more original labelled evidence was recovered; positive token change means more context tokens. Also report each candidate's difference between its cutoff recall change and top-5 recall change, retaining the sign.
+
+## Credentials and spend
+
+Read `OPENROUTER_API_KEY` from the environment or a private dotenv file. Keep it out of Git, command-line arguments, logs and saved configuration. A local coordinator may transfer only this credential over the existing SSH connection to a private cluster file with mode 600. Do not replace the existing ELM credentials.
+
+Use a conservative **USD 1 pilot guard** and the current duration-based prices to preflight the 24 planned external requests. Save actual usage and request IDs separately. The guard is not a provider account spending cap; failed/ambiguous requests may have charges. Do not launch answer generation, judging, model sweeps or the stopped earlier studies.
+
+## Evidence and validation
+
+Save a run directory under ignored `rag/results/` containing frozen sampling/configuration, dependency versions/import paths, source hashes, tokenizer metadata, environment, Slurm job/node/GPU details, command, transcripts, raw API responses, per-query retrieval rows, summary and a completion/error manifest. Restrict private raw outputs appropriately.
+
+Before paid calls, verify the actual cluster interpreters and installed packages, exercise the existing encoder/tokenizer/retrieval APIs in the Slurm allocation, check outbound access to OpenRouter, validate request model IDs and check estimated spend. Record exact versions and consult their official documentation. Reuse the existing data loader, encoder, retriever, ASR adapter and tokenizers rather than replacing their algorithms.
+
+The pilot is complete only when all four models have transcripts for the frozen eight recordings and all 64 retrieval cells are validated. Inspect per-query changes, including numbers/proper names and threshold crossings. Transcript disagreement alone does not establish which ASR is correct without an independent reference. Eight queries cannot establish general model superiority.
+
+## References
+
+- [Course RAG setup](../rag/README.md)
+- [Existing full-corpus ranking](../rag/extensions/prepare_uncapped_rankings.py)
+- [Current cutoff results and metric boundaries](rag-threshold-controls-results.md)
+- [OpenRouter speech-to-text contract](https://openrouter.ai/docs/guides/overview/multimodal/stt)
+- [OpenRouter live transcription catalogue](https://openrouter.ai/api/v1/models?output_modalities=transcription)

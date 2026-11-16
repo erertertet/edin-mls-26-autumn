@@ -12,7 +12,7 @@ POLICY = [
     "Collapse all whitespace and strip; retain bracketed content; never use query IDs, qrels or model identity.",
 ]
 
-DOTTED = re.compile(r"(?<!\w)(?:[A-Za-z]\.\s*)+[A-Za-z]\.?(?!\w)")
+DOTTED = re.compile(r"(?<!\w)(?:[A-Za-z]\.\s*)+[A-Za-z]\.(?!\w)|(?<!\w)(?:[A-Za-z]\.)+[A-Za-z](?!\w)")
 SPACED = re.compile(r"(?<!\w)[A-Z](?:\s+[A-Z])+(?!\w)")
 APOSTROPHES = str.maketrans({"\u2018": "'", "\u2019": "'", "\u02bc": "'"})
 

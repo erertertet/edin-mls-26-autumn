@@ -27,6 +27,8 @@ class NormalizationTests(unittest.TestCase):
         self.assertNotEqual(normalize("can not invest"), normalize("can invest"))
         self.assertNotEqual(normalize("I am a saver"), normalize("I am saver"))
         self.assertNotEqual(normalize("A? B!"), normalize("AB"))
+        self.assertEqual(normalize("U.S. I invest"), "us i invest")
+        self.assertEqual(normalize("I. A saver"), "i a saver")
         self.assertEqual(normalize("i a"), "i a")
 
     def test_idempotent(self):

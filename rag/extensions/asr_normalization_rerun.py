@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import importlib.metadata
 import importlib.util
 import json
@@ -127,7 +128,9 @@ def main():
         inputs["raw-run/" + relative] = sha(path)
         mappings.append({"query_id": qid, "arm": arm, "model": MODELS[arm],
                          "audio_sha256": audio["audio_sha256"], "source_path": relative,
-                         "source_sha256": sha(path), "raw": text, "normalized": normalized})
+                         "source_sha256": sha(path), "raw": text, "normalized": normalized,
+                         "raw_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                         "normalized_text_sha256": hashlib.sha256(normalized.encode("utf-8")).hexdigest()})
     if set(texts) != {(q, a) for q in selected for a in MODELS}:
         raise RuntimeError("Need all 32 original transcripts")
     sources = {str(p.relative_to(ROOT.parent)): sha(p) for p in [Path(__file__),
@@ -139,6 +142,7 @@ def main():
            "query_ids": selected, "models": MODELS, "tau": TAU, "topk": 5,
            "sources": sources, "input_sha256": inputs, "tokenizer": original["tokenizer"],
            "original_source_commit": "75d1a1e0a84a3bbbac294c839888dc90a15ffa93",
+           "raw_score_tolerance": 1e-6,
            "new_api_requests": 0, "new_asr_inferences": 0, "conditions": ["raw-control", "normalized"]})
     write_json(out / "transcript-mappings.json", mappings)
     versions = {n: {"version": importlib.metadata.version(n), "path": importlib.util.find_spec(m).origin}
@@ -171,6 +175,8 @@ def main():
             if row[key] != previous[key]:
                 raise RuntimeError(f"Raw reproduction mismatch: {row['query_id']}/{row['arm']}/{row['rule']}/{key}")
         maximum_drift = max(maximum_drift, float(np.max(np.abs(np.array(row["selected_scores"]) - previous["selected_scores"]))))
+    if maximum_drift > 1e-6:
+        raise RuntimeError(f"Raw selected-score drift exceeds frozen tolerance 1e-6: {maximum_drift}")
     write_json(out / "raw-control-check.json", {"status": "pass", "cells": len(raw),
                "exact_ids_metrics_tokens_and_fallback": True, "max_abs_selected_score_drift": maximum_drift})
     save_condition(raw, selected, out / "raw-control")

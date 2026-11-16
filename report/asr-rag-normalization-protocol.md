@@ -12,7 +12,7 @@ This is a post-hoc diagnostic requested after inspection of the raw pilot. The c
 
 ## Controls and outputs
 
-Run inside a CPU Slurm allocation using the existing RAG environment. Recompute the original 64 raw retrieval cells first and require exact selected IDs/counts/recalls/token counts/fallback flags to agree with the saved pilot; log score drift. Fail rather than silently treating an environment change as a normalization effect. Then independently encode all 32 normalized transcripts and compute 64 normalized cells. Do not enforce textual equality across models as a success condition.
+Run inside a CPU Slurm allocation using the existing RAG environment. Recompute the original 64 raw retrieval cells first and require exact selected IDs/counts/recalls/token counts/fallback flags to agree with the saved pilot; log score drift and require maximum absolute selected-score drift <=1e-6. Fail rather than silently treating an environment change as a normalization effect. Then independently encode all 32 normalized transcripts and compute 64 normalized cells. Do not enforce textual equality across models as a success condition.
 
 Freeze policy text/source hashes, input hashes, selection/configuration, environment/import versions and git commit before new metrics. Save normalized strings/hashes, per-query distinct text counts, raw-control checks, complete per-query metrics, means, candidate-minus-GLM contrasts and per-arm raw-to-normalized changes. Recount recalls and document tokens from original qrels/corpus in an independent CPU Slurm audit. Report whether normalization makes the four inputs equal on each query, rather than only whether their means match.
 

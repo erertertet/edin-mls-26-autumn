@@ -140,25 +140,35 @@ Billing includes input and output; latency also depends on decoding, scheduling 
 
 \section{Integrated ASR ablation and limitations}
 \label{sec:asr}
-Table~\ref{tab:asr} preserves ASR integration evidence; implementation details are in Appendix~\ref{app:kernels}. Measurements used an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0. The RAG ASR cache was produced separately on an RTX A6000; MIG times are not substituted into downstream latency.
+Table~\ref{tab:asr} reports ASR timings on an H200 MIG 1g.18gb slice (16 SMs) with CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0. The three custom configurations also enable the supplied CUDA kernels. Appendix~\ref{app:kernels} gives implementation details. The downstream RAG runs use transcripts cached separately on an RTX A6000.
 
 \begin{table}[h]
 \centering
-\caption{ASR ablation on one 3.50-second recording. One warm-up and three timed runs per mode; loading excluded. All modes achieved 100\% supplied word accuracy on this clip. Memory is peak allocation.}
+\caption{ASR ablation on one 3.50-second recording. Transcription times show mean $\pm$ standard deviation across three runs after one warm-up. Timing covers audio encoding and decoding from prepared inputs, after model loading and feature preprocessing. The per-token column divides the mean by the 13 tokens generated in each run. Every configuration produced the expected transcript. Peak memory is the maximum GPU memory allocated by PyTorch.}
 \label{tab:asr}
-\begin{tabular}{lrr}
+\begin{tabular}{lrrr}
 \toprule
-Enabled custom groups & Time (ms) & Memory (GiB)\\
+Enabled custom groups & ms/transcription & ms/token & Peak memory (GiB)\\
 \midrule
-None: framework reference & $1331.9\pm0.3$ & 8.90\\
-RoPE + reductions & $1294.7\pm0.5$ & 8.90\\
-Above + GEMM & $5144.9\pm0.1$ & 8.90\\
-All four & $5672.1\pm0.4$ & 8.56\\
+None (all PyTorch) & $1331.9\pm0.3$ & 102.5 & 8.90\\
+RoPE + reductions & $1294.7\pm0.5$ & 99.6 & 8.90\\
+RoPE + reductions + GEMM & $5144.9\pm0.1$ & 395.8 & 8.90\\
+All four tasks & $5672.1\pm0.4$ & 436.3 & 8.56\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-All 33 official correctness cases and five additional shape/boundary cases pass. The all-CUDA model is nevertheless \textbf{4.26 times slower} than the framework reference, with peak allocated memory 0.34 GiB lower. In a separate instrumented profile, linear calls dominate (4,960.0 ms), followed by attention (688.6 ms). Less logical memory traffic does not reproduce optimized library register tiling and scheduling. The reductions-only improvement cannot compensate for slower GEMM. Mode order was fixed; the small run dispersion and one correctly transcribed clip do not establish general ASR speed or recognition accuracy.
+All 33 official correctness cases and five additional shape/boundary cases pass. On this clip and H200 MIG slice, the all-CUDA configuration took \textbf{4.26 times as long} as the framework reference and used 0.34 GiB less peak allocated memory. In separate instrumented profiles, linear operation time rose from 1,112.2 to 4,960.0~ms and attention time from 161.9 to 688.6~ms when switching from PyTorch to all CUDA. With RoPE and the supplied CUDA kernels held fixed, enabling Task~2 reduced mean latency from 1,305.0 to 1,294.7~ms (0.8\%) in a separate comparison. These fixed-order measurements describe one recording and GPU configuration.
+
+\subsection{CUDA design questions}
+
+\textbf{Task 1 (Q1) RoPE bandwidth.} The 960,000 RoPE pairs in the audio-encoder case request 7.68 MB of Q/K reads, 3.84 MB of frequency reads and 7.68 MB of Q/K writes, for 19.20 MB of logical traffic before caching. At 256 threads per block, the median effective bandwidth was 289.0 GB/s, or 51.3\% of the estimated MIG peak, using the benchmark's Q/K byte count.
+
+\textbf{Task 2 (Q4) LayerNorm synchronisation.} Without the final block barrier, one warp can finish the mean reduction and overwrite its shared slot with a variance partial while another warp is still reading the mean partial. Removing the barrier left all numerical cases passing. Racecheck flagged one shared-memory race that grouped 160 hazards.
+
+\textbf{Task 3 (Q1) GEMM reads.} At $M=N=K=1024$, the naive kernel requests $2MNK=2{,}147{,}483{,}648$ input floats. Our $16\times16$ tile reuses each loaded value across 16 outputs, reducing that count to $2MNK/16=134{,}217{,}728$ floats. These counts exclude caches and output stores.
+
+\textbf{Task 4 (Q1) Attention storage.} A dense encoder score tensor with 20 heads and 1,500 queries and keys uses $20\times1500^2\times4=180{,}000{,}000$ bytes. With head dimension 64, our streaming kernel uses $4[32(64+1)+32(64)+4(64)]=17{,}536$ bytes of shared memory per block for padded keys, values and four queries.
 
 \subsection{Threats to validity}
 \textbf{Reused evaluation data.} The cleaner design was motivated by earlier observations on the same 324 queries. The original dev-F1 thresholds avoid direct evaluation-label tuning; the four rounded controls additionally use exploratory curve inspection. Neither undoes design-level test reuse. The curves, confidence intervals and final answer results are follow-up evidence. A new query set is needed for independent confirmation.
@@ -182,15 +192,15 @@ Uncapped cutoffs improve macro precision at matched recall but require more evid
 \label{app:kernels}
 \textbf{RoPE.} One thread owns a rotary dimension pair, reading both original values before writing. Q and K share a launch; indexing distinguishes head counts and resets positions per batch. Unrotated dimensions remain unchanged. Standard \texttt{sinf}/\texttt{cosf} preserve the supplied tolerance. Fast math failed the long-position case (maximum error $1.94\times10^{-4}$; 52,077 values outside tolerance), so it was rejected.
 
-\textbf{Reductions.} Five XOR shuffle stages implement warp sums/maxima. Block reductions publish warp partials in shared memory with publication and reuse barriers. RMSNorm reduces squared values. Softmax combines stable summaries $(m,s)$ with $m=\max(m_a,m_b)$ and $s=s_a e^{m_a-m}+s_b e^{m_b-m}$; explicit empty identities avoid $-\infty-(-\infty)$. Two input passes replace the ordinary max/sum/write scheme's three \citep{milakov2018}. Removing the reuse barrier passed numerical tests but produced one racecheck error aggregating 160 hazards; the production barrier prevents scratch reuse before all readers finish \citep{nvidia2025}.
+\textbf{Reductions.} Five XOR shuffle stages implement warp sums and maxima. Blocks publish warp partials in shared memory and use a second barrier before reuse. RMSNorm reduces squared values. Softmax merges summaries $(m,s)$ using $m=\max(m_a,m_b)$ and $s=s_a e^{m_a-m}+s_b e^{m_b-m}$. Merging with the empty summary $(-\infty,0)$ returns the other input. Online accumulation takes two input passes versus three for separate max, sum and output passes \citep{milakov2018}. At 256 threads, encoder LayerNorm achieved a median 258.2 GB/s, or 45.9\% of the estimated MIG peak, counting one input read and one output write per element.
 
-\textbf{GEMM.} Cooperative bounded loads feed shared input/transposed-weight tiles. Threads synchronize before tile consumption and reuse, including boundary threads. Bias and GELU are fused. Tile 16 remains the default because larger tiles trade dense-matrix efficiency against wasted rows in single-token projection. A $1024^3$ multiply reduces logical input requests 16-fold compared with naive scalar loads; fused encoder GELU avoids 61.44 MB of separate activation traffic. These are logical-byte estimates, not measured physical DRAM transfers.
+\textbf{GEMM.} Cooperative bounded loads feed shared input and transposed-weight tiles. Every thread reaches both tile barriers, including threads outside the output. Larger tiles improve dense-matrix reuse and leave more rows idle for single-token projection. Fusing encoder GELU saves 61.44 MB of logical activation reads and writes. For the same vocabulary-projection matrix product, tiled CUDA, naive CUDA and pedantic FP32 cuBLAS achieved 60, 58 and 262 GFLOP/s. For encoder fc1, tiled CUDA times the fused bias and GELU epilogue as well. The naive and cuBLAS timings for fc1 cover the matrix product alone.
 
 \textbf{Attention.} Grouped query heads map to shared K/V heads. Streaming tiles update the running maximum, normalization sum and rescaled output accumulator, avoiding the full score matrix. This follows IO-aware principles \citep{dao2022}; the coursework implementation is not FlashAttention. Padding reduces shared-memory conflicts; four warps remain the validated default.
 
 \begin{table}[h]
 \centering
-\caption{Selected kernel ablations on the same MIG allocation. Median over three timing rounds; the second reversed configuration order. Defaults are retained unless fully validated.}
+\caption{Selected kernel ablations on the same MIG allocation. Times are medians over three rounds, with configuration order reversed in round two. The end-to-end ASR timings use the default padded configurations.}
 \begin{tabular}{llr}
 \toprule
 Workload & Configuration & Time (ms)\\
@@ -204,7 +214,7 @@ Audio attention & Four warps, padded / unpadded K & 20.712 / 106.063\\
 \end{tabular}
 \end{table}
 
-All four RoPE, eleven reduction, ten GEMM and eight attention official cases pass, with unchanged references/tolerances. Five additional boundary/shape cases and reduction-helper checks pass. Largest default GEMM/attention errors are $3.72\times10^{-5}$/$5.21\times10^{-7}$. Small GEMM/attention and helper suites pass memcheck, racecheck and synccheck. Large cases receive numerical rather than exhaustive sanitizer coverage; the large-attention reference samples query rows. The tests establish correctness only for their covered cases.
+All four RoPE, eleven reduction, ten GEMM and eight attention official cases pass under the supplied tolerances. Five additional boundary cases and the reduction-helper checks also pass. The maximum absolute GEMM and attention errors are $3.72\times10^{-5}$ and $5.21\times10^{-7}$. Selected small cases, helper tests and extra boundary cases passed Compute Sanitizer's memcheck, racecheck and synccheck \citep{nvidia2025}. The full-size encoder attention test compared 301 of 30,000 query--head rows with the CPU reference across all 20 heads. Its fixed stride sampled 300 rows in block-local warp 0 and one in warp 3.
 
 \clearpage
 \section{Full-range retrieval curves and evidence inventory}

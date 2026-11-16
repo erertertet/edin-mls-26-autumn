@@ -17,7 +17,7 @@
 \section{Research question and system}
 Fixed top-$k$ retrieval gives every query the same number of documents, regardless of the similarity scores. A cutoff can instead return a short prefix for an apparently specific query and a longer one when many documents have similar scores. This seems a natural way to remove unnecessary evidence, but ``more effective'' can mean higher precision, greater coverage, fewer input tokens or better generated answers. These objectives need not agree.
 
-Our question is: \emph{at matched labelled-evidence recall, do absolute similarity and top-score-relative gap cutoffs improve precision or token efficiency over fixed top-$k$, and do those retrieval differences improve downstream answer quality, cost or latency?} We compare three policy families. Retrieval curves sweep their parameters; final answer evaluation compares fixed top-5, top-10 and top-20 with the two dev-selected cutoffs.
+Our question is: \emph{at matched labelled-evidence recall, do absolute similarity and top-score-relative gap cutoffs improve precision or token efficiency over fixed top-$k$, and do those retrieval differences improve downstream answer quality, cost or latency?} We compare three policy families. Retrieval curves sweep their parameters; final answer evaluation compares fixed top-5, top-10 and top-20 with two dev-selected cutoffs and four rounded-threshold controls.
 
 The retrieval results support a conditional conclusion: cutoffs improve \emph{macro precision} at matched recall, while using more evidence tokens. Pooled precision does not show the same benefit. A separate final LLM evaluation measures whether the document-level differences translate into answer quality, cost and latency; a favourable retrieval metric alone cannot establish system improvement.
 
@@ -34,15 +34,15 @@ Both cutoffs select a \emph{prefix} of the embedding ranking: a subset of a suff
 \clearpage
 \section{Experimental design and measurements}
 \subsection{Data, tuning and separation of stages}
-The course provides 350 practice and 125 dev query recordings, 24,000 corpus records and public relevance judgements (qrels), with no official test partition. An earlier study excluded 26 previously used practice queries and locked the remaining 324. This follow-up reuses those 324 evaluation queries after inspecting earlier results. It is therefore \emph{not a fresh confirmatory holdout}, although new tuning uses only the 125 dev queries.
+The course provides 350 practice and 125 dev query recordings, 24,000 corpus records and public relevance judgements (qrels), with no official test partition. An earlier study excluded 26 previously used practice queries and locked the remaining 324. This follow-up reuses those 324 evaluation queries after inspecting earlier results. It is therefore \emph{not a fresh confirmatory holdout}, and the rounded-threshold controls are motivated by the previously viewed evaluation curves.
 
-Cutoffs maximise dev \emph{macro retrieval F1}, with ties preferring fewer mean documents. Absolute similarity uses 97 predeclared values from 0.75 to 0.99; relative gap uses 81 values from 0 to 0.08. The frozen values are \textbf{$\tau=0.8925$, $\delta=0.009$}, with dev F1 .2659/.2949. Fixed \textbf{$k=5,10,20$} are predeclared answer-evaluation controls, not selected from answer scores.
+Cutoffs maximise dev \emph{macro retrieval F1}, with ties preferring fewer mean documents. Absolute similarity uses 97 predeclared values from 0.75 to 0.99; relative gap uses 81 values from 0 to 0.08. The frozen values are \textbf{$\tau=0.8925$, $\delta=0.009$}, with dev F1 .2659/.2949. Fixed \textbf{$k=5,10,20$} are predeclared controls. Four additional exploratory controls use round values: absolute $\tau=0.88,0.87$ and relative $\delta=0.02,0.03$. These are fixed before generation, not fitted to exact recall targets or selected from answer scores. Names identify the threshold; measured recall is reported separately.
 
-We reuse cached ASR transcripts and query vectors, then recompute a full exact cosine ranking on CPU. Stable sorting changes two earlier top-20 orderings; every method shares the new ranking. The frozen absolute/relative selections have maxima of 32/18 documents, respectively. Neither reaches 50 even though both can exceed it. All selected prompts fit without truncation; the largest across the five settings is 8,977 input tokens under the pinned tokenizer and prompt format.
+We reuse cached ASR transcripts and query vectors, then recompute a full exact cosine ranking on CPU. Stable sorting changes two earlier top-20 orderings; every method shares the new ranking. Dev-selected absolute/relative cutoffs have maxima of 32/18 documents. The rounded controls reach 82/180 and 113/280 documents, respectively. All prompts fit without truncation; the largest across nine settings is 71,670 input tokens under the pinned tokenizer and prompt format.
 
 The generator is Mistral Small 4 through OpenRouter (\texttt{mistralai/mistral-small-2603}); the final judge is Gemini 2.5 Flash. This matches a named course generator option, not ELM's serving implementation. Generation uses temperature 0.1 and a 2,048-token output cap; judging uses temperature zero and a 768-token cap. Reasoning is requested disabled. Twelve workers execute shuffled query/policy tasks with identical prompts and settings. Identical contexts still receive independent fresh generation.
 
-All \textbf{1,620 answers} ($324\times5$) are saved before judging begins. Every row receives fresh generation in this same randomized batch. The judge sees the transcript, candidate answer and qrels-derived gold documents, but not the policy, selected IDs, similarities or parameters. A second shuffled pass judges every saved answer. There are no policy changes after judging. Request, response, token, cost and completion records are retained.
+All \textbf{2,916 answers} ($324\times9$) are saved before judging begins. Every row receives fresh generation in this same randomized batch. The judge sees the transcript, candidate answer and qrels-derived gold documents, but not the policy, selected IDs, similarities or parameters. A second shuffled pass judges every saved answer. There are no policy changes after judging. Request, response, token, cost and completion records are retained.
 
 \subsection{Quality and cost definitions}
 For selected set $S_q$, relevant set $G_q$ and hits $h_q=|S_q\cap G_q|$,
@@ -59,71 +59,85 @@ The supplied judge assigns correctness, grounding and completeness scores from 0
 
 \clearpage
 \section{Retrieval results: precise per query, costly per token}
-Figure~\ref{fig:retrieval} sweeps all three policy families over the full corpus; 3,103 plotted settings cover the full range. The displayed axes focus on practical budgets, not a hidden selection cap. Diamonds are the frozen dev settings. The appendix shows the full range through 100\% labelled recall.
+Figure~\ref{fig:retrieval} shows the practical range of 3,103 full-corpus settings; the appendix extends to 100\% recall. Axis limits do not cap document selection.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{figures/uncapped-report-frontiers.pdf}
-\caption{Uncapped selection on 324 queries. Cutoffs improve macro precision at similar recall but generally need more retrieved-text tokens in the displayed range. Diamonds denote dev-selected settings; curves are exploratory.}
+\caption{Macro precision improves at similar recall, but retrieved-text cost rises. Diamonds: dev-selected references. Labelled squares/triangles: rounded absolute $\tau$/relative $\delta$. Curves and rounded controls are exploratory.}
 \label{fig:retrieval}
 \end{figure}
 
 \begin{table}[h]
 \centering
-\caption{Frozen operating points; percentages are qrels metrics. Input tokens include the complete generation prompt. Bold marks highest quality or lowest token usage.}
+\caption{Nine operating points; percentages are qrels metrics. Absolute/relative numbers denote $\tau$/$\delta$; 0.8925/0.009 are dev-selected. Input includes the complete prompt. Bold marks highest quality or lowest token usage.}
 \label{tab:retrieval}
 \small
 \begin{tabular}{lrrrrrr}
 \toprule
 Method & Mean docs & Max docs & Recall & Macro $P$ & Micro $P$ & Input tokens\\
 \midrule
-Fixed top-5 & 5.00 & 5 & 42.40 & 17.65 & 17.65 & 1227\\
-Fixed top-10 & 10.00 & 10 & 48.46 & 10.56 & 10.56 & 2391\\
-Fixed top-20 & 20.00 & 20 & \textbf{57.75} & 6.37 & 6.37 & 4730\\
-Absolute cutoff & 2.40 & 32 & 32.39 & 37.89 & \textbf{28.41} & \textbf{657}\\
-Relative gap & 2.55 & 18 & 30.60 & \textbf{39.21} & 23.34 & 667\\
+Fixed top-5 & 5.00 & 5 & 42.40 & 17.65 & 17.65 & 1227 \\
+Fixed top-10 & 10.00 & 10 & 48.46 & 10.56 & 10.56 & 2391 \\
+Fixed top-20 & 20.00 & 20 & \textbf{57.75} & 6.37 & 6.37 & 4730 \\
+Absolute 0.8925 & 2.40 & 32 & 32.39 & 37.89 & \textbf{28.41} & \textbf{657} \\
+Absolute 0.88 & 6.15 & 82 & 39.58 & 29.12 & 14.39 & 1612 \\
+Absolute 0.87 & 14.10 & 180 & 46.24 & 19.34 & 7.37 & 3586 \\
+Relative 0.009 & 2.55 & 18 & 30.60 & \textbf{39.21} & 23.34 & 667 \\
+Relative 0.02 & 8.28 & 113 & 42.81 & 32.25 & 10.40 & 2048 \\
+Relative 0.03 & 22.54 & 280 & 52.87 & 22.86 & 4.81 & 5437 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Match recall before attributing a precision gain.} Absolute and relative achieve different recalls, so directly comparing their precision is incomplete. At absolute's 32.39\% recall, the fixed-$k$ mixture has 31.01\% macro precision versus 37.89\%; the gain is \textbf{6.87 percentage points}, with paired 95\% interval [3.02,10.97]. At relative's 30.60\% recall, its 39.21\% precision exceeds the mixture's 33.08\% by \textbf{6.13 points} [2.73,10.06].
+\textbf{Dev-selected cutoffs trade tokens for macro precision.} At absolute's 32.39\% recall, macro precision is 37.89\% versus 31.01\% for the fixed-$k$ mixture: $+6.87$ percentage points, paired 95\% interval [3.02,10.97]. Relative gains $+6.13$ points [2.73,10.06] at 30.60\% recall. Retrieved-text costs increase by \textbf{24.1\%/41.4\%}, respectively. Lower absolute expenditure than a higher-recall fixed depth is therefore not better token efficiency.
 
-\textbf{The gain costs more tokens at matched recall.} Absolute uses 566.6 retrieved-text tokens versus 456.5 for the fixed mixture, \textbf{24.1\% more}; relative uses 575.9 versus 407.3, \textbf{41.4\% more}. Additional-token intervals are [14.1,201.4] and [93.5,241.5]. Cutoffs use fewer tokens than the higher-recall fixed depths in Table~\ref{tab:retrieval}, but that does not demonstrate better token efficiency: the matched-recall comparison exposes the allocation penalty.
+\textbf{Rounded thresholds show the same trade-off.} At their own matched recalls, absolute $\tau=0.88/0.87$ gains 6.74/6.23 macro-precision points but uses 83.5\%/98.7\% more text tokens. Relative $\delta=0.02/0.03$ gains 15.31/14.42 points at 61.1\%/70.9\% additional token cost. These are exploratory point estimates, not exact recall-matched pairs between cutoff families.
 
-\textbf{Macro precision is not pooled efficiency.} Against the same matched-recall mixtures, absolute micro precision is 28.41\% versus 30.87\% (difference $-2.46$ points, interval [$-7.27,3.05$]); relative is 23.34\% versus 32.28\% ($-8.94$ points, [$-11.99,-5.48$]). The absolute pooled difference is uncertain, while relative's is clearly negative under this bootstrap. High macro precision can coexist with large low-precision selections on a smaller set of queries. Returning fewer records for many queries therefore need not reduce the total documents or tokens processed.
+\textbf{Macro precision is not pooled efficiency.} Against matched-recall fixed mixtures, dev-selected absolute micro precision changes by $-2.46$ points [\,$-7.27,3.05$\,]; relative changes by $-8.94$ [\,$-11.99,-5.48$\,]. The absolute pooled difference is uncertain. Large low-precision contexts can dominate token volume despite high macro precision.
 
 \clearpage
 \section{Final answer evaluation and system cost}
-Table~\ref{tab:answers} evaluates generated answers at the five predeclared settings, followed by separate policy-blind judging. Scores measure answer quality under the rubric; latency covers downstream service, not a new audio-to-answer benchmark.
+Table~\ref{tab:answers} evaluates all nine settings with policy-blind judging; Figure~\ref{fig:answer-cost-score} compares their generation cost and final score. Scores measure answer quality under the rubric; latency covers downstream service, not a new audio-to-answer benchmark.
 
 \begin{table}[h]
 \centering
-\caption{Final evaluation, 324 queries per method. C/G/Comp are correctness/grounding/completeness, each out of 4. Score is their sum/12. Time is selection/context plus generation service under 12 workers. Dollars are generation per 1,000 queries, excluding judging. Bold marks best observed values, not significance.}
+\caption{Final evaluation, 324 queries per method. Absolute/relative values denote $\tau$/$\delta$. C/G/Comp are correctness/grounding/completeness (0--4); Score is their sum/12. Time covers selection/context plus generation under 12 workers. Dollars exclude judging. Bold marks best observed values, not significance.}
 \label{tab:answers}
 \small
 \begin{tabular}{lrrrrrrr}
 \toprule
 Method & C & G & Comp & Score & Input & Time (s) & \$/1,000\\
 \midrule
-Fixed top-5 & 2.19 & 2.15 & 2.18 & 0.543 & 1227 & 2.75 & 0.363 \\
-Fixed top-10 & 2.20 & 2.14 & 2.19 & 0.544 & 2391 & 3.08 & 0.581 \\
-Fixed top-20 & 2.29 & 2.23 & 2.29 & 0.568 & 4730 & 3.50 & 0.987 \\
-Absolute cutoff & \textbf{2.66} & \textbf{2.64} & \textbf{2.65} & \textbf{0.663} & \textbf{657} & \textbf{1.93} & \textbf{0.215} \\
-Relative gap & 2.41 & 2.40 & 2.42 & 0.602 & 667 & 2.09 & 0.236 \\
+Fixed top-5 & 2.15 & 2.11 & 2.15 & 0.534 & 1227 & 2.85 & 0.361 \\
+Fixed top-10 & 2.24 & 2.19 & 2.22 & 0.554 & 2391 & 3.32 & 0.547 \\
+Fixed top-20 & 2.27 & 2.19 & 2.26 & 0.560 & 4730 & 3.82 & 0.929 \\
+Absolute 0.8925 & \textbf{2.56} & \textbf{2.56} & \textbf{2.56} & \textbf{0.639} & \textbf{657} & \textbf{1.99} & \textbf{0.207} \\
+Absolute 0.88 & 2.51 & 2.48 & 2.51 & 0.625 & 1612 & 2.60 & 0.375 \\
+Absolute 0.87 & 2.35 & 2.29 & 2.35 & 0.583 & 3586 & 3.26 & 0.738 \\
+Relative 0.009 & 2.36 & 2.36 & 2.36 & 0.590 & 667 & 2.11 & 0.225 \\
+Relative 0.02 & 2.26 & 2.25 & 2.26 & 0.564 & 2048 & 2.89 & 0.468 \\
+Relative 0.03 & 2.22 & 2.17 & 2.22 & 0.551 & 5437 & 3.63 & 1.038 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/answer-cost-score.pdf}
+\caption{Generation cost versus final judge score for all nine settings (324 queries each). Upper-left is preferable. Cost excludes judging and cached upstream stages. Points are observed means, not confidence bounds; paired uncertainty is reported in the text.}
+\label{fig:answer-cost-score}
+\end{figure}
+
 \input{answer-analysis.tex}
 
 \subsection{What this comparison establishes}
-The top-5/top-10/top-20 controls show what happens as the generator receives more retrieved evidence. Their recall and context sizes differ from the cutoffs, so answer-score gains alone cannot isolate adaptivity from using shorter contexts. The retrieval-only matched-recall analysis addresses allocation efficiency separately. The earlier top-2 comparison is retained as a diagnostic, not silently combined with this batch's latency or scores.
+Fixed depths and cutoff settings differ in recall and context size; answer-score gains alone cannot isolate adaptivity from shorter contexts. The matched-recall retrieval analysis addresses allocation separately. The four rounded controls broaden coverage, but do not make the answer study recall-matched. No earlier batch is pooled into these results.
 
 The judge dimensions are correlated, not independent replications. The rubric can favour qualified refusal and penalise valid information absent from qrels. Higher scores therefore need human-audited sufficiency/factuality checks before claiming better real-world task success.
 
 Billing includes input and output; latency also depends on decoding, scheduling and concurrency. These associations do not isolate prefill cost. OpenRouter measurements do not establish ELM or local-GPU serving performance.
 
-\clearpage
 \section{Integrated ASR ablation and limitations}
 \label{sec:asr}
 Table~\ref{tab:asr} preserves ASR integration evidence; implementation details are in Appendix~\ref{app:kernels}. Measurements used an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0. The RAG ASR cache was produced separately on an RTX A6000; MIG times are not substituted into downstream latency.
@@ -147,7 +161,7 @@ All four & $5672.1\pm0.4$ & 8.56\\
 All 33 official correctness cases and five additional shape/boundary cases pass. The all-CUDA model is nevertheless \textbf{4.26 times slower} than the framework reference, with peak allocated memory 0.34 GiB lower. In a separate instrumented profile, linear calls dominate (4,960.0 ms), followed by attention (688.6 ms). Less logical memory traffic does not reproduce optimized library register tiling and scheduling. The reductions-only improvement cannot compensate for slower GEMM. Mode order was fixed; the small run dispersion and one correctly transcribed clip do not establish general ASR speed or recognition accuracy.
 
 \subsection{Threats to validity}
-\textbf{Reused evaluation data.} The cleaner design was motivated by earlier observations on the same 324 queries. Dev-only tuning prevents direct test-threshold fitting, but cannot undo design-level test reuse. The curves, confidence intervals and final answer results are follow-up evidence. A new query set is needed for independent confirmation.
+\textbf{Reused evaluation data.} The cleaner design was motivated by earlier observations on the same 324 queries. The original dev-F1 thresholds avoid direct evaluation-label tuning; the four rounded controls additionally use exploratory curve inspection. Neither undoes design-level test reuse. The curves, confidence intervals and final answer results are follow-up evidence. A new query set is needed for independent confirmation.
 
 \textbf{Incomplete and redundant labels.} Qrels recall can require retrieving several interchangeable records, while precision can penalise unjudged useful evidence. Our primary claim is about these labelled-document metrics, not the minimum necessary context. Both macro and micro precision are required because they answer different questions. The previous stopped sufficiency/reranking studies are not silently completed or promoted into this comparison.
 
@@ -156,7 +170,7 @@ All 33 official correctness cases and five additional shape/boundary cases pass.
 \textbf{Measurement boundaries.} Exact retrieval is CPU-based on cached vectors; full-corpus sorting averaged about 2.09 ms in preparation. It is excluded from the downstream table, along with cached ASR/encoding and queue wait. The token frontier measures document-text volume, while billed prompt/output usage measures API expenditure. Neither is a direct GPU energy or isolated prefill-time measurement. Large-context sweep endpoints are retrieval analysis only, not demonstrated deployable generator configurations.
 
 \section{Conclusion}
-Uncapped cutoffs improve macro precision at matched recall but require more evidence tokens. Relative also loses pooled precision; absolute's pooled difference is uncertain. In final answer evaluation, absolute scores higher than top-5/top-10/top-20 while costing less; relative's score gain over top-20 is uncertain. These operating points have different recalls. Reporting both matched-recall efficiency and final-answer outcomes exposes the trade-off rather than declaring a universally better retriever.
+Uncapped cutoffs improve macro precision at matched recall but require more evidence tokens; pooled precision need not improve. The rounded thresholds confirm this retrieval trade-off. Looser cutoffs increase recall without increasing mean answer scores in this batch. Absolute 0.8925 has the best observed answer score and cost, while absolute 0.88 offers higher recall with an uncertain score difference. The preferred setting therefore depends on the required coverage and cost, not precision alone.
 
 \clearpage
 \bibliography{references}
@@ -200,11 +214,11 @@ All four RoPE, eleven reduction, ten GEMM and eight attention official cases pas
 \caption{Full-corpus sweeps extend to 100\% labelled recall. The log token axis exposes the cost of very low cutoffs. These endpoints were not passed to the generator; no artificial top-$K$ cap is hidden by the main figure's axis limits.}
 \end{figure}
 
-The final answer-evaluation run is \path{rag/results/cutoff-pipeline-20261116}. Its configuration, source hashes, frozen parameters, context preflight, 1,620 answers, raw judge responses, 1,620 final judgements, usage and reconciled billing records are retained. The generation-complete barrier precedes judge start. Dev tuning and retrieval frontiers are preserved in \path{rag/results/cutoff-uncapped-20261116}. The full-ranking cache contains 449 queries (125 dev plus 324 evaluation), each ranked against all 24,000 records. No new ASR, embedding-model or cross-encoder inference is needed.
+The run \path{cutoff-threshold-controls-20261116} is under \path{rag/results/}. Its configuration, source hashes, frozen parameters, context preflight, 2,916 answers, raw judge responses, 2,916 final judgements, usage and reconciled billing records are retained. The generation-complete barrier precedes judge start. Dev tuning and retrieval frontiers are preserved in \path{rag/results/cutoff-uncapped-20261116}. The full-ranking cache contains 449 queries (125 dev plus 324 evaluation), each ranked against all 24,000 records. No new ASR, embedding-model or cross-encoder inference is needed.
 
-Reproduction uses \path{rag/extensions/prepare_uncapped_rankings.py}, \path{rag/extensions/cutoff_pipeline_controls.py} and \path{rag/extensions/uncapped_frontiers.py}. The final compact plots/table come from \path{report/plot_uncapped_report.py}, with a separate \texttt{--evaluation-run} for the five-row answer table. The tokenizer is pinned to Mistral Small 4 revision \texttt{a11f36bebf709121056b1dbcc943d1c6afbe494d}. Credentials and model weights are excluded from the source archive.
+Reproduction uses \path{rag/extensions/prepare_uncapped_rankings.py}, \path{rag/extensions/cutoff_threshold_controls.py} and \path{rag/extensions/uncapped_frontiers.py}. The final compact plots/table come from \path{report/plot_uncapped_report.py}, with a separate \texttt{--evaluation-run} for the nine-row answer table. The tokenizer is pinned to Mistral Small 4 revision \texttt{a11f36bebf709121056b1dbcc943d1c6afbe494d}. Credentials and model weights are excluded from the source archive.
 
-Earlier evidence stays archived rather than pooled: the primary run, capped retrieval/oracle curves, planner study and completed top-2/cutoff comparison. A sufficiency run stopped after 125 dev and 101 evaluation queries without its second-model audit. A subset-selection study saved reranker scores/dev tuning but stopped before a validated test summary. Neither was resumed. A broader nine-row control run was interrupted when the scope narrowed to top-5/top-10/top-20; its partial outputs do not enter the final table.
+Earlier five-row results and partial recall-target answers stay archived rather than pooled, alongside the primary run, capped retrieval/oracle curves, planner study and completed top-2/cutoff comparison. A sufficiency run stopped after 125 dev and 101 evaluation queries without its second-model audit. A subset-selection study saved reranker scores/dev tuning but stopped before a validated test summary. Neither was resumed. A broader nine-row control run was interrupted when the scope narrowed to top-5/top-10/top-20; its partial outputs do not enter the final table.
 
 Kernel evidence is under \path{report/task1-evidence}, \path{report/task2-evidence} and \path{report/task34-evidence}, with accompanying result notes. Final combined validation supersedes interim notes that described later tasks as unfinished. The previous and revised report sources are retained for review; only the revised source is included in the current authoring ZIP.
 

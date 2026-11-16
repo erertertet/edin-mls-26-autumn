@@ -1,12 +1,13 @@
 # Work and evidence inventory — 16 November 2026
 
-The final top-5/top-10/top-20 versus two-cutoff answer evaluation is complete, including blind judging and billing reconciliation. Earlier sufficiency/subset experiments remain stopped. This inventory distinguishes completed results from partial follow-ups.
+The final nine-setting answer evaluation is complete: fixed top-5/top-10/top-20, two dev-selected cutoffs and four rounded thresholds, including blind judging and billing reconciliation. Earlier sufficiency/subset experiments remain stopped. This inventory distinguishes completed results from partial follow-ups.
 
 ## Completed work
 
 | Work | Evidence, relative to repository root | Status / use |
 | --- | --- | --- |
-| Final pipeline depth controls | `rag/results/cutoff-pipeline-20261116/`, `report/draft/pipeline-controls-protocol.md` | CURRENT main answer table: top-5/top-10/top-20 and two frozen cutoffs; 324 queries per row, 1,620 fresh answers, 1,620 final judgements, 3,247 reconciled calls, $1.857334791. One logged explanation-quoting repair preserves identical numeric scores across six attempts. |
+| Rounded cutoff controls | `rag/results/cutoff-threshold-controls-20261116/`, `report/rag-threshold-controls-results.md`, `report/draft/threshold-controls-protocol.md` | CURRENT main table: nine settings, 324 queries each, 2,916 fresh answers/judgements, 5,837 reconciled calls, $3.557849731. Five extra judge attempts; no manual repair. One capped output retained. |
+| Earlier pipeline depth controls | `rag/results/cutoff-pipeline-20261116/`, `report/draft/pipeline-controls-protocol.md` | Archived five-row table: top-5/top-10/top-20 and two frozen cutoffs; 324 queries per row, 1,620 fresh answers, 1,620 final judgements, 3,247 reconciled calls, $1.857334791. One logged explanation-quoting repair preserves identical numeric scores across six attempts. |
 | Earlier uncapped cutoff study | `rag/results/cutoff-uncapped-20261116/`, `report/draft/uncapped-protocol.md` | Retrieval/tuning evidence retained; earlier top-2 answer comparison archived separately: 972 answers, 1,945 reconciled calls, $0.845229234. No count cap, no truncated prompts. |
 | CUDA RoPE | `report/task1-rope-results.md`, `report/task1-evidence/` | Correctness, performance and rejected fast-math variant |
 | CUDA reductions | `report/task2-reductions-results.md`, `report/task2-evidence/` | Official/helper validation, bandwidth and synchronization ablations |

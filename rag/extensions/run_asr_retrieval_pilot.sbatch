@@ -17,6 +17,8 @@ case "$(hostname -f)" in
 esac
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 test -f rag/extensions/asr_retrieval_pilot.py
+export TMPDIR="$HOME/.cache/mls-asr-pilot/tmp/$SLURM_JOB_ID"
+mkdir -p "$TMPDIR"
 export PATH="/opt/cuda-12.8.0/bin:$PATH"
 export RAG_ASR_PYTHON="${RAG_ASR_PYTHON:-$HOME/.conda/envs/mls-asr/bin/python}"
 export ASR_CUDA=all
@@ -30,6 +32,8 @@ mkdir -p "$out"
   hostname -f
   printf 'Slurm job: %s\n' "$SLURM_JOB_ID"
   git rev-parse HEAD
+  printf 'TMPDIR=%s\n' "$TMPDIR"
+  df -h "$TMPDIR"
   nvidia-smi -L
   nvcc --version
   "$rag_python" -m pip list --format=freeze

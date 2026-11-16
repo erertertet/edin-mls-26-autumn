@@ -1,0 +1,15 @@
+# Local compilation, visual QA, and exported deliverables.
+/build/
+/report*.pdf
+/report-source.zip
+/format-check.json
+
+# Working snapshots; report.tex is the current editable source.
+/report-before-uncapped.tex
+/report-top2-archive.tex
+/report-uncapped.tex
+
+# Keep only the two figure assets required to compile report.tex.
+/figures/*
+!/figures/uncapped-report-frontiers.pdf
+!/figures/uncapped-full-range.pdf

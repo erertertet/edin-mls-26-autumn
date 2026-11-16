@@ -162,6 +162,9 @@ def main():
     parser.add_argument("--env-file", type=Path, default=Path.home() / ".config/edin-mls/openrouter.env")
     parser.add_argument("--tokenizer-metadata", type=Path, default=Path.home() / ".cache/mls-asr-pilot/tokenizer-metadata.json")
     parser.add_argument("--budget-usd", type=float, default=1.0)
+    parser.add_argument("--data-dir", type=Path, default=ROOT / "data/rag_corpus")
+    parser.add_argument("--encoder-dir", type=Path, default=ROOT / "models/enc_a")
+    parser.add_argument("--tokenizer-file", type=Path)
     parser.add_argument("--validate-only", action="store_true")
     args = parser.parse_args()
     if not os.getenv("SLURM_JOB_ID") or not socket.getfqdn().endswith(".inf.ed.ac.uk"):
@@ -171,7 +174,7 @@ def main():
     os.umask(0o077)
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
-    data_dir = ROOT / "data/rag_corpus"
+    data_dir = args.data_dir.resolve()
     data = CourseData(data_dir)
     qrels = data.load_qrels("dev")
     items = {str(i["query_id"]): i for i in data.audio_items("dev")}
@@ -190,16 +193,19 @@ def main():
     tokenizer_metadata = json.loads(args.tokenizer_metadata.read_text())
     if (tokenizer_metadata["repo"], tokenizer_metadata["revision"]) != (TOKENIZER_REPO, TOKENIZER_REVISION):
         raise RuntimeError("Report tokenizer identity mismatch")
-    if sha(tokenizer_metadata["path"]) != tokenizer_metadata["sha256"]:
+    tokenizer_file = args.tokenizer_file or Path(tokenizer_metadata["path"])
+    if sha(tokenizer_file) != tokenizer_metadata["sha256"]:
         raise RuntimeError("Tokenizer file hash mismatch")
-    tokenizer = Tokenizer.from_file(tokenizer_metadata["path"])
+    tokenizer = Tokenizer.from_file(str(tokenizer_file))
     tokenizer.encode("A small tokenization check.", add_special_tokens=False)
-    encoder = LocalEncoder(ROOT / "models/enc_a", device="cpu")
+    encoder = LocalEncoder(args.encoder_dir, device="cpu")
     probe = encoder.encode("A small encoder compatibility check.")
     retriever.retrieve(probe, k=5)
     assert recall_at_k(["a", "b"], {"b", "d"}, 2) == 0.5
-    hashes = {str(p.relative_to(ROOT.parent)): sha(p) for p in [Path(__file__), ROOT / "src/data.py", ROOT / "src/encoder.py", ROOT / "src/retriever.py", ROOT / "src/metrics.py", ROOT / "src/asr_adapter.py", ROOT / "src/asr_worker.py", data_dir / "corpus.jsonl", data_dir / "qrels_dev.tsv", data_dir / "student_audio_manifest.jsonl", data_dir / "embeddings/corpus_enc_a.npy", data_dir / "embeddings/corpus_enc_a_ids.json"]}
-    hashes.update({str(p.relative_to(ROOT.parent)): sha(p) for p in (ROOT / "models/enc_a").rglob("*") if p.is_file()})
+    hashes = {str(p.relative_to(ROOT.parent)): sha(p) for p in [Path(__file__), ROOT / "src/data.py", ROOT / "src/encoder.py", ROOT / "src/retriever.py", ROOT / "src/metrics.py", ROOT / "src/asr_adapter.py", ROOT / "src/asr_worker.py"]}
+    for relative in ["corpus.jsonl", "qrels_dev.tsv", "student_audio_manifest.jsonl", "embeddings/corpus_enc_a.npy", "embeddings/corpus_enc_a_ids.json"]:
+        hashes["rag/data/rag_corpus/" + relative] = sha(data_dir / relative)
+    hashes.update({"rag/models/enc_a/" + str(p.relative_to(args.encoder_dir)): sha(p) for p in args.encoder_dir.rglob("*") if p.is_file()})
     hashes.update({str(p.relative_to(ROOT.parent)): sha(p) for p in (ROOT.parent / "hw1-asr/csrc").glob("*.cu*")})
     glm_snapshot = Path(snapshot_download(MODELS["glm"], local_files_only=True)).name
     config = {"models": MODELS, "sample_seed": 26, "query_ids": selected, "tau": TAU, "topk": 5,
@@ -213,7 +219,8 @@ def main():
                 for n, m in [("numpy", "numpy"), ("sentence-transformers", "sentence_transformers"), ("openai", "openai"), ("python-dotenv", "dotenv"), ("tokenizers", "tokenizers"), ("huggingface-hub", "huggingface_hub"), ("httpx2", "httpx2")]}
     write_json(out / ("environment-" + os.environ["SLURM_JOB_ID"] + ".json"),
                {"utc": utc(), "hostname": socket.getfqdn(), "slurm_job_id": os.environ["SLURM_JOB_ID"], "python": sys.executable, "versions": versions,
-                "git_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip(), "command": sys.argv})
+                "git_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip(), "command": sys.argv,
+                "data_dir": str(data_dir), "encoder_dir": str(args.encoder_dir), "tokenizer_file": str(tokenizer_file)})
     write_json(out / "preflight.json", {"selected_ids": selected, "eligible_queries": len(eligible), "audio_seconds": sum(a["seconds"] for a in audio_rows), "encoder_dimensions": int(probe.size), "corpus_size": 24000, "encoder_tokenizer_retriever_checked": True})
     if args.validate_only:
         print("CPU APIs and frozen sample validated inside Slurm; no ASR or paid calls.", flush=True)

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);p.add_argument('--evaluation-run',type=Path);p.add_argument('--retrieval-only',action='store_true');p.add_argument('--out',type=Path,required=True);a=p.parse_args();a.out.mkdir(exist_ok=True,parents=True)
+    p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);p.add_argument('--evaluation-run',type=Path);p.add_argument('--retrieval-only',action='store_true');p.add_argument('--report-only',action='store_true');p.add_argument('--out',type=Path,required=True);a=p.parse_args();a.out.mkdir(exist_ok=True,parents=True)
     evaluation=a.evaluation_run or a.run
     if a.retrieval_only:
         summary={'parameters':json.loads((evaluation/'frozen-parameters.json').read_text())}
@@ -44,7 +44,7 @@ def main():
             if k>=1000:dx,dy=-5,8
             if k==1000 and x=='macro_recall':dy=22
             if small and k==50 and x=='macro_recall':dx,dy=-13,6
-            if x=='macro_precision':
+            if x in ('macro_precision','micro_precision'):
                 dx,dy={1:(-24,0),2:(4,0),3:(4,0),5:(5,-2),10:(5,-2),20:(4,-3),30:(6,-6),40:(6,0),50:(10,5)}.get(k,(5,0))
             ax.annotate(f'k={k:,}',(xx,yy),xytext=(dx,dy),textcoords='offset points',
                         fontsize=6 if small else 8,color=colors['topk'],ha='right' if k>=1000 and x!='macro_precision' else 'left',
@@ -61,7 +61,8 @@ def main():
             label=(r'$\tau=' if point['family']=='absolute_radius' else r'$\delta=')+f"{point['threshold']:.2f}$"
             xx=sx*float(r[x]); yy=100*float(r[y]); color=colors[point['family']]
             ax.scatter(xx,yy,s=22 if small else 38,marker='s' if point['family']=='absolute_radius' else '^',color=color,edgecolor='white',lw=.5,zorder=8)
-            if x=='macro_precision': offsets={'absolute_088':(5,-17),'relative_002':(5,5),'absolute_087':(-12,8),'relative_003':(5,5)}
+            if x=='micro_precision': offsets={'absolute_088':(6,-15),'relative_002':(8,4),'absolute_087':(10,-11),'relative_003':(10,3)}
+            elif x=='macro_precision': offsets={'absolute_088':(5,-17),'relative_002':(5,5),'absolute_087':(-12,8),'relative_003':(5,5)}
             elif x=='mean_evidence_tokens': offsets={'absolute_088':(5,-9),'relative_002':(6,5),'absolute_087':(5,-16),'relative_003':(-21,8)}
             else: offsets={'absolute_088':(-26,5),'relative_002':(-9,9),'absolute_087':(-25,-20),'relative_003':(6,-7)}
             ax.annotate(label,(xx,yy),xytext=offsets[key],textcoords='offset points',fontsize=6 if small else 8,color=color,
@@ -72,12 +73,18 @@ def main():
     for ax,x,y in [(axs[0],'macro_precision','macro_recall'),(axs[1],'mean_evidence_tokens','macro_recall')]:
         draw(ax,x,y,True)
         label_k(ax,x,y,[1,2,3,5,10,20,50],True)
-    axs[0].set(xlim=(0,46),ylim=(20,75),xlabel='Macro precision (%)',ylabel='Macro recall (%)',title='(a) Query-weighted quality')
+    axs[0].set(xlim=(0,46),ylim=(20,75),xlabel='Macro precision (%)',ylabel='Macro recall (%)',title='(a) Precision and recall')
     axs[1].set(xlim=(0,12000),ylim=(20,75),xlabel='Mean retrieved-text tokens',ylabel='Macro recall (%)',title='(b) Coverage per token')
+    for ax, tip, label in [(axs[0],(.96,.96),(.73,.78)),(axs[1],(.04,.96),(.16,.78))]:
+        ax.annotate('Better',xy=tip,xytext=label,xycoords='axes fraction',textcoords='axes fraction',
+                    fontsize=7,color='#555555',arrowprops=dict(arrowstyle='->',color='#555555',lw=.9))
     axs[1].tick_params(axis='x',labelsize=7)
     fig.legend(*axs[0].get_legend_handles_labels(),loc='lower center',ncol=3,frameon=False,fontsize=7)
     fig.tight_layout(rect=(0,.1,1,1),pad=.5)
     fig.savefig(a.out/'uncapped-report-frontiers.pdf');fig.savefig(a.out/'uncapped-report-frontiers.png',dpi=220);plt.close(fig)
+    if a.report_only:
+        print('Report retrieval figure complete; other assets unchanged.')
+        return
     plt.rcParams.update({'font.size':10,'axes.titlesize':11})
     fig,axs=plt.subplots(1,3,figsize=(15,5))
     fields=[('macro_precision','macro_recall'),('macro_recall','micro_precision'),('mean_evidence_tokens','macro_recall')]
@@ -106,17 +113,17 @@ def main():
         return
     # Tables are generated directly from the final reconciled summary.
     table=[]
-    fields=['mean_correctness','mean_grounding','mean_completeness','mean_score','mean_input_tokens','mean_downstream_ms','inference_usd_per_1000']
-    best={f:(max if i<4 else min)(r[f] for r in summary['by_arm']) for i,f in enumerate(fields)}
+    fields=['mean_correctness','mean_grounding','mean_completeness','mean_score','mean_input_tokens','mean_recall','mean_precision']
+    best={f:(min if f=='mean_input_tokens' else max)(r[f] for r in summary['by_arm']) for f in fields}
     def formatted(r):
-        return [f"{r[f]:.2f}" for f in fields[:3]]+[f"{r['mean_score']:.3f}",f"{r['mean_input_tokens']:.0f}",f"{r['mean_downstream_ms']/1000:.2f}",f"{r['inference_usd_per_1000']:.3f}"]
+        return [f"{r[f]:.2f}" for f in fields[:3]]+[f"{r['mean_score']:.3f}",f"{r['mean_input_tokens']:.0f}",f"{100*r['mean_recall']:.2f}",f"{100*r['mean_precision']:.2f}"]
     for r in summary['by_arm']:
         name='Fixed top-2' if r['arm']=='topk' else table_names[r['arm']]
         values=[r'\textbf{'+v+'}' if r[f]==best[f] else v for f,v in zip(fields,formatted(r))]
         table.append(' & '.join([name]+values)+r' \\')
     (a.out.parent/'answer-table.tex').write_text('\n'.join(table)+'\n')
     # Standalone readable final answer table.
-    headers=['Method','Correctness\n/4','Grounding\n/4','Completeness\n/4','Score\n/1','Input\ntokens','Downstream\nseconds','Generation\n$/1,000']
+    headers=['Method','Correctness\n/4','Grounding\n/4','Completeness\n/4','Score\n/1','Input\ntokens','Macro recall\n%','Macro precision\n%']
     cells=[]
     for r in summary['by_arm']:
         cells.append(['Fixed top-2' if r['arm']=='topk' else table_names[r['arm']]]+formatted(r))
@@ -130,7 +137,7 @@ def main():
     fig.suptitle('Final blind LLM evaluation: 324 queries × '+str(len(cells))+' retrieval settings',fontsize=15,weight='bold')
     fig.text(.5,.84,'Mistral Small 4 generator · Gemini 2.5 Flash judge',ha='center',fontsize=10)
     fig.text(.02,.055,'Absolute: minimum cosine similarity; relative: maximum gap from top score. Thresholds 0.8925/0.009 were dev-selected.',fontsize=9)
-    fig.text(.02,.02,'Bold: best observed value (not significance). Higher scores; lower tokens, time and cost. Latency excludes cached ASR/embedding/retrieval.',fontsize=9)
+    fig.text(.02,.02,'Bold: highest scores, macro recall and macro precision; lowest input tokens. Both retrieval metrics average queries.',fontsize=9)
     fig.tight_layout(rect=(0,.05,1,.95));fig.savefig(a.out/'final-answer-evaluation.png',dpi=180);fig.savefig(a.out/'final-answer-evaluation.pdf');plt.close(fig)
     print(json.dumps({'tables_generated':True,'api_cost':summary['total_api_usd']}))
 

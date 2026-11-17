@@ -17,7 +17,14 @@ cleanup() {
     exit "$status"
 }
 trap cleanup EXIT
+mkdir -p "$scratch/tmp"
+export TMPDIR="$scratch/tmp"
 export PATH="/opt/cuda-12.8.0/bin:$PATH"
+source /opt/conda/etc/profile.d/conda.sh
+conda activate "$HOME/.conda/envs/mls-asr"
+export NVCC_CCBIN=/usr/bin/g++
+command -v nvcc gcc g++
+"$NVCC_CCBIN" --version
 export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 PYTHONUNBUFFERED=1 TOKENIZERS_PARALLELISM=false
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 unset OPENROUTER_API_KEY OPENAI_API_KEY ELM_API_KEY
@@ -27,6 +34,6 @@ cp -a "$model_cache/refs" "$scratch/hf/models--zai-org--GLM-ASR-Nano-2512/"
 cp -aL "$model_cache/snapshots/61ba4e0b3309b6656edea3e93e419f7bd5c61957" "$scratch/hf/models--zai-org--GLM-ASR-Nano-2512/snapshots/"
 export HF_HUB_CACHE="$scratch/hf"
 export BUILD="$scratch/build" ASR_LIB="$scratch/build/libasr_kernels.so" SM=90
-make -C hw1-asr BUILD="$BUILD" SM="$SM" lib
+make -C hw1-asr BUILD="$BUILD" SM="$SM" NVCC=/opt/cuda-12.8.0/bin/nvcc lib
 "$HOME/.conda/envs/mls-asr/bin/python" hw1-asr/measure_asr_e2e_error.py \
     --root "$PWD" --out "$PWD/rag/results/asr-e2e-error-20261117"

@@ -54,7 +54,7 @@ def main():
     for name in ("root", "run", "stage-dir"):
         parser.add_argument("--" + name, type=Path, required=True)
     args = parser.parse_args()
-    require(os.getenv("SLURM_JOB_ID") and socket.getfqdn() == "saxa.inf.ed.ac.uk", "Stage only on saxa inside Slurm")
+    require(os.getenv("SLURM_JOB_ID"), "Stage only inside Slurm")
     os.umask(0o077)
     root, run, stage = args.root.resolve(), args.run.resolve(), args.stage_dir.resolve()
     require(str(stage).startswith("/disk/scratch/mls-asr-full-e2e-s2487016-"), "Unexpected staging directory")
@@ -65,6 +65,7 @@ def main():
     require(free >= 15 * 1024**3, "Need 15 GiB free for the shared checkpoint/audio staging cache")
     plan_path = root / "hw1-asr/asr-full-e2e-plan.json"
     plan = read(plan_path)
+    require(socket.getfqdn() == plan["hostname"], "Wrong staging host")
     require(plan["expected_queries"] == 475 and plan["shards"] == 4 and plan["max_new_tokens"] == 100,
             "Unexpected fixed full-audio plan")
     old = root / "rag/results/asr-four-model-full-20261117"
@@ -79,8 +80,19 @@ def main():
     require(sha(single / "config.json") == single_audit["input_sha256"]["config.json"], "Audited single-clip config changed")
     for relative, expected in single_config["source_sha256"].items():
         require(sha(root / relative) == expected, "Previously validated model/kernel source changed: " + relative)
-    library = single / "libasr_kernels.so"
-    require(sha(library) == plan["library_sha256"] == single_audit["library_sha256"], "Prior validated CUDA library changed")
+    require(sha(single / "libasr_kernels.so") == single_audit["library_sha256"], "Historical CUDA library changed")
+    build_proof_path = run / "library-build.json"
+    build_proof = read(build_proof_path)
+    expected_build_sources = ["hw1-asr/Makefile"] + [str(path.relative_to(root)) for path in sorted((root / "hw1-asr/csrc").iterdir()) if path.suffix in (".cu", ".cuh", ".h")]
+    require(build_proof["status"] == "complete" and build_proof["sm"] == plan["library_build_sm"]
+            and build_proof["hostname"] == plan["hostname"]
+            and set(build_proof["source_sha256"]) == set(expected_build_sources), "Wrong architecture build proof")
+    for relative in expected_build_sources:
+        require(sha(root / relative) == build_proof["source_sha256"][relative], "Build source changed: " + relative)
+    require(plan["library_sha256"] is None, "Build digest must be frozen from proof before inference")
+    plan = dict(plan, library_sha256=build_proof["library_sha256"])
+    library = run / "build/sm_86/libasr_kernels.so"
+    require(sha(library) == plan["library_sha256"], "New SM86 CUDA library changed")
     saved_library = run / "libasr_kernels.so"
     copy_verified(library, saved_library, plan["library_sha256"])
     snapshot = Path(single_config["model"]["source_snapshot_path"])
@@ -134,7 +146,8 @@ def main():
     write(proof_path, proof)
     paths = ["hw1-asr/measure_asr_full_e2e.py", "hw1-asr/measure_asr_e2e_error.py",
         "hw1-asr/prepare_asr_full_e2e.py", "hw1-asr/asr-full-e2e-plan.json", "hw1-asr/run_asr_full_e2e.sbatch",
-        "hw1-asr/run_prepare_asr_full_e2e.sbatch", "report/asr-full-e2e-protocol.md", "hw1-asr/benchmark.py",
+        "hw1-asr/run_prepare_asr_full_e2e.sbatch", "hw1-asr/run_build_asr_full_e2e.sbatch",
+        "hw1-asr/build_asr_full_e2e_library.py", "report/asr-full-e2e-protocol.md", "hw1-asr/benchmark.py",
         "hw1-asr/glm_asr_cuda/model.py", "hw1-asr/glm_asr_cuda/ops.py", "hw1-asr/glm_asr_cuda/__init__.py",
         "hw1-asr/Makefile", "rag/src/asr_worker.py"]
     paths += [str(path.relative_to(root)) for path in sorted((root / "hw1-asr/csrc").iterdir()) if path.suffix in (".cu", ".cuh", ".h")]
@@ -148,7 +161,8 @@ def main():
             "snapshot_path": str(staged_snapshot), "proof_path": str(proof_path), "proof_sha256": sha(proof_path)},
         "model": {"name": plan["model_name"], "snapshot_revision": plan["snapshot_revision"],
             "source_snapshot_path": str(snapshot), "files_sha256": expected_model},
-        "library": {"path": str(saved_library), "sha256": plan["library_sha256"]}, "versions": versions,
+        "library": {"path": str(saved_library), "sha256": plan["library_sha256"],
+            "build_proof_path": str(build_proof_path), "build_proof_sha256": sha(build_proof_path)}, "versions": versions,
         "source_sha256": {path: sha(root / path) for path in paths}, "input_paths": input_paths,
         "input_sha256": {label: sha(path) for label, path in input_paths.items()},
         "prepared_slurm_job_id": os.environ["SLURM_JOB_ID"], "audio_seconds": math.fsum(q["seconds"] for q in queries),

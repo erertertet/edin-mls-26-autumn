@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=mls-asr-full-e2e
 #SBATCH --partition=Teaching
-#SBATCH --nodelist=saxa
-#SBATCH --gres=gpu:h200_1g.18gb:1
+#SBATCH --nodelist=landonia11
+#SBATCH --gres=gpu:nvidia_rtx_a6000:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=20G
 #SBATCH --time=02:00:00
@@ -15,10 +15,10 @@ source /opt/conda/etc/profile.d/conda.sh
 conda activate "$HOME/.conda/envs/mls-asr"
 export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 PYTHONUNBUFFERED=1 TOKENIZERS_PARALLELISM=false
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
-export HF_HUB_CACHE="/disk/scratch/mls-asr-full-e2e-$USER-20261117/hf"
-export TMPDIR="/disk/scratch/mls-asr-full-e2e-$USER-20261117/tmp-$SLURM_JOB_ID"
+export HF_HUB_CACHE="/disk/scratch/mls-asr-full-e2e-$USER-a6000-20261117/hf"
+export TMPDIR="/disk/scratch/mls-asr-full-e2e-$USER-a6000-20261117/tmp-$SLURM_JOB_ID"
 mkdir -p "$TMPDIR"
 unset OPENROUTER_API_KEY OPENAI_API_KEY ELM_API_KEY
-export ASR_LIB="$PWD/rag/results/asr-full-e2e-20261117/libasr_kernels.so"
+export ASR_LIB="$PWD/rag/results/asr-full-e2e-a6000-20261117/libasr_kernels.so"
 "$HOME/.conda/envs/mls-asr/bin/python" hw1-asr/measure_asr_full_e2e.py \
-    --root "$PWD" --run "$PWD/rag/results/asr-full-e2e-20261117" --shard "$SLURM_ARRAY_TASK_ID"
+    --root "$PWD" --run "$PWD/rag/results/asr-full-e2e-a6000-20261117" --shard "$SLURM_ARRAY_TASK_ID"

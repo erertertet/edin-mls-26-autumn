@@ -14,9 +14,6 @@ import torch
 
 from measure_asr_e2e_error import SNAPSHOT, cpu_array, fingerprint, metrics, precision_state, require, sha, write, save_trace, utc
 
-LIBRARY_SHA256 = "76817bd7fef1878069515d12eb4156f76368c21e12076a00ec450c1a7c78da8a"
-
-
 def error_stats(reference, candidate):
     result = metrics(reference, candidate)
     one, two = reference.astype(np.float64), candidate.astype(np.float64)
@@ -243,6 +240,10 @@ def main():
             "Invalid frozen shard plan")
     require(config["plan"]["modes"] == ["none", "all"] and config["plan"]["max_new_tokens"] == 100
             and config["plan"]["vocab_size"] == 59264, "Frozen inference settings changed")
+    require(socket.getfqdn() == config["plan"]["hostname"], "Use the frozen node for its shared staging cache")
+    library_sha = config["plan"]["library_sha256"]
+    require(isinstance(library_sha, str) and len(library_sha) == 64
+            and all(char in "0123456789abcdef" for char in library_sha), "The built library hash is not frozen")
     queries = config["queries"]
     require([q["query_id"] for q in queries] == config["cohorts"]["all"]
             and len(queries) == len(set(q["query_id"] for q in queries)) == 475
@@ -266,7 +267,7 @@ def main():
     from glm_asr_cuda import ops
     from glm_asr_cuda.model import MODEL_NAME, load_model
     from huggingface_hub import snapshot_download
-    require(config["library"]["sha256"] == LIBRARY_SHA256 == sha(ops.library_path()), "Frozen CUDA library changed")
+    require(config["library"]["sha256"] == library_sha == sha(ops.library_path()), "Frozen CUDA library changed")
     require(MODEL_NAME == config["model"]["name"] and config["model"]["snapshot_revision"] == SNAPSHOT, "Model changed")
     snapshot = Path(snapshot_download(MODEL_NAME, local_files_only=True)).resolve()
     require(snapshot.name == SNAPSHOT and snapshot == Path(config["staging"]["snapshot_path"]).resolve(), "Staged snapshot changed")
@@ -277,7 +278,7 @@ def main():
         require(proof_sha == staging.get("proof_sha256", staging.get("proof_sha")), "Staging proof changed")
         proof = json.loads(Path(staging["proof_path"]).read_text())
         require(proof["status"] == "complete" and proof["audio_files"] == 475
-                and proof["library_sha256"] == LIBRARY_SHA256
+                and proof["library_sha256"] == library_sha
                 and proof["model_files_sha256"] == config["model"]["files_sha256"]
                 and Path(proof["snapshot_path"]).resolve() == snapshot, "Staging snapshot proof mismatch")
         for name in config["model"]["files_sha256"]:
@@ -298,8 +299,11 @@ def main():
     tiny = torch.tensor([[1., 2.], [3., 4.]], device="cuda", dtype=torch.float32)
     require(np.array_equal((tiny @ tiny).cpu().numpy(), np.array([[7., 10.], [15., 22.]], dtype=np.float32)), "CUDA API probe failed")
     properties = torch.cuda.get_device_properties(torch.cuda.current_device())
-    require("H200" in properties.name and (properties.major, properties.minor, properties.multi_processor_count) == (9, 0, 16),
-            "Use the frozen H200 MIG 1g SM90 device context")
+    expected_device = config["plan"]["device"]
+    require(expected_device["name_contains"] in properties.name
+            and (properties.major, properties.minor, properties.multi_processor_count)
+            == tuple(expected_device[name] for name in ("major", "minor", "multi_processor_count")),
+            "Use the frozen GPU architecture and device context")
     counters = {"model_loads": 0, "model_generate_calls": 0, "audio_encoder_calls": 0, "processor_requests": 0,
                 "replay_next_token_calls": 0, "resumed_queries": 0, "completed_queries": 0}
     job = {"status": "running", "shard": args.shard, "slurm_job_id": os.environ["SLURM_JOB_ID"],
@@ -307,7 +311,7 @@ def main():
            "device": {"name": properties.name, "major": properties.major, "minor": properties.minor,
                       "multi_processor_count": properties.multi_processor_count, "total_memory": properties.total_memory,
                       "uuid": str(getattr(properties, "uuid", "unavailable"))}, "versions": versions,
-           "source_sha256": config["source_sha256"], "library_sha256": LIBRARY_SHA256, "staging_proof_sha256": proof_sha,
+           "source_sha256": config["source_sha256"], "library_sha256": library_sha, "staging_proof_sha256": proof_sha,
            "new_api_calls": 0, "new_external_asr_calls": 0, "new_rag_encoder_calls": 0, **counters}
     job_path = args.run / "jobs" / (os.environ["SLURM_JOB_ID"] + ".json")
     job_path.parent.mkdir(parents=True, exist_ok=True)
@@ -331,7 +335,7 @@ def main():
             write(job_path, {**job, **counters, "last_query_id": query["query_id"]})
             print(json.dumps({"stage": "query_complete", "shard": args.shard, "query_id": query["query_id"],
                               "completed": counters["completed_queries"], "planned": len(selected)}), flush=True)
-        require(sha(config_path) == config_sha and sha(ops.library_path()) == LIBRARY_SHA256
+        require(sha(config_path) == config_sha and sha(ops.library_path()) == library_sha
                 and precision_state() == precision, "Frozen runtime context changed during the shard")
         for name, expected in config["source_sha256"].items():
             require(sha(args.root / name) == expected, "Source changed during the shard: " + name)

@@ -1,0 +1,80 @@
+{
+  "status": "pass",
+  "errors": [],
+  "slurm_job_id": "3726994",
+  "analysis_slurm_job_id": "3726982",
+  "utc": "2026-11-17T14:26:28.788397+00:00",
+  "queries": 475,
+  "transcript_mappings_checked": 1900,
+  "text_hashes_checked": 3800,
+  "unordered_model_pairs": 6,
+  "all_unit_comparisons_checked": 11400,
+  "summary_rows_checked": 84,
+  "paired_percentile_intervals_checked": 504,
+  "bootstrap_replicates_per_cohort": 5000,
+  "stored_bootstrap_replicates_recomputed": {
+    "all": 25,
+    "practice": 25,
+    "dev": 25,
+    "pilot": 25,
+    "remaining_dev": 25,
+    "remaining_all": 25
+  },
+  "total_stored_bootstrap_replicates_recomputed": 150,
+  "maximum_normalized_distance_formula_error": 0.0,
+  "maximum_recomputed_bootstrap_value_error": 8.881784197001252e-16,
+  "character_identity": {
+    "all": {
+      "queries": 475,
+      "raw_queries": 195,
+      "normalized_queries": 390
+    },
+    "practice": {
+      "queries": 350,
+      "raw_queries": 149,
+      "normalized_queries": 284
+    },
+    "dev": {
+      "queries": 125,
+      "raw_queries": 46,
+      "normalized_queries": 106
+    },
+    "pilot": {
+      "queries": 8,
+      "raw_queries": 3,
+      "normalized_queries": 8
+    },
+    "remaining_dev": {
+      "queries": 117,
+      "raw_queries": 43,
+      "normalized_queries": 98
+    },
+    "remaining_all": {
+      "queries": 467,
+      "raw_queries": 192,
+      "normalized_queries": 382
+    }
+  },
+  "rapidfuzz_version": "3.14.6",
+  "independent_distance_implementation": "rapidfuzz.distance.Levenshtein_py",
+  "rapidfuzz_python_source_sha256": "7f881a8360420024865cf55ed209c69d87f90832c0772aa1bdfe5c525f69b515",
+  "normalizer_sha256": "fff6993b2f1ae85db3a65a6c645a6e2ac3ad0ec415eb82af3f73a763de8e9dd2",
+  "audit_script_sha256": "18198ca4f0505c6e0988d58b96fb7c0d57b802302e5fb00a6c1691e078cc9746",
+  "new_asr_calls": 0,
+  "new_encoder_calls": 0,
+  "new_api_calls": 0,
+  "input_sha256": {
+    "analysis-config.json": "f433e5939c85f8c315f4d8fe3e4f2435b2841b93ff6f4dd048a71af286a09ab9",
+    "summary.json": "8b873b8f32a905e75e18c2e339312af47efd5ce4b7fbeeba94c0e056adfa2dc8",
+    "distances.npz": "9460b54dd5cb5343060e05cb7bbbd6deadb73efec0c508898b6a43ff265db06e",
+    "bootstrap-values.npz": "396b82f47c8718e397e82615e7a83f81a64b1d119beec29138e1b89713034e39",
+    "completion.json": "ba33c514eb3b487c3ea99af3acb646cb3014ce6786aeca8395cfc3fb43bb24ce"
+  },
+  "full_input_sha256": {
+    "config.json": "08e26c97c6447d7147e971b5feb97e3ffe5ef41490ff7a1c11fca4af335ce43a",
+    "summary.json": "618081a6298107aaea5322bfd09632fc00f993f1867f6fbb58e9d7b74c180654",
+    "transcript-mappings.json": "41cd9c58959709959872ad8aee09182e591601cc283d28fb3c569da72a983c3f",
+    "audit.json": "f97c67d40f3f86ad7d79f83a61a0bb4ed2c431a98edf8a3cdbdf65c0b3f9e570"
+  },
+  "scope": "Python/C++ implementation cross-check plus independent macro-distance, identity, paired interval and stored-bootstrap accounting; no ASR ground truth, semantic/retrieval assessment or independent scientific replication."
+}

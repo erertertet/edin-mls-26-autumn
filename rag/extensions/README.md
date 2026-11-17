@@ -262,3 +262,22 @@ See the [frozen protocol](../../report/asr-matched-curves-protocol.md) and
 The [aggregate curves CSV](../../report/asr-matched-curves.csv) and
 [independent validation record](../../report/asr-matched-curves-audit.json)
 are public; the per-query count cache and bootstrap indices remain private.
+
+## Transcript differences by edit distance
+
+`analyze_asr_edit_distance.py` quantifies all six unordered ASR-model pairs on
+the same 475 saved raw/normalized transcripts using RapidFuzz 3.14.6 unit-cost
+Levenshtein distance. It reports character and whitespace-word absolute edits
+and the macro mean of `distance / max(lengths)`, with paired query-bootstrap
+intervals. These reference-free distances measure disagreement, not WER/CER.
+The query-wise overall value averages the six pairs before query resampling.
+
+Run `run_asr_edit_distance.sbatch`, followed by
+`run_audit_asr_edit_distance.sbatch`, in Edinburgh Slurm. Render the audited
+aggregates with `render_asr_edit_distance.py --run RUN --output RUN/report.md`
+inside an allocation. This follow-up reads existing transcripts, makes no
+ASR/encoder/API calls and leaves the retrieval results and normalizer unchanged.
+The [protocol](../../report/asr-edit-distance-protocol.md),
+[result tables](../../report/asr-edit-distance-results.md),
+[aggregate CSV](../../report/asr-edit-distance.csv) and
+[audit](../../report/asr-edit-distance-audit.json) document the calculation.

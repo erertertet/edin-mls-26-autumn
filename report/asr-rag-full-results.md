@@ -2,6 +2,8 @@
 
 Subsequent analysis: [recall–token curves, separated calibration and paired intervals](asr-matched-curves-results.md). It reuses this experiment's saved vectors and preserves every fixed result below; it makes no new ASR or encoder calls.
 
+Transcript comparison: [character and word edit-distance results](asr-edit-distance-results.md) quantify all six model pairs before and after the same frozen normalization. They measure inter-model disagreement without a reference transcript.
+
 The frozen experiment completed **475/475 supplied audio queries**: **350 practice and 125 dev**, with **1,900 four-model transcripts and all 7,600 retrieval cells**. The exact 32 original pilot transcripts were reused; the remaining 467 recordings were completed with the same four ASR arms. This note presents saved audited aggregates; it does not regenerate or revise transcripts.
 
 ## Main findings

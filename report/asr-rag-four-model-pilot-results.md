@@ -92,7 +92,7 @@ The eight queries come from dev data previously used to choose the cutoff; they 
 
 First-GLM call wall time includes worker/model setup; saved API wall times include network/provider service. This run makes no cross-model inference-speed or full audio-to-answer latency claim. Earlier 324-query answer batches are not pooled into this pilot.
 
-A useful next controlled comparison would apply one predeclared transcript-normalization policy to all models, alongside the raw-transcript condition, to separate acronym/punctuation effects from other ASR differences. That follow-up has not been run.
+A subsequent user-requested formatting control has now been completed; see [the normalized rerun](asr-rag-normalization-results.md). That post-hoc experiment applies one common combined normalization rule and reproduces this raw run as a control. The raw results above remain the original condition; component-specific acronym/punctuation effects have not been separately ablated.
 
 ## Reproduction
 

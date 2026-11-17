@@ -1,19 +1,82 @@
 # Coursework report draft
 
-This revised draft gathers the ASR work, uncapped retrieval analysis and completed final answer evaluation of fixed top-5, top-10, top-20, two dev-selected cutoffs and four rounded-threshold controls. All nine settings use one fresh randomized batch and final blind LLM judging. Earlier sufficiency/subset experiments remain stopped.
+This revised draft gathers the ASR work, uncapped retrieval analysis and completed final answer evaluation of fixed top-5, top-10, top-20, two dev-selected cutoffs and four rounded-threshold controls. All nine settings use one fresh randomized batch and final blind LLM judging. The report tables additionally restore the earlier dev-selected top-2 reference as a tenth row (marked with a dagger in the answer table); histograms and regression still use the original nine-setting batch. Earlier sufficiency/subset experiments remain stopped.
+
+The third annotated review uses **macro precision and macro recall throughout
+the article**: both average per-query ratios with equal query weight. Formula,
+figure, tables, bolded maxima and conclusions use this definition consistently.
+The retrieval plot marks upper right as better for precision/recall and upper
+left as better for token/recall. Threshold comparisons show both starting and
+ending precision; the ASR comparison explicitly assesses GLM transcription
+capability. Confidence intervals remain omitted, and Table 2 retains recall
+and precision instead of latency and dollar cost. The original dev macro-F1
+tuning objective and top-score-relative cutoff remain unchanged.
+
+The fourth review follows the official template's five sections: Introduction;
+System and Technical Approach; Experimental Methodology; Results and Analysis;
+Discussion and Conclusion. Kernel implementation, hardware and validation
+procedure are in Section 3.1. Kernel and E2E numbers are in Section 4.4 / Table 3;
+GLM transcript comparisons are in Section 4.5 / Table 4. Macro F1 is explicitly
+the average of per-query harmonic means (`mean(2*hits/(selected+relevant))`),
+matching the dev-tuning code. The score-distribution discussion leads Section
+4.2, and Section 4.3 replaces the old interpretation paragraph with the saved
+query-fixed-effects regression. The report's administrative page retains only
+the AI declaration and group fields, as in the template.
+
+The fifth annotated review shortens the displayed metrics to macro precision
+and recall, with the correct per-query harmonic-mean F1 definition inline by
+dev tuning. It removes the full-sweep recall remark and directly compares
+relative 0.02/0.03 against absolute 0.88/0.87: both retrieval metrics improve,
+but mean answer scores fall. The regression interpretation emphasizes that
+precision and recall jointly explain only 2.6% of within-query score variation,
+so higher precision alone provides limited explanation of the score differences.
+
+The pre-restructure snapshot was pushed as commit `88b1c76` on
+`codex/asr-whisper-pilot`, including the PDF via Git LFS.
+
+The layout is unchanged: 5.5-inch text width, 10-point body font and approximately
+10.96 PDF points between body baselines. Style/support files match both Git and
+the supplied template. The earlier annotated `1.pdf` was flattened to A4, while
+`2.pdf` and the compiled report are US Letter.
+
+The former Appendix B (full-range retrieval/evidence inventory) and Appendix C
+(answer-score/context-size plots) have been removed. Appendix A retains the
+CUDA implementation and detailed ablations; the final administrative page is
+unnumbered. Supporting experiment files and preview figures remain available.
+
+The ASR comparison now treats normalization as a **diagnostic for GLM transcript
+agreement**, not a proposed pipeline improvement. Section 4.5 reports the saved
+whole-transcript disagreement counts and the completed word/character
+edit-distance results from the audited 475-query saved-data analysis.
+The existing normalization rule also needs a leading-decimal audit before it
+can be described as meaning-preserving. The final nine-policy answer experiment
+continues to use its original transcripts.
 
 - `report.pdf`: compiled report tracked with Git LFS; six main pages. Run `git lfs pull` after cloning to download the PDF. See `format-check.json` for the local format validation.
 - `report.tex`, `references.bib`: editable report source.
+- `asr-agreement.tex`: GLM comparison, completed edit-distance table, metric definitions and interpretation.
 - `figures/uncapped-frontiers.png`: macro precision, pooled precision and token/recall curves, using 324 queries and the entire 24,000-document corpus without a count cap.
-- `figures/answer-cost-score.png`: Section 4 scatter plot of reconciled generation USD per 1,000 queries versus final judge score, with all nine settings labelled. Generated from saved results without new API calls.
-- `figures/final-answer-evaluation.png`: final nine-row answer table, with separate judge dimensions, full input tokens, downstream latency and generation charges. Best observed values are bolded.
+- `figures/answer-score-distributions-nine.png` / `.pdf`: the selected preview 01, adapted for report-sized labels; nine exact-score histograms now replace the cost-versus-score graph in Section 4. The older cost graph is retained as an unused asset and excluded from the current source archive.
+- `figures/answer-score-distribution.png` / `.pdf`: all 2,916 final scores, with horizontal jitter only and mean diamonds, separately labelled for all nine settings.
+- `figures/answer-score-documents.png` / `.pdf`: exact score versus retrieved-document count, split by retrieval family. Bubble area encodes coincident answers within a setting; all panels share a log count axis and include the maximum of 280 documents. Markers/shades distinguish thresholds. These two earlier plots are retained as unused assets; they are no longer included in the PDF or source archive.
+- `figures/answer-distribution-data.json`: aggregate count/score frequencies, summary checks, rendering versions and input hashes; no query IDs or text.
+- `answer-table.tex`: final nine-row answer table, with judge dimensions, full input tokens, macro recall and macro precision. Best observed values are bolded. The table renderer uses the same columns; older standalone images are retained as previews.
 - `threshold-controls-protocol.md`: current nine-row design and measurement boundaries. `pipeline-controls-protocol.md` preserves the earlier five-row study. `uncapped-protocol.md` documents the earlier top-2 study.
 - `../../rag/results/cutoff-threshold-controls-20261116/summary.json`: final answer results and paired intervals. Retrieval comparisons remain in `../../rag/results/cutoff-uncapped-20261116/frontiers/summary.json`.
 - `format-check.json`: supplied checker output, PASS.
 - `report-source.zip`: portable LaTeX source, generated table/analysis inputs, required styles, figure PDFs and this README. It excludes credentials, raw query data, model weights and build intermediates.
 - `../work-inventory.md`: evidence locations and completed/incomplete status.
 
-The Query-weighted quality panel has **macro precision on x and macro recall on y**. Each query has equal weight. Higher macro precision does not imply higher pooled precision, recall per token or answer quality. Diamonds retain the earlier dev-selected reference settings; curves are exploratory. The other panels keep their original axes.
+The current report figure has **macro precision on x and macro recall on y**
+in the first panel, and retrieved-text tokens versus macro recall in the second.
+Diamonds retain the earlier dev-selected references. The standalone macro/micro
+comparison and regression previews remain outside the report.
+
+Regenerate only the current report figure from saved data:
+
+```text
+python report/plot_uncapped_report.py --run rag/results/cutoff-uncapped-20261116 --evaluation-run rag/results/cutoff-threshold-controls-20261116 --retrieval-only --report-only --out report/draft/figures
+```
 
 ## Before submission
 
@@ -22,6 +85,97 @@ Fill in Group ID, name and UUN on the final page only. Review every technical cl
 The final nine-row study generated 2,916 fresh answers before judging began. All 5,837 calls reconcile to $3.557849731 (generation $1.583303721; judging $1.974546010). Five extra judge attempts resolved a formatting error without manual repair. One answer reached the output cap and is retained. All input prompts fit and all token counts match preflight. The earlier five-row study cost $1.857334791 and the top-2 study $0.845229234; both are archived separately. Partial outputs from interrupted runs are excluded. Sufficiency/subset studies were not resumed.
 
 The added thresholds are absolute tau=0.88/0.87 and relative delta=0.02/0.03, named by parameter rather than target recall. They are exploratory controls motivated by viewed evaluation curves, not dev-tuned selections or exact recall fits. Absolute 0.8925 remains best observed; absolute 0.88 increases recall with an uncertain score difference. See `../rag-threshold-controls-results.md` for the full interpretation.
+
+## ASR comparison provenance and interpretation
+
+Whole-transcript and normalized top-5 set disagreement comes from
+[PR #5's saved-data comparison](https://github.com/erertertet/edin-mls-26-autumn/pull/5#issuecomment-6948640302),
+based on the audited 475-query run documented in `../asr-rag-full-results.md`.
+GLM-versus-Whisper/MAI/Voxtral raw disagreements are 261/155/152 queries;
+normalized disagreements are 71/66/62. All denominators are 475. Normalized top-5
+set disagreements are 56/52/48, respectively. The separate matched-recall
+robustness observation uses **117 dev queries**, as defined in
+`../asr-matched-curves-results.md`; it is not the 324-query answer evaluation.
+
+Edit-distance values come from `../asr-edit-distance.csv` at commit `0ba8312`,
+with definitions in `../asr-edit-distance-protocol.md`, full uncertainty tables
+in `../asr-edit-distance-results.md` and audit job 3726994 in
+`../asr-edit-distance-audit.json`. The private transcript archive is not present
+in this checkout; the report incorporates the audited public aggregates.
+Distances count minimum unit-cost Levenshtein operations, with whitespace word
+splitting and Unicode characters including spaces. NED divides each query's
+distance by the longer sequence length and then averages queries. This replaces
+the earlier draft's proposed reference-denominated corpus rate; neither output
+is ground truth. Text formatting normalization and length normalization in NED
+are distinct operations. These are agreement measures, not reference-based WER/CER.
+
+Normalized word edits total 164/156/146 for GLM versus Whisper/MAI/Voxtral.
+Dividing by 475 gives the table's mean edits per query; dividing by 71/66/62
+disagreeing queries gives 2.31/2.36/2.35 edits among disagreements. Word NED
+point estimates are 2.456/2.317/2.202%, with the reported 5,000-replicate,
+pointwise paired-query bootstrap intervals in the saved analysis. Intervals are omitted from the current report at the author's request. Small edits can still alter meaning.
+The leading-decimal normalization edge case remains unresolved; all reported
+numbers describe the original frozen normalization, not a corrected rerun.
+
+The plots use the local saved `results.jsonl`, validate all three rubric
+components and document counts, require exactly one judgement for each of the
+324 shared queries under nine policies, and reconcile means with `summary.json`.
+They use no model/API calls. Exactly 263--281 of 324 answers per setting
+(81.2--86.7%) score at either endpoint. This is descriptive, not a significance
+test or causal estimate of the effect of context length.
+
+Regenerate from the repository root in the report-rendering environment:
+
+```text
+python report/plot_answer_distributions.py --run rag/results/cutoff-threshold-controls-20261116 --out report/draft/figures
+```
+
+Use `--nine-only` to render only the newly selected Section 4 plot. The standalone
+preview 05 (document-count change versus score change, paired with fixed top-5)
+remains outside the report pending figure selection.
+
+## Precision/recall regression
+
+Section 4.3 uses the completed saved-data fit in `../answer-regression-results.json`.
+It regresses all 2,916 per-query scores on per-query precision and recall, with a
+separate intercept for each of the 324 queries. The slopes are 0.1844186 and
+0.0508738, or +0.01844/+0.00509 score per +10 percentage points. Adding
+configuration intercepts yields +0.01694/+0.00702. Within-query R? is 0.0257501;
+its denominator excludes between-query variation. Whole-query bootstrap bounds
+support a positive precision association while recall remains uncertain; the
+report omits interval numbers as requested. No causal effect is claimed.
+`../analyze_answer_regression.py` reproduces the saved-data analysis and preview.
+
+## Kernel numerical correctness
+
+Section 4.4 Table 3 retains the historical H200 operator tests and now reports
+all-CUDA versus PyTorch on all **475 recordings**, using an RTX A6000 and IEEE
+FP32. Maximum absolute differences are **0.003749847 in logits**,
+**0.000266075 in probabilities**, and **0.016044259 in audio projections**.
+Independent greedy sequences and decoded texts agree on **475/475 queries**;
+all **7,660 token positions** including EOS match. Token, character and word
+edit distances are zero on every query, with no formatting normalization.
+
+Each primary field covers **453,962,240 full-vocabulary values**. Appendix A
+includes per-query median/p95 maxima, distinct macro/pooled statistics,
+termination accounting and four complete-history replay controls (51 positions,
+zero replay discrepancy). CPU job **3728059** independently audited all 475
+lossless traces and 1,425 edit distances; all checks passed. This is observed
+implementation agreement on the supplied finite corpus, not WER/CER or a bound
+on other inputs.
+
+Full artifacts: [results](../asr-full-e2e-results.md),
+[aggregate CSV](../asr-full-e2e.csv), [summary](../asr-full-e2e-summary.json),
+[audit](../asr-full-e2e-audit.json), [protocol](../asr-full-e2e-protocol.md),
+[execution record](../asr-full-e2e-execution.md) and
+[SM86 build proof](../asr-full-e2e-library-build.json).
+
+The older H200 one-clip numerical results remain in
+`../asr-e2e-error-results.md` and Appendix A. The historical H200 timing/memory
+ablation still reports 4.26x runtime and 0.34 GiB lower peak memory. Both the
+input coverage and GPU differ in the new full-set check, so the larger extrema
+are not an isolated sample-size or cross-device comparison. Instrumented
+full-set jobs are not used for latency comparisons.
 
 ## Build
 
@@ -40,4 +194,15 @@ From the repository root, the supplied checker can inspect the resulting PDF:
 python report/format_checker/check_report_format.py report/draft/report.pdf --json report/draft/format-check.json
 ```
 
-The five supplied style/support files are unchanged from `report/latex_template`. The final checker output records the main-body count, 10 pt body text, required header and review line numbers. Earlier top-50 figures and the prior report are retained for review, but the current source archive includes only the revised report's required files.
+The five supplied style/support files are unchanged from `report/latex_template`. The final checker output records the main-body count, 10 pt body text, required header and review line numbers. Earlier top-50 figures and the prior report are retained for review, but the current source archive includes all LaTeX modules and only the figure PDFs used by the revised report.
+
+## Restored top-2 reference
+
+Section 3.2 explicitly identifies the common selection objective for all three
+families: maximise macro retrieval F1 on the 125 dev queries, freeze the best
+parameter within each search, then evaluate on 324 practice queries. Dev winners
+are top-2 (24.3851%), absolute 0.8925 (26.5858%) and relative 0.009 (29.4863%).
+Answer scores do not participate in tuning. Top-5/10/20 and rounded cutoffs are
+additional controls, not the dev-F1 winners.
+
+The tenth table row comes from `rag/results/cutoff-uncapped-20261116/summary.json` (`topk`), checked against its 324 saved results and the identical query set in the nine-setting batch. Generator/judge models, prompts, decoding settings, corpus hash and partition hash match. Its mean score is 0.5943930041, full input tokens 531.9475309, macro recall 0.3209339871 and macro precision 0.3132716049. It is a separate earlier batch, not a new run. Best-value formatting now assigns lowest input tokens to top-2; the absolute cutoff retains the best mean score. The histogram, regression and $3.5578 billing total remain scoped to the original nine-setting batch. If regenerating the nine-row answer table with `plot_uncapped_report.py`, retain this explicitly labelled historical row when updating the report.

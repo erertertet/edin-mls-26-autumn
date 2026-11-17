@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "slurm_job_id": "3728209",
+  "pdf_sha256": "4e4460b917c2457874bdfabb9483ab3c4a59e16e712c4a5623b80dbef6d049d3",
+  "main_body_pages": 6,
+  "total_pages": 13,
+  "format_status": "PASS",
+  "undefined_reference_or_citation_warnings": [],
+  "overfull_box_messages": [],
+  "visual_review": {
+    "status": "pass",
+    "contact_sheet_pages": 13,
+    "detailed_pages": [
+      5,
+      10,
+      11
+    ],
+    "findings": "No clipping, overlaps, unreadable tables or section/float placement defects observed."
+  },
+  "supplied_styles_unchanged": true,
+  "numerical_analysis_environment": {
+    "numpy": "2.4.6",
+    "float64_mantissa": 52,
+    "longdouble_mantissa": 63,
+    "longdouble_bytes": 16
+  }
+}

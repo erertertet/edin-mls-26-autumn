@@ -1,0 +1,25 @@
+\subsection{Checking GLM transcripts against alternative ASR models}
+To assess GLM's transcription capability, Table~\ref{tab:asr-agreement} compares its outputs with Whisper, MAI and Voxtral on 475 recordings: 1,900 saved transcripts, including 32 reused pilot transcripts. Text normalization aligns formatting (e.g., ``I S A'' and ``ISA'' both become ``isa'').
+
+\begin{table}[h]
+\centering
+\caption{GLM versus each alternative on 475 recordings. Disagreement means any whole-transcript difference. The last three columns compare formatting-normalized text; NED is symmetric normalized edit distance, averaged over all queries including exact matches. No model is treated as ground truth.}
+\label{tab:asr-agreement}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+& \multicolumn{2}{c}{Transcript disagreement (\%)} & \multicolumn{3}{c}{Normalized edit comparison}\\
+Comparison model & Raw & Normalized & \shortstack{Word edits\\per query} & \shortstack{Word NED\\(\%)} & \shortstack{Char. NED\\(\%)}\\
+\midrule
+Whisper large-v3 & 54.95 & 14.95 & 0.345 & 2.456 & 1.514\\
+MAI-Transcribe 2 & 32.63 & 13.89 & 0.328 & 2.317 & 1.507\\
+Voxtral Small Transcribe 3 & 32.00 & 13.05 & 0.307 & 2.202 & 1.467\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Levenshtein distance $d$ counts minimum unit-cost insertions, deletions and substitutions. Words use whitespace splitting; characters are Unicode code points, including spaces. For each query, NED divides $d$ by the longer sequence length in that unit, then averages queries: $N^{-1}\sum_q d(A_q,B_q)/\max(|A_q|,|B_q|)$. This length scaling is distinct from text formatting normalization, and is not a pooled edit/length ratio or reference-based WER/CER.
+
+GLM differs on 71, 66 and 62 normalized transcripts, but averages only 0.31--0.35 word edits per query. Among the disagreeing transcripts alone, the means are 2.31, 2.36 and 2.35 edits. The low edit distances show substantial agreement across the saved model outputs.
+
+Normalized top-5 sets differ from GLM's on 11.79\%, 10.95\% and 10.11\% of queries, respectively. On the separate 117-query dev evaluation, absolute cutoff uses 772--1,224 more document tokens than top-$k$ at 40\% descriptively matched recall across eight ASR/input settings. The retrieval token-efficiency trade-off persists across these models and input formats.

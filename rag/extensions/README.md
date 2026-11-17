@@ -237,3 +237,47 @@ The query-weighted panel has precision on x and recall on y. The final answer
 table bolds best observed values, not significance. The broader nine-row
 `cutoff_expanded_controls.py` run was interrupted when scope narrowed; its partial
 results do not enter the five-row table. See `report/draft/pipeline-controls-protocol.md`.
+
+## Four-ASR recall–token follow-up
+
+The saved 475-audio experiment is extended without ASR, encoder or API calls by
+`prepare_asr_curve_cache.py`, `analyze_asr_curves.py` and
+`render_asr_curve_analysis.py`. The frozen JSON plan declares 307 policies per
+case, 30/40/50% recall targets and 5,000 paired query bootstrap replicates.
+Calibration uses 350 practice queries; evaluation uses the 117 dev queries
+outside the original pilot. Practice-selected transfer and descriptive
+evaluation-curve recall standardization are separate estimands. These reused
+data are exploratory, not a fresh holdout.
+
+Submit `run_prepare_asr_curves.sbatch`, then `run_analyze_asr_curves.sbatch`,
+then `run_audit_asr_curves.sbatch` from the repository root in Edinburgh Slurm.
+The independent auditor checks all operating points, paired intervals and
+aggregate curves, plus selected saved bootstrap replicates, without importing
+the producer's statistical kernel or drawing new query samples. The original
+top-5/cutoff 0.8925 controls remain unchanged. Private inputs/results are required;
+the wrappers do not provision them or resume ASR work.
+
+See the [frozen protocol](../../report/asr-matched-curves-protocol.md) and
+[results with PNG/PDF figures](../../report/asr-matched-curves-results.md).
+The [aggregate curves CSV](../../report/asr-matched-curves.csv) and
+[independent validation record](../../report/asr-matched-curves-audit.json)
+are public; the per-query count cache and bootstrap indices remain private.
+
+## Transcript differences by edit distance
+
+`analyze_asr_edit_distance.py` quantifies all six unordered ASR-model pairs on
+the same 475 saved raw/normalized transcripts using RapidFuzz 3.14.6 unit-cost
+Levenshtein distance. It reports character and whitespace-word absolute edits
+and the macro mean of `distance / max(lengths)`, with paired query-bootstrap
+intervals. These reference-free distances measure disagreement, not WER/CER.
+The query-wise overall value averages the six pairs before query resampling.
+
+Run `run_asr_edit_distance.sbatch`, followed by
+`run_audit_asr_edit_distance.sbatch`, in Edinburgh Slurm. Render the audited
+aggregates with `render_asr_edit_distance.py --run RUN --output RUN/report.md`
+inside an allocation. This follow-up reads existing transcripts, makes no
+ASR/encoder/API calls and leaves the retrieval results and normalizer unchanged.
+The [protocol](../../report/asr-edit-distance-protocol.md),
+[result tables](../../report/asr-edit-distance-results.md),
+[aggregate CSV](../../report/asr-edit-distance.csv) and
+[audit](../../report/asr-edit-distance-audit.json) document the calculation.

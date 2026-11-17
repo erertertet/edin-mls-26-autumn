@@ -1,0 +1,3284 @@
+{
+  "source_run": "cutoff-threshold-controls-20261116",
+  "input_sha256": {
+    "results.jsonl": "63d596082eb814ba9ba970602321a0d75c67f90aaade7a91260bd5235aa8f765",
+    "summary.json": "b9205116c335dd383d460930c40f4ee422c96de9682003c493d7daf557a548d7"
+  },
+  "rendering": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.5",
+    "distribution_horizontal_jitter_seed": 20261117,
+    "score_documents_area_points_squared_per_answer": 2.0
+  },
+  "notes": [
+    "Saved final judgements only; 324 paired queries and 9 policies.",
+    "Score is the sum of three integer 0-4 rubric dimensions divided by 12.",
+    "Distribution jitter affects the categorical x coordinate only.",
+    "Document plot uses exact score/count coordinates, with area proportional to frequency.",
+    "Repeated queries across policies are not independent samples; plots are descriptive.",
+    "No ASR, encoder, retrieval, generation or judge calls."
+  ],
+  "policies": [
+    {
+      "arm": "fixed5",
+      "queries": 324,
+      "mean_score": 0.5336934156378601,
+      "zero_scores": 118,
+      "full_scores": 145,
+      "mean_documents": 5.0,
+      "max_documents": 5,
+      "points": [
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 118
+        },
+        {
+          "documents": 5,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 9
+        },
+        {
+          "documents": 5,
+          "score_sum": 4,
+          "score": 0.3333333333333333,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 11
+        },
+        {
+          "documents": 5,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 36
+        },
+        {
+          "documents": 5,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 2
+        },
+        {
+          "documents": 5,
+          "score_sum": 8,
+          "score": 0.6666666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 145
+        }
+      ]
+    },
+    {
+      "arm": "fixed10",
+      "queries": 324,
+      "mean_score": 0.5540123456790124,
+      "zero_scores": 114,
+      "full_scores": 155,
+      "mean_documents": 10.0,
+      "max_documents": 10,
+      "points": [
+        {
+          "documents": 10,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 114
+        },
+        {
+          "documents": 10,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 6
+        },
+        {
+          "documents": 10,
+          "score_sum": 4,
+          "score": 0.3333333333333333,
+          "answers": 5
+        },
+        {
+          "documents": 10,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 13
+        },
+        {
+          "documents": 10,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 29
+        },
+        {
+          "documents": 10,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 10,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 10,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 155
+        }
+      ]
+    },
+    {
+      "arm": "fixed20",
+      "queries": 324,
+      "mean_score": 0.559670781893004,
+      "zero_scores": 110,
+      "full_scores": 156,
+      "mean_documents": 20.0,
+      "max_documents": 20,
+      "points": [
+        {
+          "documents": 20,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 110
+        },
+        {
+          "documents": 20,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 6
+        },
+        {
+          "documents": 20,
+          "score_sum": 4,
+          "score": 0.3333333333333333,
+          "answers": 4
+        },
+        {
+          "documents": 20,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 21
+        },
+        {
+          "documents": 20,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 26
+        },
+        {
+          "documents": 20,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 1
+        },
+        {
+          "documents": 20,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 156
+        }
+      ]
+    },
+    {
+      "arm": "absolute_radius",
+      "queries": 324,
+      "mean_score": 0.6391460905349794,
+      "zero_scores": 93,
+      "full_scores": 185,
+      "mean_documents": 2.4012345679012346,
+      "max_documents": 32,
+      "points": [
+        {
+          "documents": 1,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 63
+        },
+        {
+          "documents": 1,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 6
+        },
+        {
+          "documents": 1,
+          "score_sum": 4,
+          "score": 0.3333333333333333,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 15
+        },
+        {
+          "documents": 1,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 2
+        },
+        {
+          "documents": 1,
+          "score_sum": 8,
+          "score": 0.6666666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 125
+        },
+        {
+          "documents": 2,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 8
+        },
+        {
+          "documents": 2,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 2
+        },
+        {
+          "documents": 2,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 2,
+          "score_sum": 8,
+          "score": 0.6666666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 22
+        },
+        {
+          "documents": 3,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 7
+        },
+        {
+          "documents": 3,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 3,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 10
+        },
+        {
+          "documents": 4,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 4,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 4,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 5,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 6,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 6,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 6
+        },
+        {
+          "documents": 7,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 8,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 9,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 12,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 14,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 17,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 18,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 26,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 32,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        }
+      ]
+    },
+    {
+      "arm": "absolute_088",
+      "queries": 324,
+      "mean_score": 0.625,
+      "zero_scores": 99,
+      "full_scores": 182,
+      "mean_documents": 6.154320987654321,
+      "max_documents": 82,
+      "points": [
+        {
+          "documents": 1,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 34
+        },
+        {
+          "documents": 1,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 1,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 2
+        },
+        {
+          "documents": 1,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 73
+        },
+        {
+          "documents": 2,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 14
+        },
+        {
+          "documents": 2,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 2
+        },
+        {
+          "documents": 2,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 6
+        },
+        {
+          "documents": 2,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 24
+        },
+        {
+          "documents": 3,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 9
+        },
+        {
+          "documents": 3,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 5
+        },
+        {
+          "documents": 3,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 5
+        },
+        {
+          "documents": 3,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 18
+        },
+        {
+          "documents": 4,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 4,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 4,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 5,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 2
+        },
+        {
+          "documents": 5,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 9
+        },
+        {
+          "documents": 6,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 6
+        },
+        {
+          "documents": 6,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 7,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 7,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 6
+        },
+        {
+          "documents": 8,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 8,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 9,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 9,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 9,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 7
+        },
+        {
+          "documents": 10,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 10,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 10,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 11,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 11,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 11,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 11,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 12,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 13,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 14,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 15,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 16,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 17,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 18,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 19,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 20,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 20,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 21,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 24,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 25,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 27,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 28,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 28,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 30,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 31,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 32,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 32,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 34,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 41,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 45,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 46,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 52,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 64,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 82,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        }
+      ]
+    },
+    {
+      "arm": "absolute_087",
+      "queries": 324,
+      "mean_score": 0.5825617283950617,
+      "zero_scores": 106,
+      "full_scores": 161,
+      "mean_documents": 14.104938271604938,
+      "max_documents": 180,
+      "points": [
+        {
+          "documents": 1,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 13
+        },
+        {
+          "documents": 1,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 31
+        },
+        {
+          "documents": 2,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 8
+        },
+        {
+          "documents": 2,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 24
+        },
+        {
+          "documents": 3,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 7
+        },
+        {
+          "documents": 3,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 12
+        },
+        {
+          "documents": 4,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 7
+        },
+        {
+          "documents": 4,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 4,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 4,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 12
+        },
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 5,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 7
+        },
+        {
+          "documents": 6,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 8
+        },
+        {
+          "documents": 6,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 6,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 7
+        },
+        {
+          "documents": 7,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 6
+        },
+        {
+          "documents": 7,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 2
+        },
+        {
+          "documents": 7,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 8,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 8,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 5
+        },
+        {
+          "documents": 8,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 9,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 9,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 2
+        },
+        {
+          "documents": 9,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 10,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 10,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 10,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 3
+        },
+        {
+          "documents": 10,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 10,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 11,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 11,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 11,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 12,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 12,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 13,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 13,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 14,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 14,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 14,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 15,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 15,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 16,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 16,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 1
+        },
+        {
+          "documents": 17,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 17,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 18,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 18,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 4
+        },
+        {
+          "documents": 18,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 19,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 20,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 20,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 20,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 21,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 21,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 21,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 22,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 22,
+          "score_sum": 4,
+          "score": 0.3333333333333333,
+          "answers": 1
+        },
+        {
+          "documents": 22,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 23,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 23,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 24,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 25,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 26,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 26,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 28,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 28,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 29,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 30,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 30,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 31,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 32,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 1
+        },
+        {
+          "documents": 36,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 37,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 38,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 41,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 42,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 43,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 44,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 45,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 47,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 48,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 51,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 52,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 53,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 53,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 53,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 55,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 58,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 60,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 60,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 61,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 64,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 66,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 67,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 81,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 81,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 82,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 87,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 98,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 130,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 146,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 180,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        }
+      ]
+    },
+    {
+      "arm": "relative_gap",
+      "queries": 324,
+      "mean_score": 0.5902777777777778,
+      "zero_scores": 107,
+      "full_scores": 167,
+      "mean_documents": 2.552469135802469,
+      "max_documents": 18,
+      "points": [
+        {
+          "documents": 1,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 27
+        },
+        {
+          "documents": 1,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 3
+        },
+        {
+          "documents": 1,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 8
+        },
+        {
+          "documents": 1,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 2
+        },
+        {
+          "documents": 1,
+          "score_sum": 8,
+          "score": 0.6666666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 88
+        },
+        {
+          "documents": 2,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 34
+        },
+        {
+          "documents": 2,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 2
+        },
+        {
+          "documents": 2,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 9
+        },
+        {
+          "documents": 2,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 40
+        },
+        {
+          "documents": 3,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 13
+        },
+        {
+          "documents": 3,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 2
+        },
+        {
+          "documents": 3,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 9
+        },
+        {
+          "documents": 3,
+          "score_sum": 7,
+          "score": 0.5833333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 14
+        },
+        {
+          "documents": 4,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 13
+        },
+        {
+          "documents": 4,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 4,
+          "score_sum": 8,
+          "score": 0.6666666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 4,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 10
+        },
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 7
+        },
+        {
+          "documents": 5,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 6,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 6,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 7,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 8,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 8,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 9,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 9,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 10,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 12,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 12,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 18,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        }
+      ]
+    },
+    {
+      "arm": "relative_002",
+      "queries": 324,
+      "mean_score": 0.5637860082304528,
+      "zero_scores": 114,
+      "full_scores": 157,
+      "mean_documents": 8.277777777777779,
+      "max_documents": 113,
+      "points": [
+        {
+          "documents": 1,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 6
+        },
+        {
+          "documents": 1,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 5
+        },
+        {
+          "documents": 1,
+          "score_sum": 8,
+          "score": 0.6666666666666666,
+          "answers": 3
+        },
+        {
+          "documents": 1,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 48
+        },
+        {
+          "documents": 2,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 9
+        },
+        {
+          "documents": 2,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 4
+        },
+        {
+          "documents": 2,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 18
+        },
+        {
+          "documents": 3,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 3,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 4
+        },
+        {
+          "documents": 3,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 19
+        },
+        {
+          "documents": 4,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 10
+        },
+        {
+          "documents": 4,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 4,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 11
+        },
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 12
+        },
+        {
+          "documents": 5,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 6
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 12
+        },
+        {
+          "documents": 6,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 9
+        },
+        {
+          "documents": 6,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 2
+        },
+        {
+          "documents": 6,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 6,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 8
+        },
+        {
+          "documents": 7,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 7
+        },
+        {
+          "documents": 7,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 7,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 7
+        },
+        {
+          "documents": 8,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 9
+        },
+        {
+          "documents": 8,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 2
+        },
+        {
+          "documents": 8,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 8,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 9,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 6
+        },
+        {
+          "documents": 9,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 9,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 10,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 10,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 10,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 11,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 12,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 12,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 13,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 13,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 14,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 14,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 14,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 15,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 15,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 15,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 16,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 17,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 17,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 18,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 18,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 19,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 19,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 20,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 21,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 21,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 22,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 22,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 23,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 23,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 24,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 24,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 25,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 25,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 26,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 26,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 27,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 27,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 28,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 29,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 30,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 32,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 35,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 36,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 41,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 47,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 49,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 59,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 65,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 113,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        }
+      ]
+    },
+    {
+      "arm": "relative_003",
+      "queries": 324,
+      "mean_score": 0.5511831275720164,
+      "zero_scores": 115,
+      "full_scores": 148,
+      "mean_documents": 22.54320987654321,
+      "max_documents": 280,
+      "points": [
+        {
+          "documents": 1,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 1,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 1,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 24
+        },
+        {
+          "documents": 2,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 2,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 2,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 2,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 18
+        },
+        {
+          "documents": 3,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 3,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 3,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 3,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 12
+        },
+        {
+          "documents": 4,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 4,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 3
+        },
+        {
+          "documents": 4,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 1
+        },
+        {
+          "documents": 4,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 11
+        },
+        {
+          "documents": 5,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 5,
+          "score_sum": 9,
+          "score": 0.75,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 5,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 6,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 6
+        },
+        {
+          "documents": 6,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 6,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 7,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 7,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 7,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 6
+        },
+        {
+          "documents": 8,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 8,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 5
+        },
+        {
+          "documents": 8,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 9,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 9,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 9,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 10,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 10,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 10,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 10,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 6
+        },
+        {
+          "documents": 11,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 11,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 12,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 12,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 12,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 12,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 13,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 5
+        },
+        {
+          "documents": 13,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 10,
+          "score": 0.8333333333333334,
+          "answers": 1
+        },
+        {
+          "documents": 13,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 14,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 14,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 2
+        },
+        {
+          "documents": 14,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 15,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 15,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 16,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 16,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 16,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 17,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 17,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 17,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 17,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 3
+        },
+        {
+          "documents": 18,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 18,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 18,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 5
+        },
+        {
+          "documents": 19,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 19,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 19,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 20,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 6
+        },
+        {
+          "documents": 20,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 4
+        },
+        {
+          "documents": 21,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 22,
+          "score_sum": 11,
+          "score": 0.9166666666666666,
+          "answers": 1
+        },
+        {
+          "documents": 22,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 23,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 4
+        },
+        {
+          "documents": 23,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 24,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 24,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 25,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 26,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 27,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 27,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 27,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 28,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 29,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 29,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 30,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 31,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 31,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 32,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 32,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 33,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 33,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 34,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 35,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 35,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 35,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 36,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 37,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 41,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 42,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 43,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 43,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 43,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 44,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 44,
+          "score_sum": 3,
+          "score": 0.25,
+          "answers": 1
+        },
+        {
+          "documents": 44,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 45,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 46,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 3
+        },
+        {
+          "documents": 46,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 47,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 47,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 48,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 2
+        },
+        {
+          "documents": 49,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 50,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 53,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 54,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 54,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 55,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 56,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 57,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 57,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 59,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 59,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 60,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 62,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 63,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 64,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 65,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 67,
+          "score_sum": 5,
+          "score": 0.4166666666666667,
+          "answers": 1
+        },
+        {
+          "documents": 68,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 70,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 71,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 71,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 72,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 73,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 75,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 76,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 79,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 84,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 2
+        },
+        {
+          "documents": 90,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 96,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 99,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 101,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 107,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 110,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 129,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 135,
+          "score_sum": 12,
+          "score": 1.0,
+          "answers": 1
+        },
+        {
+          "documents": 145,
+          "score_sum": 6,
+          "score": 0.5,
+          "answers": 1
+        },
+        {
+          "documents": 198,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        },
+        {
+          "documents": 280,
+          "score_sum": 0,
+          "score": 0.0,
+          "answers": 1
+        }
+      ]
+    }
+  ]
+}

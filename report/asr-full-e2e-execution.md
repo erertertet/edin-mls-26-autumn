@@ -1,0 +1,15 @@
+# Full-set ASR kernel validation: execution record
+
+The frozen experiment contains all 475 original recordings, deterministic shards 0–3, IEEE FP32, a 100-token ceiling and the original model snapshot. The inference configuration SHA256 is `82f6e7d84487e05814b6519c2b4db10c8b5997bcd7c39e34c9a260073884d724`. Inference sources are frozen at `742fbea`; the independent CPU aggregation/audit sources were added in `5770646` without changing those inputs or inference files.
+
+The original H200 node `saxa` entered DRAIN. CPU preparation 3727831 completed, but array 3727832 and probe 3727851 were cancelled before execution. The full-set experiment moved to RTX A6000 **before any full-set model inference**. This is a new hardware context; the older H200 one-fixture numerical and timing results retain their original scope.
+
+Slurm build 3727935 completed using the unchanged Makefile/CUDA sources, `SM=86`, CUDA 12.8.93 and GCC 13.3. All four official kernel-test groups passed. The actual library SHA256 is `f4914777a519c5a6029da698e6440c0e4067b3e5dcf0a1dc2b450319db26a008`; the build proof binds its bytes and exact source hashes. Preparations 3727936 and 3727988 failed on a scratch-directory symlink check before inference. The guard was corrected in `742fbea`; preparation 3727994 completed and froze all inputs. Their dependent, unstarted GPU arrays were cancelled.
+
+Shard 0 ran as array task 3727995_0 (actual job 3728009), requesting two CPUs. While it ran, tasks 1–3 remained pending because of CPU availability. Only those pending tasks were cancelled and resubmitted as array 3728058 with one CPU per task; the fixed scientific configuration and source bytes were retained. `OMP_NUM_THREADS=2` remained set for all workers. CPU allocations therefore differ, and these instrumented runs are **not a performance comparison**. Actual allocations and CPU IDs are retained in the ignored run's `resource-*.txt` and Slurm accounting logs. No two writers ran the same shard.
+
+CPU API/aggregation probe 3728005 passed, including separate Python/C++ Levenshtein implementations, empty/Unicode/whitespace conventions, NumPy-array statistics and unequal-query macro versus pooled metrics. Early independent trace audit 3728041 passed for four already-completed records; it is separate from the required final audit of all 475.
+
+The four producing GPU jobs are **3728009, 3728058, 3728060 and 3728064**; all completed successfully. CPU job **3728059** completed the aggregate, independently audited all **475 traces**, **1,425 edit distances** and **six cohorts**, and rendered the result tables. Its audit status is **pass**. Completed records and runtime counters both account for **950 model generations and 950 audio-encoder calls**, with **51 additional decoder replay steps** in the four predeclared controls.
+
+Full query records, token/text sequences, lossless traces, model weights, inputs and resource logs remain under the ignored cluster run `rag/results/asr-full-e2e-a6000-20261117`. Public artifacts contain aggregate results and provenance hashes. External ASR/API and RAG-encoder requests are zero.

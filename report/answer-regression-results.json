@@ -1,0 +1,93 @@
+{
+  "source": "rag/results/cutoff-threshold-controls-20261116/results.jsonl",
+  "source_sha256": "63d596082eb814ba9ba970602321a0d75c67f90aaade7a91260bd5235aa8f765",
+  "observations": 2916,
+  "queries": 324,
+  "configurations": [
+    "fixed5",
+    "fixed10",
+    "fixed20",
+    "absolute_radius",
+    "absolute_088",
+    "absolute_087",
+    "relative_gap",
+    "relative_002",
+    "relative_003"
+  ],
+  "equation": "score_qa = intercept / fixed effects + beta_P * precision_qa + beta_R * recall_qa + residual",
+  "precision": "Per-query relevant retrieved documents / selected documents; not an arm-level macro-precision predictor.",
+  "recall": "Per-query relevant retrieved documents / labelled relevant documents.",
+  "score": "Sum of correctness, grounding and completeness divided by 12; range 0 to 1.",
+  "uncertainty": "5000 whole-query bootstrap resamples; percentile 95% intervals; seed 20261117.",
+  "r2_definition": "Pooled R2 uses total score variation; query R2 uses within-query variation; query_policy R2 uses variation after removing query and configuration means.",
+  "models": {
+    "pooled": {
+      "beta_precision": 0.4728813852635356,
+      "beta_recall": 0.24654541644281053,
+      "intercept": 0.3569230710270197,
+      "r2": 0.2411075477960265,
+      "regressor_correlation": 0.395366840962599,
+      "condition_number": 3.984955317458908,
+      "precision_ci95": [
+        0.41261581290289223,
+        0.5336851094770766
+      ],
+      "precision_per_10pp": 0.047288138526353565,
+      "recall_ci95": [
+        0.17028259836758958,
+        0.3257417632309044
+      ],
+      "recall_per_10pp": 0.024654541644281054,
+      "precision_partial_r2": 0.12386018519412012,
+      "recall_partial_r2": 0.05320672962869133
+    },
+    "query": {
+      "beta_precision": 0.18441860263112822,
+      "beta_recall": 0.05087382108123854,
+      "intercept": null,
+      "r2": 0.0257501178120475,
+      "regressor_correlation": -0.10852545403579125,
+      "condition_number": 1.1465816233071975,
+      "precision_ci95": [
+        0.1268014104515826,
+        0.24597930312848762
+      ],
+      "precision_per_10pp": 0.018441860263112824,
+      "recall_ci95": [
+        -0.04352835445021654,
+        0.14635385243448787
+      ],
+      "recall_per_10pp": 0.005087382108123855,
+      "precision_partial_r2": 0.025223810449486184,
+      "recall_partial_r2": 0.001666752359207213
+    },
+    "query_policy": {
+      "beta_precision": 0.16940919411545513,
+      "beta_recall": 0.07022425922903532,
+      "intercept": null,
+      "r2": 0.020429995328609563,
+      "regressor_correlation": 0.07470496887993737,
+      "condition_number": 1.0873613711167858,
+      "precision_ci95": [
+        0.10176982814845426,
+        0.23666760610083348
+      ],
+      "precision_per_10pp": 0.016940919411545515,
+      "recall_ci95": [
+        -0.02418403989224363,
+        0.16771496205455053
+      ],
+      "recall_per_10pp": 0.007022425922903532,
+      "precision_partial_r2": 0.016728418132769596,
+      "recall_partial_r2": 0.0027044897923931277
+    }
+  },
+  "diagnostics": {
+    "queries_with_precision_variation": 258,
+    "queries_with_recall_variation": 187,
+    "zero_hit_rows": 1109,
+    "full_score_zero_hit_rows": 287,
+    "endpoint_scores": 2432
+  },
+  "interpretation": "Descriptive conditional linear associations, not causal treatment effects. Query controls remove fixed query difficulty; configuration controls remove mean policy differences. Precision and recall share a hit numerator and change jointly. Scores are bounded and concentrated at endpoints; OLS is a descriptive projection."
+}

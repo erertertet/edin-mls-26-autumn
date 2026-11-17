@@ -17,7 +17,7 @@
 \section{Introduction}\label{sec:introduction}
 Fixed top-$k$ retrieval gives every query the same number of documents. We can also decide how many documents to retrieve from the corpus using the cosine-similarity scores between the query and document embeddings. In this report, we test two methods that adapt the number retrieved: an absolute similarity cutoff and a relative gap from the highest similarity score. We investigate how these methods affect precision, evidence coverage, token cost and generated answer quality.
 
-Our question is: \emph{how do absolute similarity and top-score-relative gap cutoffs trade off document recall, precision and retrieved-text token usage, and how do these choices affect generated answer quality?} We compare three policy families, using macro (query-averaged) precision and recall throughout. Retrieval curves sweep their parameters; final answer evaluation compares fixed top-5, top-10 and top-20 with two dev-selected cutoffs and four rounded-threshold controls.
+Our question is: \emph{how do absolute similarity and top-score-relative gap cutoffs trade off document recall, precision and retrieved-text token usage, and how do these choices affect generated answer quality?} We compare three policy families using macro (query-averaged) metrics. We select each family's best parameter by dev macro F1, then evaluate the frozen settings on practice queries. Top-5/10/20 and four rounded cutoffs provide additional controls.
 
 We find that cutoffs improve macro precision at matched macro recall, while fixed top-$k$ uses fewer evidence tokens at that recall. The dev-selected cutoffs return fewer documents with higher precision, lower recall and higher mean judge scores than top-5. In the final answer evaluation, the dev-selected absolute cutoff achieves the highest mean judge score (0.639 versus 0.534 for top-5), with 657 versus 1,227 input tokens.
 
@@ -47,7 +47,9 @@ Operator tests and timing use an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, 
 \subsection{Retrieval and answer evaluation}
 The course supplies 350 practice and 125 dev recordings, 24,000 corpus records and relevance judgements (qrels). We tune on dev and evaluate on 324 practice queries after excluding 26 used earlier. This exploratory follow-up reuses previously inspected evaluation data.
 
-Cutoffs maximise dev macro F1: the query average of $F_{1,q}=2p_qr_q/(p_q+r_q)$, where $p_q,r_q$ are per-query precision and recall (F1 is zero when both are zero). Ties favour fewer mean documents. The grids contain 97 absolute thresholds from 0.75 to 0.99 and 81 relative gaps from 0 to 0.08. We freeze $\tau=0.8925$ and $\delta=0.009$; controls use top-5/10/20 and rounded $\tau=0.88/0.87$, $\delta=0.02/0.03$. All methods share cached transcripts, vectors and full stable cosine rankings. Rounded controls were motivated by earlier curves and fixed before generation.
+\textbf{All three methods use the same dev-selection objective: maximum macro F1.} This averages $F_{1,q}=2p_qr_q/(p_q+r_q)$ over queries, where $p_q,r_q$ are precision and recall (F1 is zero when both are zero). Ties favour fewer mean documents. We search $k=1,\ldots,24{,}000$, 97 absolute thresholds from 0.75 to 0.99 and 81 relative gaps from 0 to 0.08. The best settings within these searches are \textbf{top-2}, \textbf{$\tau=0.8925$} and \textbf{$\delta=0.009$}, with dev macro F1 of \textbf{24.39\%, 26.59\% and 29.49\%}, respectively. We freeze these parameters before practice evaluation; final answer scores do not enter selection.
+
+Additional controls use top-5/10/20 and rounded $\tau=0.88/0.87$, $\delta=0.02/0.03$. All methods share cached transcripts, vectors and full stable cosine rankings. Rounded controls were motivated by earlier curves and fixed before generation.
 
 Mistral Small 4 (\texttt{mistralai/mistral-small-2603}, OpenRouter) generates answers at temperature 0.1 with a 2,048-token cap; Gemini 2.5 Flash judges at temperature zero with a 768-token cap. Reasoning is requested disabled. Twelve workers run shuffled query/policy tasks. All 2,916 fresh answers are saved before a separate shuffled judging pass. The judge sees the question, answer and qrels-relevant documents; the retrieval policy and selected list are hidden.
 
@@ -59,7 +61,7 @@ For selected set $S_q$, relevant set $G_q$ and hits $h_q=|S_q\cap G_q|$, define
 \end{equation}
 Both metrics average queries equally. Unjudged records count as non-relevant; qrels may omit useful or include redundant evidence \citep{joren2025}. Figure~\ref{fig:retrieval} counts retrieved-text tokens; tables count full prompt input. Matched-recall comparisons interpolate neighbouring fixed-$k$ settings.
 
-The judge scores correctness, grounding and completeness from 0--4; their sum/12 is the final score. We regress per-query scores on precision and recall across all nine settings, with query intercepts and a configuration-control sensitivity check. Uncertainty uses 5,000 whole-query bootstrap samples. The separate 475-recording ASR comparison checks GLM against three alternative models after aligning case, punctuation, acronym spacing and whitespace.
+The judge scores correctness, grounding and completeness from 0--4; their sum/12 is the final score. We regress per-query scores on precision and recall across the nine settings in the main batch, with query intercepts and a configuration-control sensitivity check. Uncertainty uses 5,000 whole-query bootstrap samples. The separate 475-recording ASR comparison checks GLM against three alternative models after aligning case, punctuation, acronym spacing and whitespace.
 
 \clearpage
 \section{Results and Analysis}\label{sec:results}
@@ -75,17 +77,18 @@ Figure~\ref{fig:retrieval} shows the practical range of 3,103 uncapped settings.
 
 \begin{table}[h]
 \centering
-\caption{Nine operating points. Macro recall and macro precision are percentages; input counts the complete prompt. Bold marks highest recall/precision or lowest input tokens. Absolute/relative values denote $\tau$/$\delta$.}
+\caption{Ten operating points. Macro recall and macro precision are percentages; input counts the complete prompt. Bold marks highest recall/precision or lowest input tokens. Absolute/relative values denote $\tau$/$\delta$.}
 \label{tab:retrieval}
 \small
 \begin{tabular}{lrrrrr}
 \toprule
 Method & Mean docs & Max docs & Macro $R$ & Macro $P$ & Input tokens\\
 \midrule
+Fixed top-2 & 2.00 & 2 & 32.09 & 31.33 & \textbf{532} \\
 Fixed top-5 & 5.00 & 5 & 42.40 & 17.65 & 1227 \\
 Fixed top-10 & 10.00 & 10 & 48.46 & 10.56 & 2391 \\
 Fixed top-20 & 20.00 & 20 & \textbf{57.75} & 6.37 & 4730 \\
-Absolute 0.8925 & 2.40 & 32 & 32.39 & 37.89 & \textbf{657} \\
+Absolute 0.8925 & 2.40 & 32 & 32.39 & 37.89 & 657 \\
 Absolute 0.88 & 6.15 & 82 & 39.58 & 29.12 & 1612 \\
 Absolute 0.87 & 14.10 & 180 & 46.24 & 19.34 & 3586 \\
 Relative 0.009 & 2.55 & 18 & 30.60 & \textbf{39.21} & 667 \\
@@ -103,23 +106,24 @@ Relative 0.03 & 22.54 & 280 & 52.87 & 22.86 & 5437 \\
 
 \clearpage
 \subsection{Final answer quality and score distributions}
-Table~\ref{tab:answers} evaluates all nine settings with the retrieval method hidden from the judge; Figure~\ref{fig:answer-score-histograms} shows their score distributions. Each method is evaluated on the same 324 queries.
+Table~\ref{tab:answers} adds the earlier dev-selected top-2 result to the nine-setting batch, giving ten rows on the same 324 queries. Top-2 uses the same models, prompts and decoding settings in a separate batch. Figure~\ref{fig:answer-score-histograms} and the regression retain the nine-setting batch.
 
 \textbf{Score distributions and context size.} Figure~\ref{fig:answer-score-histograms} shows all nine score distributions. Between 81.2\% and 86.7\% of answers per setting receive exactly 0 or 1; means therefore hide substantial variation. Absolute 0.8925 has 185 full-score and 93 zero-score answers, versus 145 and 118 for top-5.
 
 \begin{table}[h]
 \centering
-\caption{Final evaluation, 324 queries per method. Corr./Ground./Comp. denote correctness, grounding and completeness (0--4); Score is their sum/12. Macro recall and macro precision are percentages. Bold marks highest scores/recall/precision or lowest input tokens.}
+\caption{Answer evaluation, 324 queries per method; $\dagger$ marks the earlier batch. Corr./Ground./Comp. denote correctness, grounding and completeness (0--4); Score is their sum/12. Macro recall and macro precision are percentages. Bold marks highest scores/recall/precision or lowest input tokens.}
 \label{tab:answers}
 \small
 \begin{tabular}{lrrrrrrr}
 \toprule
 Method & Corr. & Ground. & Comp. & Score & Input & Macro $R$ & Macro $P$\\
 \midrule
+Fixed top-2$^\dagger$ & 2.38 & 2.37 & 2.39 & 0.594 & \textbf{532} & 32.09 & 31.33 \\
 Fixed top-5 & 2.15 & 2.11 & 2.15 & 0.534 & 1227 & 42.40 & 17.65 \\
 Fixed top-10 & 2.24 & 2.19 & 2.22 & 0.554 & 2391 & 48.46 & 10.56 \\
 Fixed top-20 & 2.27 & 2.19 & 2.26 & 0.560 & 4730 & \textbf{57.75} & 6.37 \\
-Absolute 0.8925 & \textbf{2.56} & \textbf{2.56} & \textbf{2.56} & \textbf{0.639} & \textbf{657} & 32.39 & 37.89 \\
+Absolute 0.8925 & \textbf{2.56} & \textbf{2.56} & \textbf{2.56} & \textbf{0.639} & 657 & 32.39 & 37.89 \\
 Absolute 0.88 & 2.51 & 2.48 & 2.51 & 0.625 & 1612 & 39.58 & 29.12 \\
 Absolute 0.87 & 2.35 & 2.29 & 2.35 & 0.583 & 3586 & 46.24 & 19.34 \\
 Relative 0.009 & 2.36 & 2.36 & 2.36 & 0.590 & 667 & 30.60 & \textbf{39.21} \\
@@ -173,13 +177,13 @@ Output probabilities & PyTorch & $2.661\times10^{-4}$ & --- & ---\\
 
 In the H200 MIG timing ablation, all CUDA takes \textbf{4.26 times as long} as PyTorch and uses 0.34 GiB less peak memory (Table~\ref{tab:asr}).
 
-The full check covers 7,660 prediction positions, including EOS: 453,962,240 logits and probabilities each. Independent greedy outputs agree at all positions; token, character and word edit distances are zero on every query. Appendix~\ref{app:asr-full} reports pooled discrepancies, replay controls and the full-trace audit. These finite-corpus maxima are not future-input error bounds.
+Across 7,660 prediction positions (including EOS), we compare 453,962,240 logits and probabilities each. Every query has zero token, character and word edits. Appendix~\ref{app:asr-full} gives pooled errors, replay controls and the independent audit.
 
 \clearpage
 \input{asr-agreement.tex}
 
 \section{Discussion and Conclusion}\label{sec:conclusion}
-Cutoffs improve macro precision at matched recall, while fixed top-$k$ preserves more recall per token. Absolute 0.8925 gives the highest observed answer score with the fewest prompt tokens. However, precision and recall explain little of the variation in end-to-end answer scores across settings for the same query: the supplied rubric can reward qualified insufficient-evidence answers, and qrels describe documents rather than unique answer facts. Our data reuse and one answer/judgement per setting make this an exploratory comparison.
+Cutoffs improve macro precision at matched recall, while fixed top-$k$ preserves more recall per token. Absolute 0.8925 gives the highest observed answer score; the earlier top-2 baseline uses the fewest prompt tokens. However, precision and recall explain little of the variation in end-to-end answer scores across settings for the same query: the supplied rubric can reward qualified insufficient-evidence answers, and qrels describe documents rather than unique answer facts. Our data reuse and one answer/judgement per setting make this an exploratory comparison.
 
 The CUDA kernels pass the supplied numerical correctness checks. On all 475 recordings, all CUDA preserves PyTorch's 7,660 generated tokens and decoded texts despite nonzero numerical discrepancies. This establishes observed transcript preservation, not a numerical bound for other inputs. GEMM/attention optimisation remains necessary to close the runtime gap to PyTorch. GLM-ASR-Nano also shows strong transcript agreement with Whisper, MAI and Voxtral, averaging 0.31--0.35 word edits per query after formatting normalization. Substituting these models changes the top-5 retrieval sets for 10.11--11.79\% of queries, while the observed retrieval token-efficiency trade-off persists across models.
 

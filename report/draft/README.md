@@ -1,6 +1,6 @@
 # Coursework report draft
 
-This revised draft gathers the ASR work, uncapped retrieval analysis and completed final answer evaluation of fixed top-5, top-10, top-20, two dev-selected cutoffs and four rounded-threshold controls. All nine settings use one fresh randomized batch and final blind LLM judging. Earlier sufficiency/subset experiments remain stopped.
+This revised draft gathers the ASR work, uncapped retrieval analysis and completed final answer evaluation of fixed top-5, top-10, top-20, two dev-selected cutoffs and four rounded-threshold controls. All nine settings use one fresh randomized batch and final blind LLM judging. The report tables additionally restore the earlier dev-selected top-2 reference as a tenth row (marked with a dagger in the answer table); histograms and regression still use the original nine-setting batch. Earlier sufficiency/subset experiments remain stopped.
 
 The third annotated review uses **macro precision and macro recall throughout
 the article**: both average per-query ratios with equal query weight. Formula,
@@ -195,3 +195,14 @@ python report/format_checker/check_report_format.py report/draft/report.pdf --js
 ```
 
 The five supplied style/support files are unchanged from `report/latex_template`. The final checker output records the main-body count, 10 pt body text, required header and review line numbers. Earlier top-50 figures and the prior report are retained for review, but the current source archive includes all LaTeX modules and only the figure PDFs used by the revised report.
+
+## Restored top-2 reference
+
+Section 3.2 explicitly identifies the common selection objective for all three
+families: maximise macro retrieval F1 on the 125 dev queries, freeze the best
+parameter within each search, then evaluate on 324 practice queries. Dev winners
+are top-2 (24.3851%), absolute 0.8925 (26.5858%) and relative 0.009 (29.4863%).
+Answer scores do not participate in tuning. Top-5/10/20 and rounded cutoffs are
+additional controls, not the dev-F1 winners.
+
+The tenth table row comes from `rag/results/cutoff-uncapped-20261116/summary.json` (`topk`), checked against its 324 saved results and the identical query set in the nine-setting batch. Generator/judge models, prompts, decoding settings, corpus hash and partition hash match. Its mean score is 0.5943930041, full input tokens 531.9475309, macro recall 0.3209339871 and macro precision 0.3132716049. It is a separate earlier batch, not a new run. Best-value formatting now assigns lowest input tokens to top-2; the absolute cutoff retains the best mean score. The histogram, regression and $3.5578 billing total remain scoped to the original nine-setting batch. If regenerating the nine-row answer table with `plot_uncapped_report.py`, retain this explicitly labelled historical row when updating the report.

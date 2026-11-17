@@ -15,6 +15,18 @@ This revised draft gathers the ASR work, uncapped retrieval analysis and complet
 
 The Query-weighted quality panel has **macro precision on x and macro recall on y**. Each query has equal weight. Higher macro precision does not imply higher pooled precision, recall per token or answer quality. Diamonds retain the earlier dev-selected reference settings; curves are exploratory. The other panels keep their original axes.
 
+## End-to-end ASR numerical validation
+
+Section 5 and Appendix A now distinguish kernel-level errors, final transcript
+agreement and full-model logits/probability discrepancy on the supplied 3.50 s
+audio clip. The numerical trace uses explicit IEEE float32 PyTorch settings and
+is separate from the older timing ablation. The supplied benchmark's historical
+`Accuracy` field is word-set coverage, not WER. See
+[`../asr-e2e-error-results.md`](../asr-e2e-error-results.md) and the
+[`../asr-e2e-error-protocol.md`](../asr-e2e-error-protocol.md) for the saved-array
+comparison, coverage, repeated-run checks and limitations. This check performs
+local GLM inference inside Slurm and makes no external ASR/API requests.
+
 ## Before submission
 
 Fill in Group ID, name and UUN on the final page only. Review every technical claim and the AI-use declaration. The source retains the supplied review format and anonymous main body. The draft is not a replacement for the separate video and individual review deliverables.

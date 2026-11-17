@@ -1,0 +1,135 @@
+{
+  "status": "pass",
+  "errors": [],
+  "slurm_job_id": "3727120",
+  "analysis_slurm_job_id": "3727116",
+  "utc": "2026-11-17T15:28:11.230333+00:00",
+  "audio_clips": 1,
+  "audio_seconds": 3.505,
+  "runs_checked": 6,
+  "comparisons_checked": 3,
+  "self_drift_comparisons_checked": 2,
+  "per_step_comparisons_checked": 65,
+  "metric_blocks_independently_recomputed": 145,
+  "full_vocabulary_size": 59264,
+  "captured_prediction_rows_checked": 78,
+  "captured_logit_values_checked": 4622592,
+  "captured_probability_values_checked": 4622592,
+  "comparison_coverage": [
+    {
+      "reference_run": "none_1",
+      "candidate_run": "task12",
+      "token_agreement": true,
+      "token_mismatch_count": 0,
+      "common_prefix_tokens": 13,
+      "comparable_prediction_steps": 13,
+      "full_trajectory_comparable": true,
+      "compared_logit_values": 770432
+    },
+    {
+      "reference_run": "none_1",
+      "candidate_run": "task123",
+      "token_agreement": true,
+      "token_mismatch_count": 0,
+      "common_prefix_tokens": 13,
+      "comparable_prediction_steps": 13,
+      "full_trajectory_comparable": true,
+      "compared_logit_values": 770432
+    },
+    {
+      "reference_run": "none_1",
+      "candidate_run": "all_1",
+      "token_agreement": true,
+      "token_mismatch_count": 0,
+      "common_prefix_tokens": 13,
+      "comparable_prediction_steps": 13,
+      "full_trajectory_comparable": true,
+      "compared_logit_values": 770432
+    },
+    {
+      "reference_run": "none_1",
+      "candidate_run": "none_2",
+      "token_agreement": true,
+      "token_mismatch_count": 0,
+      "common_prefix_tokens": 13,
+      "comparable_prediction_steps": 13,
+      "full_trajectory_comparable": true,
+      "compared_logit_values": 770432
+    },
+    {
+      "reference_run": "all_1",
+      "candidate_run": "all_2",
+      "token_agreement": true,
+      "token_mismatch_count": 0,
+      "common_prefix_tokens": 13,
+      "comparable_prediction_steps": 13,
+      "full_trajectory_comparable": true,
+      "compared_logit_values": 770432
+    }
+  ],
+  "probability_diagnostics": [
+    {
+      "run_id": "none_1",
+      "steps": 13,
+      "vocab_size": 59264,
+      "probability_mass_max_abs_error": 2.4524795283475953e-07,
+      "logit_probability_argmax_disagreements": 0
+    },
+    {
+      "run_id": "task12",
+      "steps": 13,
+      "vocab_size": 59264,
+      "probability_mass_max_abs_error": 2.1173756170611568e-07,
+      "logit_probability_argmax_disagreements": 0
+    },
+    {
+      "run_id": "task123",
+      "steps": 13,
+      "vocab_size": 59264,
+      "probability_mass_max_abs_error": 2.843885542613833e-07,
+      "logit_probability_argmax_disagreements": 0
+    },
+    {
+      "run_id": "all_1",
+      "steps": 13,
+      "vocab_size": 59264,
+      "probability_mass_max_abs_error": 2.2999545867818938e-07,
+      "logit_probability_argmax_disagreements": 0
+    },
+    {
+      "run_id": "none_2",
+      "steps": 13,
+      "vocab_size": 59264,
+      "probability_mass_max_abs_error": 2.4524795283475953e-07,
+      "logit_probability_argmax_disagreements": 0
+    },
+    {
+      "run_id": "all_2",
+      "steps": 13,
+      "vocab_size": 59264,
+      "probability_mass_max_abs_error": 2.2999545867818938e-07,
+      "logit_probability_argmax_disagreements": 0
+    }
+  ],
+  "source_files_sha256_checked": 13,
+  "model_snapshot_files_sha256_checked": 10,
+  "library_sha256": "76817bd7fef1878069515d12eb4156f76368c21e12076a00ec450c1a7c78da8a",
+  "model_snapshot_revision": "61ba4e0b3309b6656edea3e93e419f7bd5c61957",
+  "metric_recomputation_relative_tolerance": 1e-10,
+  "kernel_numerical_acceptance_tolerance": null,
+  "numpy_version": "2.4.6",
+  "audit_script_sha256": "e8d01a15a8ee7da4c588dbb1e484d814501ca484c009ed5c518ade4971415ea6",
+  "audit_new_model_calls": 0,
+  "audit_new_encoder_calls": 0,
+  "audit_new_api_calls": 0,
+  "production_model_generate_calls": 6,
+  "production_audio_encoder_calls": 6,
+  "input_sha256": {
+    "config.json": "6f3f146d994805d8b4b82bb33198d74aa80fb84bd0407affc7bd0eb8317ae152",
+    "runs.json": "07f1fb0b759bb1e1026e19fdb5bb9ae9f2be59ad7c2e2af6c1eafcf4a641c96d",
+    "summary.json": "d4bd44908a87262c8d3da03dd68b935b2a70a4edf93ba3252deb695f8be260e7",
+    "completion.json": "91b60fe89098000d6ee1ca3beb8dcafbacd441136c908125b4e7841ca4729a9d",
+    "libasr_kernels.so": "76817bd7fef1878069515d12eb4156f76368c21e12076a00ec450c1a7c78da8a"
+  },
+  "scope": "Saved-array numerical/accounting audit on one supplied clip; Python float64 sums/norm formulas, greedy capture and common-history alignment. Does not rerun the model, decode tokens independently, infer WER, or impose a kernel acceptance threshold."
+}

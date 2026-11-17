@@ -144,7 +144,7 @@ Table~\ref{tab:asr} reports ASR timings on an H200 MIG 1g.18gb slice (16 SMs) wi
 
 \begin{table}[h]
 \centering
-\caption{ASR ablation on one 3.50-second recording. Transcription times show mean $\pm$ standard deviation across three runs after one warm-up. Timing covers audio encoding and decoding from prepared inputs, after model loading and feature preprocessing. The per-token column divides the mean by the 13 tokens generated in each run. Every configuration produced the expected transcript. Peak memory is the maximum GPU memory allocated by PyTorch.}
+\caption{ASR ablation on one 3.50-second recording. Transcription times show mean $\pm$ standard deviation across three runs after one warm-up. Timing covers audio encoding and decoding from prepared inputs, after model loading and feature preprocessing. The per-token column divides the mean by the 13 tokens generated in each run. Each mode's final recorded decoded output was identical. Peak memory is the maximum GPU memory allocated by PyTorch.}
 \label{tab:asr}
 \begin{tabular}{lrrr}
 \toprule
@@ -158,7 +158,9 @@ All four tasks & $5672.1\pm0.4$ & 436.3 & 8.56\\
 \end{tabular}
 \end{table}
 
-All 33 official correctness cases and five additional shape/boundary cases pass. On this clip and H200 MIG slice, the all-CUDA configuration took \textbf{4.26 times as long} as the framework reference and used 0.34 GiB less peak allocated memory. In separate instrumented profiles, linear operation time rose from 1,112.2 to 4,960.0~ms and attention time from 161.9 to 688.6~ms when switching from PyTorch to all CUDA. With RoPE and the supplied CUDA kernels held fixed, enabling Task~2 reduced mean latency from 1,305.0 to 1,294.7~ms (0.8\%) in a separate comparison. These fixed-order measurements describe one recording and GPU configuration.
+All 33 official correctness cases and five additional shape/boundary cases pass. On this clip and H200 MIG slice, all CUDA took \textbf{4.26 times as long} as PyTorch and used 0.34 GiB less peak allocated memory. These fixed-order measurements describe one recording and GPU configuration.
+
+Under separate IEEE FP32 settings, the complete pipeline's all-CUDA maximum absolute logit/probability discrepancies versus PyTorch were $5.245\times10^{-5}$/$1.788\times10^{-6}$. All 13 generated token IDs and decoded text matched; every 59,264-entry vocabulary distribution was checked (770,432 values per array). This one-clip, 3.505-second check is not WER or a timing rerun (Appendix~\ref{app:kernels}).
 
 \subsection{CUDA design questions}
 
@@ -215,6 +217,30 @@ Audio attention & Four warps, padded / unpadded K & 20.712 / 106.063\\
 \end{table}
 
 All four RoPE, eleven reduction, ten GEMM and eight attention official cases pass under the supplied tolerances. Five additional boundary cases and the reduction-helper checks also pass. The maximum absolute GEMM and attention errors are $3.72\times10^{-5}$ and $5.21\times10^{-7}$. Selected small cases, helper tests and extra boundary cases passed Compute Sanitizer's memcheck, racecheck and synccheck \citep{nvidia2025}. The full-size encoder attention test compared 301 of 30,000 query--head rows with the CPU reference across all 20 heads. Its fixed stride sampled 300 rows in block-local warp 0 and one in warp 3.
+
+\textbf{Historical timing profiles.} In separate instrumented profiles, linear operation time rose from 1,112.2 to 4,960.0~ms and attention time from 161.9 to 688.6~ms when switching from PyTorch to all CUDA. With RoPE and the supplied CUDA kernels held fixed, enabling Task~2 reduced mean latency from 1,305.0 to 1,294.7~ms (0.8\%) in a separate comparison. These profiles are distinct from the numerical trace below.
+
+\subsection{End-to-end numerical discrepancy}
+One separately instrumented run compares the complete supplied pipeline on the same 3.505-second clip, with one model load and shared prepared inputs. PyTorch's global, CUDA-matmul and cuDNN FP32 precision settings are all \texttt{ieee}. Against the all-PyTorch reference, all three CUDA modes retain the same 13-token greedy trajectory (including EOS) and exact decoded text. Hence all 13 prediction positions share the same token history: the comparison covers every one of 59,264 vocabulary entries, or 770,432 logits and probabilities per mode, rather than selected tokens alone.
+
+For candidate $x$ and reference $y$, flattened discrepancies are computed in float64: $e_\infty=\max_i|x_i-y_i|$ and $e_{\rm rel}=\|x-y\|_2/\|y\|_2$. A zero reference gives relative error zero only when the difference is also zero; otherwise it is undefined. No end-to-end numerical acceptance threshold was selected.
+
+\begin{table}[h]
+\centering
+\caption{Complete-pipeline discrepancies versus all PyTorch under the separate IEEE FP32 numerical context. $z$ denotes full-vocabulary logits, $p$ probabilities. Partial modes also enable the supplied CUDA kernels. All 13 positions align in every row.}
+\label{tab:asr-error}
+\begin{tabular}{lrrrr}
+\toprule
+CUDA tasks & $e_\infty(z)$ & $e_\infty(p)$ & $e_{\rm rel}(p)$ & Token diffs\\
+\midrule
+1+2 & $2.575\!\times\!10^{-5}$ & $4.172\!\times\!10^{-7}$ & $2.271\!\times\!10^{-7}$ & 0/13\\
+1+2+3 & $6.104\!\times\!10^{-5}$ & $3.994\!\times\!10^{-6}$ & $1.506\!\times\!10^{-6}$ & 0/13\\
+All four & $5.245\!\times\!10^{-5}$ & $1.788\!\times\!10^{-6}$ & $7.128\!\times\!10^{-7}$ & 0/13\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The all-CUDA projected-audio maximum discrepancy is $9.537\times10^{-6}$ over $44\times2048$ values. Repeating all PyTorch and all CUDA once each gives zero discrepancy in their own saved logits, probabilities and audio projections; this is a within-run observation, not a general reproducibility guarantee. CPU audit job 3727120 independently recomputes all 145 global/per-position metric blocks from GPU job 3727116. Numerical arrays remain private. Identical decoded output does not mean zero floating-point error or establish general ASR accuracy. The historical benchmark's ``Accuracy'' is distinct-expected-word coverage, not WER. Instrumentation and precision settings differ from the historical timing study, so these traces supply no new latency or memory comparison.
 
 \clearpage
 \section{Full-range retrieval curves and evidence inventory}

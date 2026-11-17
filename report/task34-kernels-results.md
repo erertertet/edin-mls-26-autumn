@@ -78,8 +78,11 @@ of every output. Official tests were not changed to expand these checks.
 
 ## Model integration
 
-All four modes produced the expected transcription and supplied word accuracy
-of 100%: "Concord returned to its place amidst the tents."
+All four modes' final recorded decoded outputs were identical:
+"Concord returned to its place amidst the tents." The supplied benchmark printed
+`Accuracy: 100%`, but this is distinct-expected-word set coverage after
+punctuation removal and uppercasing, not WER. Only the final timed run's text
+was printed; the first two runs record token counts rather than full token IDs.
 
 | CUDA groups | Mean transcription time | Time/token | Peak allocated GPU memory |
 | --- | ---: | ---: | ---: |
@@ -99,6 +102,48 @@ attention calls take 688.6 ms. For task1/2/3 with framework attention, they take
 4959.1 and 160.6 ms. Thus attention integration adds approximately 527.2 ms to
 the observed mean; the linear kernel is still the largest cost. Profile totals
 are instrumented and must not be substituted for unprofiled timing means.
+
+## End-to-end numerical discrepancy follow-up
+
+A separate audited run on 2026-11-17 measures floating-point differences through
+the complete supplied ASR pipeline, extending the historical decoded-output
+check above. It uses the same supplied clip (exact duration **3.505 s**, previously
+rounded to 3.50 s), one loaded float32 model and shared prepared inputs. PyTorch's
+global, CUDA-matmul and cuDNN FP32 precision controls are all `ieee`. This
+instrumented numerical context does **not** replace the historical timing or
+memory measurements.
+
+All three candidate modes match all **13** greedy token IDs (including EOS) and the final
+decoded text of the all-PyTorch reference. Each comparison covers the complete
+shared-token-history trajectory: **59,264 vocabulary entries × 13 positions =
+770,432 values**, separately for logits and probabilities. Partial modes also
+enable the supplied CUDA kernels.
+
+| Custom CUDA groups | Maximum absolute logit discrepancy | Maximum absolute probability discrepancy | Relative L2 probability discrepancy | Token mismatches |
+| --- | ---: | ---: | ---: | ---: |
+| task1,task2 | 2.574921e-5 | 4.172325e-7 | 2.271151e-7 | 0/13 |
+| task1,task2,task3 | 6.103516e-5 | 3.993511e-6 | 1.506432e-6 | 0/13 |
+| all | 5.245209e-5 | 1.788139e-6 | 7.127561e-7 | 0/13 |
+
+Discrepancies are computed in float64 from saved float32 arrays against the
+all-PyTorch output, not against a ground-truth transcript. The all-CUDA
+projected-audio maximum absolute discrepancy is **9.536743e-6** over 90,112
+values. One repeat each of all PyTorch and all CUDA produces zero measured
+numerical drift in saved logits, probabilities and audio projections within its own mode. This
+limited repeat check does not guarantee bitwise reproducibility elsewhere.
+
+GPU Slurm job **3727116** on the H200 MIG 1g.18gb slice completed the six
+model-generation runs. CPU Slurm audit **3727120** passed, independently
+recomputing 145 global/per-position metric blocks and checking all captured
+positions, alignment and source/model/library hashes. No end-to-end numerical
+acceptance threshold was chosen. Zero token/text disagreement does not mean
+zero numerical discrepancy or establish WER=0 or general ASR quality.
+
+See [the complete numerical result note](asr-e2e-error-results.md) and
+[the frozen protocol](asr-e2e-error-protocol.md) for all metric definitions,
+projected-audio/logit/probability results, precision controls and hashed
+provenance. The raw numerical arrays and model weights remain private; no
+external API, external ASR or RAG-encoder calls were made.
 
 ## Controlled parameter experiments
 

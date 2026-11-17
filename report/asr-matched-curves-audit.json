@@ -1,0 +1,106 @@
+{
+  "status": "pass",
+  "errors": [],
+  "slurm_job_id": "3726799",
+  "utc": "2026-11-17T13:08:40.625142+00:00",
+  "analysis_slurm_job_id": "3726791",
+  "calibration_queries": 350,
+  "evaluation_queries": 117,
+  "pilot_queries": 8,
+  "points_independently_recomputed": 112,
+  "practice_policy_selections_checked": 48,
+  "paired_contrasts_checked": 196,
+  "point_and_contrast_intervals_checked": 1540,
+  "bootstrap_replicates_per_interval": 5000,
+  "stored_bootstrap_replicates_recomputed": [
+    0,
+    38,
+    275,
+    542,
+    840,
+    1041,
+    1607,
+    1628,
+    2078,
+    2406,
+    2605,
+    2614,
+    2651,
+    2688,
+    2782,
+    2783,
+    2841,
+    3010,
+    3239,
+    3508,
+    3833,
+    3978,
+    4559,
+    4639,
+    4999
+  ],
+  "max_abs_replicate_metric_differences": {
+    "achieved_recall": 2.3314683517128287e-15,
+    "macro_precision": 1.6653345369377348e-15,
+    "micro_precision": 1.8318679906315083e-15,
+    "mean_tokens": 5.6843418860808015e-11,
+    "mean_documents": 2.2382096176443156e-13
+  },
+  "common_target_support": [
+    {
+      "panel": "calibrated",
+      "target": 0.3,
+      "valid_bootstraps": 4988,
+      "total_bootstraps": 5000
+    },
+    {
+      "panel": "calibrated",
+      "target": 0.4,
+      "valid_bootstraps": 5000,
+      "total_bootstraps": 5000
+    },
+    {
+      "panel": "calibrated",
+      "target": 0.5,
+      "valid_bootstraps": 5000,
+      "total_bootstraps": 5000
+    },
+    {
+      "panel": "matched",
+      "target": 0.3,
+      "valid_bootstraps": 4986,
+      "total_bootstraps": 5000
+    },
+    {
+      "panel": "matched",
+      "target": 0.4,
+      "valid_bootstraps": 5000,
+      "total_bootstraps": 5000
+    },
+    {
+      "panel": "matched",
+      "target": 0.5,
+      "valid_bootstraps": 5000,
+      "total_bootstraps": 5000
+    }
+  ],
+  "fixed_original_count_controls_checked": 7600,
+  "csv_curve_points_checked": 14736,
+  "metric_units": "recall/precision fractions; tokens/documents as counts",
+  "new_asr_calls": 0,
+  "new_encoder_calls": 0,
+  "new_api_calls": 0,
+  "audit_script_sha256": "d45c0a1451cbdee5e8a49b09e1253f34bf69e5b32a5ebce499a05d4bcaa92259",
+  "plan_sha256": "e7fd3bd2862d427d4c4c8fd9dbcf94b68cb04befb7213f2933e1af9f0fe4ce0c",
+  "input_sha256": {
+    "metadata.json": "369aaaeb6ebc972ec09ce7931cf1a1e2e8d81f1338acceb34789b522c74d46c0",
+    "partition.json": "cfe0bc147b80573a990d7fad17b43fe4f40e5de68c877c532d897b848561e6c6",
+    "curve-cache.npz": "5c707703e75e0b5db55a734cc1dd0a6ebbb76d1100e3cfa3e33e21f8ce88dc6e",
+    "analysis-config.json": "4a7a8fb463620e597d576536dbd08f936b33227581904ac664f6aed71ce021c1",
+    "analysis.json": "38baa87095e11437f92574262435989c1eab6ba46a6ec68592f1d933254feced",
+    "calibration-policies.json": "05757e170293017ceb410af4134117a661538c6b24fd02b6848aaf4b6137f0e5",
+    "bootstrap-distribution.npz": "317154908dc789effb559740e11ab3a0ad1030ece03a23e65cc9f3c15a2e2b77",
+    "analysis-completion.json": "f109181384ebbea73b3d68d97d6808e1c489d568bf502caaeb595bccf3ef12ab"
+  },
+  "scope": "Independent saved-count aggregates and mixture selections; all saved-distribution percentile CIs/paired differences; 25 stored bootstrap replicates rebuilt from counts. No ASR, encoder, API, or new query bootstrap draws."
+}

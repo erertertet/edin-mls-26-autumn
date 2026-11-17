@@ -259,13 +259,66 @@ def contrast_table(contrasts):
     return lines
 
 
+def findings_lines(data):
+    """Summarize already-saved point estimates/intervals; never refit statistics."""
+    normalizations = [p for p in data["contrasts"]
+                      if p["panel"] == "matched" and p["kind"] == "normalization"]
+    require(len(normalizations) == 24, "Expected 24 descriptive normalization contrasts")
+    all_cross_zero = all(ci_bounds(p, metric) is not None
+                         and ci_bounds(p, metric)[0] <= 0 <= ci_bounds(p, metric)[1]
+                         for p in normalizations
+                         for metric in ("mean_tokens", "macro_precision", "micro_precision"))
+    lines = ["## Main descriptive findings", ""]
+    if all_cross_zero:
+        lines += ["- **These comparisons do not establish a stable normalization benefit at shared recall.** "
+                  "For all 24 descriptive normalization contrasts (four models × two policy families × three targets), "
+                  "the token-cost, macro-precision and micro-precision pointwise 95% intervals each include zero. "
+                  "This is insufficient evidence for a stable benefit; it does not establish equivalence or prove zero effect."]
+    else:
+        lines += ["- Normalization effects vary by model, policy and recall target. "
+                  "The paired point estimates and disclosed intervals below determine each comparison; "
+                  "no universal improvement or equivalence claim is made."]
+    cut40 = [p for p in data["contrasts"] if p["panel"] == "matched"
+             and p["kind"] == "cutoff_vs_topk" and abs(float(p["target"]) - .4) <= 1e-12]
+    require(len(cut40) == 8, "Expected eight descriptive cutoff-versus-top-k comparisons at 40% recall")
+    costs = [p["metrics"]["mean_tokens"] for p in cut40]
+    macro = [p["metrics"]["macro_precision"] for p in cut40]
+    micro = [p["metrics"]["micro_precision"] for p in cut40]
+    require(all(finite(v) for v in costs + macro + micro), "Unsupported main 40% comparison")
+    positive_intervals = all(ci_bounds(p, "mean_tokens") is not None
+                             and ci_bounds(p, "mean_tokens")[0] > 0 for p in cut40)
+    statement = ("- At **40% descriptive evaluation-curve recall**, cutoff minus top-k mean document-token cost "
+                 "is **" + numeric(min(costs), digits=1, signed=True) + " to "
+                 + numeric(max(costs), digits=1, signed=True) + " tokens** across the eight model/input settings. ")
+    if positive_intervals:
+        statement += "All eight pointwise 95% cost intervals lie above zero. "
+    statement += ("These are exploratory, unadjusted pointwise comparisons, not a simultaneous or universal policy claim. "
+                  "Macro-precision point differences are **" + numeric(min(macro), digits=2, scale=100, signed=True)
+                  + " to " + numeric(max(macro), digits=2, scale=100, signed=True) + " pp**, while micro-precision point differences are **"
+                  + numeric(min(micro), digits=2, scale=100, signed=True) + " to "
+                  + numeric(max(micro), digits=2, scale=100, signed=True)
+                  + " pp**. The two precision definitions therefore do not support an unqualified precision-improvement statement.")
+    lines.append(statement)
+    cal40 = [p for p in data["calibrated_points"] if abs(float(p["target"]) - .4) <= 1e-12]
+    require(len(cal40) == 16, "Expected sixteen calibration-transfer points at 40% target")
+    recalls = [p["metrics"]["achieved_recall"] for p in cal40]
+    require(all(finite(r) for r in recalls), "Unsupported 40% calibration-transfer point")
+    lines += ["- **A 40% practice calibration target does not produce 40% evaluation recall.** "
+              "The observed remaining-dev recalls range from **" + numeric(min(recalls), scale=100)
+              + "% to " + numeric(max(recalls), scale=100) + "%**. "
+              "This transfer result must remain separate from descriptive exact-recall standardization; "
+              "the intervals quantify its sampling and calibration variability.", ""]
+    return lines
+
+
 def report_lines(data, figures):
     metadata = data["metadata"]
     cal_n, eval_n = metadata.get("calibration_queries", 350), metadata.get("evaluation_queries", 117)
     lines = ["# ASR recall–token curves, calibration transfer and paired intervals", "",
         "This follow-up reuses the saved four-model raw/normalized transcriptions and query vectors. "
-        "It makes **zero new ASR, encoder or external API calls**. The fixed normalization rule and the original 0.8925 control are retained.", "",
-        "## Two distinct estimands", "",
+        "It makes **zero new ASR, encoder or external API calls**. The fixed normalization rule and the original 0.8925 control are retained.", ""]
+    lines += findings_lines(data)
+    lines += ["## Two distinct estimands", "",
         "1. **Calibration transfer:** choose threshold/top-k mixture parameters using **" + str(cal_n)
         + " practice queries**, then apply those exact indices and mixture weights to the **" + str(eval_n)
         + " remaining dev queries**, excluding the eight pilot queries. A common calibration target does **not** guarantee equal achieved evaluation recall. "
@@ -295,7 +348,27 @@ def report_lines(data, figures):
     for key in allowed:
         if key in metadata:
             lines.append("| " + key + " | `" + str(metadata[key]) + "` |")
-    lines += ["| rendering_slurm_job_id | `" + os.environ["SLURM_JOB_ID"] + "` |", "",
+    lines += ["| rendering_slurm_job_id | `" + os.environ["SLURM_JOB_ID"] + "` |", ""]
+    audit = data.get("_audit")
+    if audit is not None:
+        audited_replicates = audit["stored_bootstrap_replicates_recomputed"]
+        audited_replicate_count = len(audited_replicates) if isinstance(audited_replicates, list) else int(audited_replicates)
+        lines += ["Independent saved-data audit **" + str(audit["slurm_job_id"]) + "** passed. "
+                  "It checked **" + str(audit["points_independently_recomputed"]) + " operating points**, **"
+                  + str(audit["paired_contrasts_checked"]) + " paired contrasts**, **"
+                  + str(audit["point_and_contrast_intervals_checked"]) + " point/contrast intervals** and **"
+                  + str(audit["csv_curve_points_checked"]) + " saved curve rows**. It independently reconstructed **"
+                  + str(audited_replicate_count) + " saved bootstrap replicates**; "
+                  "this is distinct from recomputing the reported percentile bounds from every saved distribution.", ""]
+    if metadata.get("bootstrap_warnings"):
+        lines += ["### Retained runtime warning", "",
+                  "The saved runtime metadata retains a generic SciPy warning mentioning BCa. "
+                  "The run was configured with **method=percentile**; unsupported NaNs remain in the raw bootstrap distribution. "
+                  "The intervals reported here are explicit **2.5th/97.5th percentile quantiles over the disclosed finite common-support mask**, "
+                  "rather than the raw SciPy interval summary. **No BCa interval is used.** "
+                  + ("The independent saved-data audit confirmed these finite-mask percentile values." if audit is not None else
+                     "The exact warning is preserved in analysis metadata for audit rather than suppressed."), ""]
+    lines += [
               "## Observed recall–token curves", "",
               "The operating-range plot shows macro recall 20–70% and mean document-text tokens 0–10,000. "
               "Axis limits crop the display only; the full candidate-range plot is provided separately. "
@@ -326,7 +399,13 @@ def report_lines(data, figures):
             numeric(params.get("high"), digits=6), numeric(params.get("high_weight"), digits=6)]) + " |")
     lines += ["", "## Descriptive comparisons at shared evaluation-curve recall", "",
               "These standardized points answer a curve-comparison question on the evaluation data. "
-              "Their parameters are not claimed to have been independently calibrated for deployment."]
+              "Their parameters are not claimed to have been independently calibrated for deployment.", "",
+              "**Matched-panel recall equals the target by construction, up to numerical tolerance.** Each supported bootstrap replicate re-interpolates "
+              "to the same prespecified evaluation-curve recall target. Consequently, achieved recall has a near-zero-width interval "
+              "and matched recall differences are approximately zero. This reflects the definition of standardization, "
+              "**not certainty about recall on new queries or zero generalization uncertainty**. "
+              "The cost and precision intervals quantify uncertainty in this descriptive curve functional; "
+              "calibration-transfer recall uncertainty is reported in the separate transfer panel."]
     for target in sorted({float(p["target"]) for p in data["matched_points"]}):
         lines += ["", "### Evaluation-curve target: " + numeric(target, digits=1, scale=100) + "%", ""]
         lines += point_table([p for p in data["matched_points"] if float(p["target"]) == target])
@@ -334,7 +413,8 @@ def report_lines(data, figures):
     lines += ["", "## Normalization contrasts at shared evaluation-curve recall", "",
               "Differences are **normalized minus raw** at the same descriptive evaluation-curve recall target. "
               "Negative token differences mean less document text; positive precision differences mean higher labelled precision. "
-              "These signs are definitions, not a claim about the observed direction or statistical significance.", "",
+              "The near-zero recall difference is imposed by standardization, not independently demonstrated recall equivalence. "
+              "The signs define the contrasts; uncertainty and the limitations of pointwise inference remain important.", "",
               "![Paired normalization effects at shared recall](figures/asr-normalization-effects.png)", "",
               "[Standalone normalization-effects PDF](figures/asr-normalization-effects.pdf)", ""]
     lines += contrast_table(normalizations)
@@ -364,7 +444,8 @@ def report_lines(data, figures):
               "No new reference transcripts, WER experiment, repeated-ASR variance estimate, answer generation, judging or cross-model latency benchmark is included. "
               "Precision and recall concern the provided relevance labels, which may be incomplete. "
               "These exploratory paired intervals do not account for annotation bias, ASR service-revision variability or all earlier analyst choices. "
-              "The figures and tables present saved measurements without asserting an effect direction or significance.", "",
+              "The observed directions and interval summaries are descriptive; they do not establish a universal effect, "
+              "equivalence or family-wide statistical significance.", "",
               "## Artifacts", "",
               "This public note and its plots contain aggregate metrics only. Raw audio, transcript text and query IDs are not embedded. "
               "The full-range figures expose the saved candidate grid rather than extrapolating beyond it.", "",
@@ -396,6 +477,14 @@ def main():
                 "new_api_calls", "new_api_requests"):
         if key in data["metadata"]:
             require(data["metadata"][key] == 0, "Unexpected new inference/API activity")
+    audit_path = run / "curve-audit.json"
+    if audit_path.exists():
+        audit = read(audit_path)
+        require(audit.get("status") == "pass", "Saved-data audit has not passed")
+        require(audit["analysis_slurm_job_id"] == data["metadata"]["slurm_job_id"]
+                and audit["input_sha256"]["analysis.json"] == digest(run / "analysis.json"),
+                "Audit does not bind this saved analysis")
+        data["_audit"] = audit
     rows = read_curves(run / "curves.csv")
     output.parent.mkdir(parents=True, exist_ok=True)
     folder = output.parent / "figures"
@@ -413,9 +502,12 @@ def main():
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")
     manifest = {"status": "rendered", "slurm_job_id": os.environ["SLURM_JOB_ID"],
                 "matplotlib_version": matplotlib.__version__, "curve_rows": len(rows),
+                "renderer_source_sha256": digest(Path(__file__)),
                 "input_sha256": {name: digest(run / name) for name in ("analysis.json", "curves.csv")},
                 "plot_checks": plot_checks,
                 "output_sha256": {str(path.relative_to(output.parent)): digest(path) for path in files + [output]}}
+    if audit_path.exists():
+        manifest["input_sha256"]["curve-audit.json"] = digest(audit_path)
     (output.parent / "render-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(manifest), flush=True)
 

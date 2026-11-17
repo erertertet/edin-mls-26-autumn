@@ -1,0 +1,21 @@
+{
+  "version": "asr-full-e2e-v1",
+  "expected_queries": 475,
+  "shards": 4,
+  "model_name": "zai-org/GLM-ASR-Nano-2512",
+  "snapshot_revision": "61ba4e0b3309b6656edea3e93e419f7bd5c61957",
+  "library_sha256": "76817bd7fef1878069515d12eb4156f76368c21e12076a00ec450c1a7c78da8a",
+  "max_new_tokens": 100,
+  "modes": ["none", "all"],
+  "precision": {"global": "ieee", "matmul": "ieee", "cudnn": "ieee"},
+  "vocab_size": 59264,
+  "replay_control": "first_query_in_each_shard",
+  "numerical_estimand": "all-CUDA on full PyTorch-reference token history, retaining candidate audio embeddings",
+  "greedy_estimand": "independent greedy token sequences and decoded text",
+  "edit_distance_units": ["tokens", "characters", "words"],
+  "edit_distance_weights": [1, 1, 1],
+  "edit_distance_normalization": "distance/max(lengths); both empty=0",
+  "text_definition": "tokenizer.decode(skip_special_tokens=True).strip(); no additional normalization",
+  "bootstrap_replicates": 0,
+  "kernel_acceptance_threshold": null
+}

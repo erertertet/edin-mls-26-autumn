@@ -173,9 +173,10 @@ def transcribe(args, selection, transcripts):
                 raw = response.json()
                 headers = {h: response.headers.get(h) for h in ["x-request-id", "x-openrouter-provider", "openrouter-provider", "x-generation-id", "date"]}
             metadata.update(response_cost_usd=(raw.get("usage") or {}).get("cost"), raw_response=raw, response_headers=headers)
-            text = str(raw.get("text", "")).strip()
-            if not text:
+            text = raw.get("text")
+            if not isinstance(text, str) or not text.strip():
                 raise RuntimeError("Provider returned an empty transcript")
+            text = text.strip()
             result = {"status": "complete", "query_id": qid, "audio_sha256": audio["audio_sha256"],
                       "model": MODELS[arm], "transcript": text, "seconds": time.perf_counter() - started,
                       "utc": utc(), "raw_response": raw, "response_headers": headers,
@@ -184,25 +185,37 @@ def transcribe(args, selection, transcripts):
             write_json(transcript_path(args.out, arm, qid), result)
             metadata.update(status="complete", finished_utc=utc())
             write_json(attempt, metadata)
-            return {"query_id": qid, "arm": arm, "result": result}
+            return {"query_id": qid, "arm": arm, "result": result,
+                    "accounted_cost_usd": float(metadata["response_cost_usd"]) if metadata.get("response_cost_usd") is not None else estimates[qid, arm]}
         except Exception as exc:
             metadata.update(status="failed", finished_utc=utc(), error=safe_error(exc, key),
                             error_type=type(exc).__name__, request_id=getattr(exc, "request_id", None))
             write_json(attempt, metadata)
-            return {"query_id": qid, "arm": arm, "error": metadata["error"]}
+            return {"query_id": qid, "arm": arm, "error": metadata["error"],
+                    "accounted_cost_usd": float(metadata["response_cost_usd"]) if metadata.get("response_cost_usd") is not None else estimates[qid, arm]}
 
     random.Random(26).shuffle(pending)
     failures = []
+    accounted_spend = sum(max(a.get("response_cost_usd") or 0, a["estimated_cost_usd"]) for a in previous_attempts)
+    budget_stop = False
     with ThreadPoolExecutor(max_workers=3) as pool:
         futures = [pool.submit(request, audio, arm) for audio, arm in pending]
         for index, future in enumerate(as_completed(futures), 1):
+            if future.cancelled():
+                continue
             value = future.result()
+            accounted_spend += value.get("accounted_cost_usd", 0)
             if "result" in value:
                 transcripts[value["query_id"], value["arm"]] = value["result"]
             else:
                 failures.append(value)
             print(json.dumps({"stage": "api", "finished_new_tasks": index, "planned": len(pending),
                               "query_id": value["query_id"], "arm": value["arm"], "success": "result" in value}), flush=True)
+            if accounted_spend >= 1 and not budget_stop:
+                budget_stop = True
+                for queued in futures:
+                    queued.cancel()
+                failures.append({"error": "USD 1 accounted-spend guard stopped queued tasks; in-flight requests may still be billed"})
     write_json(args.out / "transcription-failures.json", failures)
     with OpenAI(api_key=key, base_url="https://openrouter.ai/api/v1", max_retries=0, timeout=90) as client:
         account = client.get("/key", cast_to=dict)["data"]

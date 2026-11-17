@@ -14,17 +14,15 @@
 \maketitle
 \lhead{Under review as a report for UoE 26/27 Sem1 INFR11269: Machine Learning Systems}
 
-\section{Research question and system}
+\section{Introduction}\label{sec:introduction}
 Fixed top-$k$ retrieval gives every query the same number of documents. Similarity cutoffs adapt that number to each query's scores. We investigate whether this improves precision, evidence coverage, token cost or generated answers.
 
 Our question is: \emph{how do absolute similarity and top-score-relative gap cutoffs trade macro labelled-evidence recall against macro document precision and input tokens, and how do these choices affect generated answer quality?} We compare three policy families. Retrieval curves sweep their parameters; final answer evaluation compares fixed top-5, top-10 and top-20 with two dev-selected cutoffs and four rounded-threshold controls.
 
 Cutoffs improve macro precision at matched macro recall, while fixed top-$k$ uses fewer evidence tokens. The dev-selected cutoffs also return fewer documents with higher precision but lower recall than top-5. In the final answer evaluation, the dev-selected absolute cutoff achieves the highest mean judge score (0.639 versus 0.534 for top-5), with 657 versus 1,227 input tokens.
 
-\subsection{Pipeline and implementation}
-The supplied speech-driven RAG pipeline uses GLM-ASR-Nano to transcribe audio, \texttt{enc\_a} to embed the transcript, exact cosine search over 24,000 corpus records and an LLM to answer from the selected text. We retain the supplied model, encoder, corpus, interfaces, CPU references and answer rubric. Our additions are the required CUDA computations, controlled retrieval policies, parallel experiment/accounting scripts and saved-data analyses.
-
-We implement paired in-place RoPE rotations, warp/block reductions for RMSNorm/softmax, tiled GEMM with fused bias/GELU, and streaming grouped-query attention. The kernels use online normalization and IO-aware computation principles \citep{milakov2018,dao2022}. All 33 official cases pass. Section~\ref{sec:asr} gives the integrated ablation; Appendix~\ref{app:kernels} details implementation and checks.
+\section{System and Technical Approach}\label{sec:approach}
+The supplied pipeline transcribes speech with GLM-ASR-Nano, embeds the transcript with \texttt{enc\_a}, searches 24,000 corpus records by cosine similarity and generates an answer from selected text. We retain the supplied models and answer rubric, adding the required CUDA kernels, retrieval policies and parallel experiment scripts. Kernel implementation and validation are described in Section~\ref{sec:methodology}.
 
 \subsection{Three retrieval rules without a candidate cap}
 Let $d_{qi}$ be the document ranked $i$ for query $q$, with cosine similarities $s_{q1}\geq\cdots\geq s_{qM}$ and $M=24{,}000$. The selected sets are
@@ -40,33 +38,34 @@ Here $s_q^{\max}$ is the highest similarity for query $q$. Relative selection co
 Both cutoffs select a \emph{prefix} of the embedding ranking. We rank the entire corpus without a document-count cap. Lowering $\tau$ or increasing $\delta$ admits more documents; the nine operating points undergo generation after a context-size check.
 
 \clearpage
-\section{Experimental design and measurements}
-\subsection{Data, tuning and separation of stages}
-The course provides 350 practice and 125 dev query recordings, 24,000 corpus records and public relevance judgements (qrels), with no official test partition. Evaluation uses 324 practice queries after excluding 26 used earlier. This exploratory follow-up reuses previously inspected data; the rounded-threshold controls are motivated by those earlier curves.
+\section{Experimental Methodology}\label{sec:methodology}
+\subsection{CUDA implementation and validation}
+RoPE rotates dimension pairs in place. Warp/block reductions implement RMSNorm, LayerNorm and stable softmax, with barriers protecting shared partial sums. Tiled GEMM uses cooperative loads and fused bias/GELU; streaming grouped-query attention updates online softmax statistics without storing the full score matrix \citep{milakov2018,dao2022}. Appendix~\ref{app:kernels} gives detailed designs.
 
-Cutoffs maximise dev \emph{macro retrieval F1}, with ties preferring fewer mean documents. Absolute similarity uses 97 predeclared values from 0.75 to 0.99; relative gap uses 81 values from 0 to 0.08. The frozen values are \textbf{$\tau=0.8925$, $\delta=0.009$}, with dev F1 .2659/.2949. Fixed \textbf{$k=5,10,20$} are predeclared controls. Four additional exploratory controls use round values: absolute $\tau=0.88,0.87$ and relative $\delta=0.02,0.03$. These are fixed before generation, not fitted to exact recall targets or selected from answer scores. Names identify the threshold; measured recall is reported separately.
+We test on an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0, using supplied CPU/cuBLAS references. A separate IEEE FP32 run compares complete GLM-ASR outputs with PyTorch on one 3.505-second clip. Timing uses one warm-up and three runs, excluding model loading and preprocessing. Downstream RAG reuses transcripts cached on an RTX A6000.
 
-We reuse cached ASR transcripts and query vectors, then recompute a full exact cosine ranking on CPU. Stable sorting changes two earlier top-20 orderings; every method shares the new ranking. Dev-selected absolute/relative cutoffs have maxima of 32/18 documents. The rounded controls reach 82/180 and 113/280 documents, respectively. All prompts fit without truncation; the largest across nine settings is 71,670 input tokens under the pinned tokenizer and prompt format.
+\subsection{Retrieval and answer evaluation}
+The course supplies 350 practice and 125 dev recordings, 24,000 corpus records and relevance judgements (qrels). We tune on dev and evaluate on 324 practice queries after excluding 26 used earlier. This exploratory follow-up reuses previously inspected evaluation data.
 
-The generator is Mistral Small 4 through OpenRouter (\texttt{mistralai/mistral-small-2603}); the final judge is Gemini 2.5 Flash. Generation uses temperature 0.1 and a 2,048-token output cap; judging uses temperature zero and a 768-token cap. Reasoning is requested disabled. Twelve workers execute shuffled query/policy tasks with identical prompts and settings. Identical contexts still receive independent fresh generation.
+Cutoffs maximise dev macro F1, breaking ties by fewer mean documents. The grids contain 97 absolute thresholds from 0.75 to 0.99 and 81 relative gaps from 0 to 0.08. We freeze $\tau=0.8925$ and $\delta=0.009$; controls use top-5/10/20 and rounded $\tau=0.88/0.87$, $\delta=0.02/0.03$. All methods share cached transcripts, vectors and full stable cosine rankings. Rounded controls were motivated by earlier curves and fixed before generation.
 
-All \textbf{2,916 answers} ($324\times9$) are freshly generated and saved before judging begins. The judge receives the transcribed question, generated answer and qrels-relevant documents as reference evidence. The retrieval method, its selected document list and similarity scores are hidden, keeping assessment focused on the answer and reference evidence. A second shuffled pass judges every saved answer. Retrieval settings remain fixed; requests, responses, usage and costs are retained.
+Mistral Small 4 (\texttt{mistralai/mistral-small-2603}, OpenRouter) generates answers at temperature 0.1 with a 2,048-token cap; Gemini 2.5 Flash judges at temperature zero with a 768-token cap. Reasoning is requested disabled. Twelve workers run shuffled query/policy tasks. All 2,916 fresh answers are saved before a separate shuffled judging pass. The judge sees the question, answer and qrels-relevant documents; the retrieval policy and selected list are hidden.
 
-\subsection{Quality and cost definitions}
-For selected set $S_q$, relevant set $G_q$ and hits $h_q=|S_q\cap G_q|$, we report
+\subsection{Metrics and diagnostic comparisons}
+For selected set $S_q$, relevant set $G_q$ and hits $h_q=|S_q\cap G_q|$, define
 \begin{equation}
- R=\frac1N\sum_q\frac{h_q}{|G_q|},\qquad
- P=\frac1N\sum_q\frac{h_q}{|S_q|}.
+ p_q=\frac{h_q}{|S_q|},\quad r_q=\frac{h_q}{|G_q|},\quad
+ P=\frac1N\sum_q p_q,\quad R=\frac1N\sum_q r_q,\quad
+ F_1=\frac1N\sum_q\frac{2h_q}{|S_q|+|G_q|}.
 \end{equation}
-Both metrics are macro averages: recall is the mean fraction of relevant documents retrieved per query, and precision is the mean fraction of retrieved documents that are relevant. Every query has equal weight. Unjudged records count as non-relevant. Qrels may include redundant records or omit useful evidence \citep{joren2025}.
+All three metrics average queries equally. Macro F1 averages each query's harmonic mean, rather than taking the harmonic mean of $P$ and $R$. Unjudged records count as non-relevant; qrels may omit useful or include redundant evidence \citep{joren2025}. Figure~\ref{fig:retrieval} counts retrieved-text tokens; tables count full prompt input. Matched-recall comparisons interpolate neighbouring fixed-$k$ settings.
 
-Figure~\ref{fig:retrieval} counts retrieved-text tokens; the tables report full prompt input tokens. Comparisons at matched recall interpolate neighbouring fixed-$k$ settings.
-
-The supplied judge scores correctness, grounding and completeness from 0--4; the final score is their sum divided by 12. It can reward a qualified insufficient-evidence answer when gold evidence is inadequate. We compare mean scores across the same 324 queries under all nine settings.
+The judge scores correctness, grounding and completeness from 0--4; their sum/12 is the final score. We regress per-query scores on precision and recall across all nine settings, with query intercepts and a configuration-control sensitivity check. Uncertainty uses 5,000 whole-query bootstrap samples. The separate 475-recording ASR comparison checks GLM against three alternative models after aligning case, punctuation, acronym spacing and whitespace.
 
 \clearpage
-\section{Retrieval results: precision, recall and token usage}
-Figure~\ref{fig:retrieval} shows the practical range of 3,103 full-corpus settings; the full sweeps reach 100\% recall. Axis limits do not cap document selection.
+\section{Results and Analysis}\label{sec:results}
+\subsection{Retrieval quality and token usage}
+Figure~\ref{fig:retrieval} shows the practical range of 3,103 uncapped settings; the full sweeps reach 100\% recall.
 
 \begin{figure}[h]
 \centering
@@ -104,8 +103,10 @@ Relative 0.03 & 22.54 & 280 & 52.87 & 22.86 & 5437 \\
 \textbf{Fixed top-$k$ preserves more recall per token.} At matched recall, the dev-selected absolute and relative cutoffs use 24.1\% and 41.4\% more retrieved-text tokens than interpolated fixed-$k$ settings. The rounded absolute cutoffs use 83.5\%/98.7\% more, and relative cutoffs use 61.1\%/70.9\% more. Higher average per-query precision therefore coexists with greater token cost at the same recall.
 
 \clearpage
-\section{Final answer evaluation}
+\subsection{Final answer quality and score distributions}
 Table~\ref{tab:answers} evaluates all nine settings with the retrieval method hidden from the judge; Figure~\ref{fig:answer-score-histograms} shows their score distributions. Each method is evaluated on the same 324 queries.
+
+\textbf{Score distributions and context size.} Figure~\ref{fig:answer-score-histograms} shows all nine score distributions. Between 81.2\% and 86.7\% of answers per setting receive exactly 0 or 1; means therefore hide substantial variation. Absolute 0.8925 has 185 full-score and 93 zero-score answers, versus 145 and 118 for top-5.
 
 \begin{table}[h]
 \centering
@@ -138,15 +139,13 @@ Relative 0.03 & 2.22 & 2.17 & 2.22 & 0.551 & 5437 & 52.87 & 22.86 \\
 
 \input{answer-analysis.tex}
 
-\textbf{Score distributions and context size.} Figure~\ref{fig:answer-score-histograms} shows all nine score distributions. Between 81.2\% and 86.7\% of answers per setting receive exactly 0 or 1; means therefore hide substantial variation. Absolute 0.8925 has 185 full-score and 93 zero-score answers, versus 145 and 118 for top-5.
 
-\subsection{Interpreting retrieval and answer quality}
-The retrieval and answer evaluations favour different operating points. Matching recall exposes the extra token cost of cutoffs, whereas the final answer study favours the shorter contexts selected by absolute 0.8925. The supplied rubric evaluates correctness, grounding and completeness against gold documents and can award full credit to a qualified insufficient-evidence answer. The observed score improvement therefore reflects performance under this rubric. The nine settings cover both short, high-precision contexts and longer contexts with greater labelled-evidence recall.
 
-\section{ASR implementation and transcription checks}
-\label{sec:asr}
-\subsection{Custom-kernel integration}
-Kernel checks use an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0. Table~\ref{tab:kernel-errors} reports operator and complete-pipeline errors; Appendix~\ref{app:kernels} gives detailed ablations. Downstream RAG uses transcripts cached separately on an RTX A6000.
+\subsection{Precision, recall and final score}
+The same-query regression fits $\mathrm{score}_{qa}=\alpha_q+\beta_Pp_{qa}+\beta_Rr_{qa}+\epsilon_{qa}$ to 2,916 answers, where $a$ indexes retrieval settings. The fitted slopes are $\beta_P=0.1844$ and $\beta_R=0.0509$: a 10-percentage-point increase in precision is associated with a 0.0184 score increase, holding recall fixed; the corresponding recall association is 0.0051. Adding configuration intercepts gives 0.0169 and 0.0070. Precision has the clearer positive association; recall remains uncertain in whole-query bootstrap resampling. The predictors explain only \textbf{2.6\% of within-query score variation}. Retrieval labels therefore capture a small part of the rubric score variation across settings on the same question.
+
+\subsection{Kernel correctness and system cost}\label{sec:asr}
+Table~\ref{tab:kernel-errors} combines operator checks with complete-pipeline discrepancies. All 33 official and five additional cases pass.
 
 \begin{table}[h]
 \centering
@@ -173,15 +172,15 @@ Output probabilities & PyTorch & $1.788\times10^{-6}$ & --- & ---\\
 \end{tabular}
 \end{table}
 
-All 33 official and five additional cases pass. In the timing ablation, all CUDA takes \textbf{4.26 times as long} as PyTorch and uses 0.34 GiB less peak memory (Table~\ref{tab:asr}).
+In the timing ablation, all CUDA takes \textbf{4.26 times as long} as PyTorch and uses 0.34 GiB less peak memory (Table~\ref{tab:asr}).
 
 The end-to-end comparison covers 770,432 logits and probabilities each, plus 90,112 audio-projection values. All 13 generated token IDs, including EOS, match PyTorch. Appendix~\ref{app:kernels} gives the three-mode results and independent audit.
 
 \clearpage
 \input{asr-agreement.tex}
 
-\section{Conclusion}
-Cutoffs improve macro precision at matched macro recall, while fixed top-$k$ gives better recall per retrieved-text token. Loosening the cutoffs recovers recall at increasing token cost. Answer scores favour a different balance: absolute 0.8925 achieves the highest mean score (0.639) with the fewest prompt tokens (657). More retrieved evidence does not automatically yield a higher score under the supplied rubric. The choice of policy therefore depends on whether the priority is evidence coverage, input size or judged answer quality.
+\section{Discussion and Conclusion}\label{sec:conclusion}
+Cutoffs improve macro precision at matched recall, while fixed top-$k$ preserves more recall per token. Absolute 0.8925 gives the highest observed answer score with the fewest prompt tokens. However, precision and recall explain little within-query score variation: the supplied rubric can reward qualified insufficient-evidence answers, and qrels describe documents rather than unique answer facts. Our data reuse and one answer/judgement per setting make this an exploratory comparison. A fresh evaluation with human answer assessment would test whether the score advantage generalises. The CUDA kernels pass correctness checks and preserve the tested transcript, but GEMM/attention optimisation remains necessary to close the runtime gap to PyTorch.
 
 \clearpage
 \bibliography{references}
@@ -268,10 +267,7 @@ The all-CUDA projected-audio maximum discrepancy is $9.537\times10^{-6}$ across 
 \textbf{Task 4 (Q1) Attention storage.} A dense encoder score tensor with 20 heads and 1,500 queries and keys uses $20\times1500^2\times4=180{,}000{,}000$ bytes. With head dimension 64, our streaming kernel uses $4[32(64+1)+32(64)+4(64)]=17{,}536$ bytes of shared memory per block for padded keys, values and four queries.
 
 
-\clearpage
-\section*{Draft completion status}
-The retrieval, final answer and saved-transcript edit-distance results are complete. Table~\ref{tab:asr-agreement} uses the audited 475-query aggregates, with symmetric query-averaged NED rather than the earlier proposed reference-denominated corpus rate. The frozen normalizer's handling of leading decimals still requires an audit before treating normalization as meaning-preserving. Reported agreement metrics describe the saved rule and are not silently recomputed. The group must review the implementation, numerical claims, interpretation and AI declaration, then fill final-page identity fields. The separately required video and individual review are not produced by this draft. Raw evidence contains local/remote paths and must be reviewed before any anonymous supplementary submission.
-
+\newpage
 \section*{AI declaration}
 OpenAI Codex assisted with CUDA and experiment code, validation orchestration, remote execution, data analysis, figures, literature lookup and report drafting. This draft contains AI-generated prose, code and figures and is not represented as unaided work. Numerical results come from saved logs and metric arrays, with completed and incomplete experiments distinguished. The submitting group is responsible for reviewing the implementation, interpretation, citations and final text and ensuring that the submission accurately represents its understanding and work.
 

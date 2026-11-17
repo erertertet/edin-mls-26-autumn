@@ -12,6 +12,20 @@ capability. Confidence intervals remain omitted, and Table 2 retains recall
 and precision instead of latency and dollar cost. The original dev macro-F1
 tuning objective and top-score-relative cutoff remain unchanged.
 
+The fourth review follows the official template's five sections: Introduction;
+System and Technical Approach; Experimental Methodology; Results and Analysis;
+Discussion and Conclusion. Kernel implementation, hardware and validation
+procedure are in Section 3.1. Kernel and E2E numbers are in Section 4.4 / Table 3;
+GLM transcript comparisons are in Section 4.5 / Table 4. Macro F1 is explicitly
+the average of per-query harmonic means (`mean(2*hits/(selected+relevant))`),
+matching the dev-tuning code. The score-distribution discussion leads Section
+4.2, and Section 4.3 replaces the old interpretation paragraph with the saved
+query-fixed-effects regression. The report's administrative page retains only
+the AI declaration and group fields, as in the template.
+
+The pre-restructure snapshot was pushed as commit `88b1c76` on
+`codex/asr-whisper-pilot`, including the PDF via Git LFS.
+
 The layout is unchanged: 5.5-inch text width, 10-point body font and approximately
 10.96 PDF points between body baselines. Style/support files match both Git and
 the supplied template. The earlier annotated `1.pdf` was flattened to A4, while
@@ -23,7 +37,7 @@ CUDA implementation and detailed ablations; the final administrative page is
 unnumbered. Supporting experiment files and preview figures remain available.
 
 The ASR comparison now treats normalization as a **diagnostic for GLM transcript
-agreement**, not a proposed pipeline improvement. Section 5.2 reports the saved
+agreement**, not a proposed pipeline improvement. Section 4.5 reports the saved
 whole-transcript disagreement counts and the completed word/character
 edit-distance results from the audited 475-query saved-data analysis.
 The existing normalization rule also needs a leading-decimal audit before it
@@ -112,9 +126,21 @@ Use `--nine-only` to render only the newly selected Section 4 plot. The standalo
 preview 05 (document-count change versus score change, paired with fixed top-5)
 remains outside the report pending figure selection.
 
+## Precision/recall regression
+
+Section 4.3 uses the completed saved-data fit in `../answer-regression-results.json`.
+It regresses all 2,916 per-query scores on per-query precision and recall, with a
+separate intercept for each of the 324 queries. The slopes are 0.1844186 and
+0.0508738, or +0.01844/+0.00509 score per +10 percentage points. Adding
+configuration intercepts yields +0.01694/+0.00702. Within-query R? is 0.0257501;
+its denominator excludes between-query variation. Whole-query bootstrap bounds
+support a positive precision association while recall remains uncertain; the
+report omits interval numbers as requested. No causal effect is claimed.
+`../analyze_answer_regression.py` reproduces the saved-data analysis and preview.
+
 ## Kernel numerical correctness
 
-Section 5.1 now lists the largest recorded absolute errors for RoPE, RMSNorm,
+Section 4.4 now lists the largest recorded absolute errors for RoPE, RMSNorm,
 LayerNorm, softmax, GEMM and attention, alongside the supplied atol/rtol values.
 Sources are `../task1-rope-results.md`, `../task2-reductions-results.md` and
 `../task34-kernels-results.md`. These compare against supplied CPU implementations
@@ -122,7 +148,7 @@ and cuBLAS for large GEMM, **not direct PyTorch tensor differences**. Large
 attention checks sample output rows. The integrated PyTorch/custom comparison
 now includes the audited E2E results in `../asr-e2e-error-results.md` and
 `../asr-e2e-error-audit.json` (remote commit `41f272f`, GPU job 3727116,
-CPU audit 3727120). Main Section 5.1 Table 3 now includes a separate GLM-ASR end-to-end block, alongside the operator checks, reporting all-CUDA maximum discrepancies of
+CPU audit 3727120). Main Section 4.4 Table 3 now includes a separate GLM-ASR end-to-end block, alongside the operator checks, reporting all-CUDA maximum discrepancies of
 5.245209e-5 in logits and 1.788139e-6 in probabilities, with 0/13 token
 mismatches and exact decoded-text agreement on one 3.505-second clip. Appendix A
 contains all three custom modes, relative L2 probability discrepancy, audio

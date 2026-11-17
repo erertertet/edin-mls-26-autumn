@@ -23,6 +23,14 @@ matching the dev-tuning code. The score-distribution discussion leads Section
 query-fixed-effects regression. The report's administrative page retains only
 the AI declaration and group fields, as in the template.
 
+The fifth annotated review shortens the displayed metrics to macro precision
+and recall, with the correct per-query harmonic-mean F1 definition inline by
+dev tuning. It removes the full-sweep recall remark and directly compares
+relative 0.02/0.03 against absolute 0.88/0.87: both retrieval metrics improve,
+but mean answer scores fall. The regression interpretation emphasizes that
+precision and recall jointly explain only 2.6% of within-query score variation,
+so higher precision alone provides limited explanation of the score differences.
+
 The pre-restructure snapshot was pushed as commit `88b1c76` on
 `codex/asr-whisper-pilot`, including the PDF via Git LFS.
 

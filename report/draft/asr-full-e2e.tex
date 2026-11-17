@@ -1,0 +1,47 @@
+\subsection{Full-corpus implementation comparison}\label{app:asr-full}
+The extension retains all 475 supplied recordings (350 practice, 125 dev; 2,496.725 seconds), with the historical fixture excluded. The original audio order fixes four round-robin shards. Each query shares one prepared input between an independent PyTorch and all-CUDA greedy generation, with the same model snapshot, IEEE FP32 controls and 100-token ceiling. The all-CUDA mode includes the supplied CUDA operations. The unchanged kernel sources are rebuilt for RTX A6000 (84 SMs, sm\_86; CUDA 12.8.93, GCC 13.3); the originally planned H200 node entered DRAIN before full-set inference. This extension is separate from the historical H200 timing ablation.
+
+\paragraph{Numerical comparison.} At each PyTorch prediction position we compare all 59,264 vocabulary logits and probabilities under the complete PyTorch token history, retaining CUDA's own projected audio. Independent greedy scores are reused through the first differing prediction; any remaining suffix is replayed with PyTorch token IDs. The first query in each shard additionally replays the whole history as a control. Scores after divergent independent histories are not compared as arithmetic error.
+
+For field $f$, let $M_q$ be its element count, $A_q=\sum_i|x_{qi}-y_{qi}|$, $D_q=\sum_i(x_{qi}-y_{qi})^2$ and $B_q=\sum_i y_{qi}^2$. Pooled MAE, RMS and relative L2 are respectively $\sum_q A_q/\sum_q M_q$, $\sqrt{\sum_q D_q/\sum_q M_q}$ and $\sqrt{\sum_q D_q/\sum_q B_q}$. They differ from unweighted averages of query metrics. Logits, probabilities and projected audio are stored losslessly in float32; error accumulation uses float64, independently recounted with extended-precision CPU accumulation. Maxima describe this finite corpus, with no fitted acceptance threshold or future-input error bound.
+
+\paragraph{Output comparison.} Independent greedy token sequences include EOS. Positional identity uses the sum of larger sequence lengths as denominator, including unmatched suffix positions. Separately, reference-history argmax identity compares CUDA and PyTorch choices at every PyTorch position. Text is the adapter's decoded output after stripping outer whitespace; no acronym, case or punctuation normalization is applied. Unit-cost Levenshtein distances use token IDs, Unicode code points or whitespace-separated words. Query NED divides distance by the larger length (two empty sequences give zero); macro NED averages queries, whereas pooled NED divides total edits by total larger lengths. These implementation differences are not WER/CER against independent reference transcripts.
+
+\paragraph{Full-set results.} Both independent greedy outputs agree on every recording: 475/475 complete token sequences and 475/475 decoded texts, including the unstripped decoder strings. Positional token identity and reference-history argmax identity are both 7,660/7,660 (100\%). Complete numerical coverage is 453,962,240 logits and probabilities each, plus 63,639,552 projected-audio values. Every recording reaches EOS in both modes; neither mode has a capped or empty transcript, and the maximum sequence length is 34 tokens.
+
+\begin{table}[h]
+\centering
+\small
+\caption{All-475 observed discrepancies on RTX A6000. Median and p95 describe per-query maxima; RMS and relative L2 pool all field values. The larger full-set maxima cannot be compared with the old single-fixture H200 values as an isolated sample-size effect: hardware also differs.}
+\label{tab:asr-full-error}
+\begin{tabular}{lrrrrr}
+\toprule
+Field & Max absolute & Median max & p95 max & Pooled RMS & Pooled rel. L2\\
+\midrule
+Logits & $3.750\times10^{-3}$ & $7.820\times10^{-5}$ & $4.723\times10^{-4}$ & $3.607\times10^{-5}$ & $6.846\times10^{-6}$\\
+Probabilities & $2.661\times10^{-4}$ & $3.576\times10^{-6}$ & $1.135\times10^{-5}$ & $1.899\times10^{-8}$ & $4.754\times10^{-6}$\\
+Audio projection & $1.604\times10^{-2}$ & $1.050\times10^{-4}$ & $8.784\times10^{-4}$ & $2.210\times10^{-5}$ & $3.774\times10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Distinct macro and pooled summaries on the same 475 recordings. Macro quantities give every query equal weight.}
+\begin{tabular}{lrrrr}
+\toprule
+Field & Macro MAE & Pooled MAE & Macro RMS & Macro rel. L2\\
+\midrule
+Logits & $1.298\times10^{-5}$ & $1.297\times10^{-5}$ & $1.727\times10^{-5}$ & $3.323\times10^{-6}$\\
+Probabilities & $2.009\times10^{-11}$ & $2.002\times10^{-11}$ & $7.866\times10^{-9}$ & $1.981\times10^{-6}$\\
+Audio projection & $2.502\times10^{-6}$ & $2.382\times10^{-6}$ & $8.279\times10^{-6}$ & $1.416\times10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Token, character and word edit distances are zero for every query: each unit has total edits, mean, median, p95, maximum, macro NED and pooled NED equal to zero. Their respective total larger-length denominators are 7,660 token IDs, 35,297 characters and 6,114 words. No empty-text convention is responsible for this agreement.
+
+No greedy histories diverge. Only the four predeclared controls require replay: all 51 replayed prediction positions numerically equal the corresponding natural CUDA logits and probabilities. There are 950 model-generation and 950 audio-encoder calls, plus 51 decoder replay steps; external ASR/API and RAG-encoder requests are zero. Shard 0 requests two CPUs and the remaining shards one, all with two OpenMP threads; these instrumented executions do not measure comparative latency. The 350/125 split and all six overlapping historical cohorts remain in the published aggregate CSV. One greedy pair per recording and the observed zero edit distances establish finite-corpus transcript preservation, without establishing general recognition accuracy or zero numerical error.
+
+CPU audit 3728059 independently reconstructs and checks all 475 lossless traces, all three numerical fields, all 1,425 token/character/word edit distances and all six cohort summaries. The audit passes, with exact discrete counts and maxima and a $10^{-9}$ relative recount tolerance for accumulated scalar statistics. This recount tolerance checks aggregation agreement; it is not a kernel acceptance threshold. The frozen configuration, source/binary hashes, full-precision aggregate JSON/CSV and execution record accompany the report.

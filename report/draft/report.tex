@@ -42,7 +42,7 @@ Both cutoffs select a \emph{prefix} of the embedding ranking. We rank the entire
 \subsection{CUDA implementation and validation}
 RoPE rotates dimension pairs in place. Warp/block reductions implement RMSNorm, LayerNorm and stable softmax, with barriers protecting shared partial sums. Tiled GEMM uses cooperative loads and fused bias/GELU; streaming grouped-query attention updates online softmax statistics without storing the full score matrix \citep{milakov2018,dao2022}. Appendix~\ref{app:kernels} gives detailed designs.
 
-We test on an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0, using supplied CPU/cuBLAS references. A separate IEEE FP32 run compares complete GLM-ASR outputs with PyTorch on one 3.505-second clip. Timing uses one warm-up and three runs, excluding model loading and preprocessing. Downstream RAG reuses transcripts cached on an RTX A6000.
+Operator tests and timing use an H200 MIG 1g.18gb slice (16 SMs), CUDA 12.8.93, PyTorch 2.10.0+cu128 and Transformers 5.0.0. Timing uses one warm-up and three runs, excluding model loading and preprocessing. Separately, an RTX A6000 IEEE FP32 run compares all CUDA with PyTorch on all 475 recordings, using complete PyTorch token histories for numerical errors and independent greedy outputs for agreement. Downstream RAG retains its cached transcripts.
 
 \subsection{Retrieval and answer evaluation}
 The course supplies 350 practice and 125 dev recordings, 24,000 corpus records and relevance judgements (qrels). We tune on dev and evaluate on 324 practice queries after excluding 26 used earlier. This exploratory follow-up reuses previously inspected evaluation data.
@@ -144,11 +144,11 @@ Relative 0.03 & 2.22 & 2.17 & 2.22 & 0.551 & 5437 & 52.87 & 22.86 \\
 The same-query regression fits $\mathrm{score}_{qa}=\alpha_q+\beta_Pp_{qa}+\beta_Rr_{qa}+\epsilon_{qa}$ to 2,916 answers, where $a$ indexes retrieval settings. The fitted slopes are $\beta_P=0.1844$ and $\beta_R=0.0509$: a 10-percentage-point increase in precision is associated with a 0.0184 score increase, holding recall fixed; the corresponding recall association is 0.0051. Adding configuration intercepts gives 0.0169 and 0.0070. Precision has the stronger positive association; recall remains uncertain in whole-query bootstrap resampling. Yet precision and recall together explain only \textbf{2.6\% of within-query score variation}. Higher precision alone therefore offers limited explanation of the observed score differences between retrieval settings.
 
 \subsection{Kernel correctness and system cost}\label{sec:asr}
-Table~\ref{tab:kernel-errors} combines operator checks with complete-pipeline discrepancies. All 33 official and five additional cases pass.
+Table~\ref{tab:kernel-errors} combines historical H200 operator checks with the full-corpus pipeline comparison. All 33 official and five additional operator cases pass.
 
 \begin{table}[h]
 \centering
-\caption{Maximum absolute errors. The operator tests pass $|y-y_{\rm ref}|\leq a+r|y_{\rm ref}|$; large attention samples rows. End-to-end rows compare all CUDA against PyTorch under IEEE FP32 on one 3.505-second clip; dashes indicate no preset acceptance tolerance.}
+\caption{Maximum absolute discrepancies. Historical H200 operator tests pass $|y-y_{\rm ref}|\leq a+r|y_{\rm ref}|$; large attention samples rows. End-to-end rows cover all 475 recordings on RTX A6000 under IEEE FP32 and complete PyTorch token histories; dashes mean no preset tolerance.}
 \label{tab:kernel-errors}
 \small
 \begin{tabular}{llrrr}
@@ -162,18 +162,18 @@ Softmax & CPU & $2.67\times10^{-8}$ & $10^{-7}$ & $10^{-4}$\\
 GEMM & CPU / cuBLAS & $3.72\times10^{-5}$ & $10^{-3}$ & $10^{-3}$\\
 Attention & CPU (sampled large) & $5.21\times10^{-7}$ & $10^{-4}$ & $10^{-3}$\\
 \midrule
-\multicolumn{5}{l}{\textbf{GLM-ASR end to end (all CUDA)}}\\
-Audio projection & PyTorch & $9.537\times10^{-6}$ & --- & ---\\
-Decoder logits & PyTorch & $5.245\times10^{-5}$ & --- & ---\\
-Output probabilities & PyTorch & $1.788\times10^{-6}$ & --- & ---\\
-\multicolumn{5}{l}{Token mismatches: \textbf{0/13}; decoded text: \textbf{exact match}.}\\
+\multicolumn{5}{l}{\textbf{GLM-ASR end to end: 475 recordings (all CUDA)}}\\
+Audio projection & PyTorch & $1.604\times10^{-2}$ & --- & ---\\
+Decoder logits & PyTorch & $3.750\times10^{-3}$ & --- & ---\\
+Output probabilities & PyTorch & $2.661\times10^{-4}$ & --- & ---\\
+\multicolumn{5}{l}{Exact token sequences: \textbf{475/475}; decoded texts: \textbf{475/475}.}\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-In the timing ablation, all CUDA takes \textbf{4.26 times as long} as PyTorch and uses 0.34 GiB less peak memory (Table~\ref{tab:asr}).
+In the H200 MIG timing ablation, all CUDA takes \textbf{4.26 times as long} as PyTorch and uses 0.34 GiB less peak memory (Table~\ref{tab:asr}).
 
-The end-to-end comparison covers 770,432 logits and probabilities each, plus 90,112 audio-projection values. All 13 generated token IDs, including EOS, match PyTorch. Appendix~\ref{app:kernels} gives the three-mode results and independent audit.
+The full check covers 7,660 prediction positions, including EOS: 453,962,240 logits and probabilities each. Independent greedy outputs agree at all positions; token, character and word edit distances are zero on every query. Appendix~\ref{app:asr-full} reports pooled discrepancies, replay controls and the full-trace audit. These finite-corpus maxima are not future-input error bounds.
 
 \clearpage
 \input{asr-agreement.tex}
@@ -181,7 +181,7 @@ The end-to-end comparison covers 770,432 logits and probabilities each, plus 90,
 \section{Discussion and Conclusion}\label{sec:conclusion}
 Cutoffs improve macro precision at matched recall, while fixed top-$k$ preserves more recall per token. Absolute 0.8925 gives the highest observed answer score with the fewest prompt tokens. However, precision and recall explain little of the variation in end-to-end answer scores across settings for the same query: the supplied rubric can reward qualified insufficient-evidence answers, and qrels describe documents rather than unique answer facts. Our data reuse and one answer/judgement per setting make this an exploratory comparison.
 
-The CUDA kernels pass the supplied numerical correctness checks. In the tested end-to-end run, the custom implementation closely matches PyTorch's numerical outputs and preserves the decoded transcript. GEMM/attention optimisation remains necessary to close the runtime gap to PyTorch. GLM-ASR-Nano also shows strong transcript agreement with Whisper, MAI and Voxtral, averaging 0.31--0.35 word edits per query after formatting normalization. Substituting these models changes the top-5 retrieval sets for 10.11--11.79\% of queries, while the observed retrieval token-efficiency trade-off persists across models.
+The CUDA kernels pass the supplied numerical correctness checks. On all 475 recordings, all CUDA preserves PyTorch's 7,660 generated tokens and decoded texts despite nonzero numerical discrepancies. This establishes observed transcript preservation, not a numerical bound for other inputs. GEMM/attention optimisation remains necessary to close the runtime gap to PyTorch. GLM-ASR-Nano also shows strong transcript agreement with Whisper, MAI and Voxtral, averaging 0.31--0.35 word edits per query after formatting normalization. Substituting these models changes the top-5 retrieval sets for 10.11--11.79\% of queries, while the observed retrieval token-efficiency trade-off persists across models.
 
 \clearpage
 \bibliography{references}
@@ -235,14 +235,14 @@ Audio attention & Four warps, padded / unpadded K & 20.712 / 106.063\\
 
 All four RoPE, eleven reduction, ten GEMM and eight attention official cases pass under the supplied tolerances. Five additional boundary cases and the reduction-helper checks also pass. The maximum absolute GEMM and attention errors are $3.72\times10^{-5}$ and $5.21\times10^{-7}$. Selected small cases, helper tests and extra boundary cases passed Compute Sanitizer's memcheck, racecheck and synccheck \citep{nvidia2025}. The full-size encoder attention test compared 301 of 30,000 query--head rows with the CPU reference across all 20 heads. Its fixed stride sampled 300 rows in block-local warp 0 and one in warp 3.
 
-\subsection{End-to-end numerical discrepancy}
-A separate instrumented run uses the same 3.505-second clip, one loaded model and shared prepared inputs. PyTorch's global, CUDA-matmul and cuDNN FP32 precision settings are all \texttt{ieee}. All three custom modes produce the same 13-token trajectory, including EOS, and exact decoded text as PyTorch. Each comparison covers all 59,264 vocabulary entries at all 13 positions: 770,432 logits and 770,432 probabilities.
+\subsection{Historical single-fixture numerical discrepancy}
+A separate instrumented H200 MIG run uses the same 3.505-second clip, one loaded model and shared prepared inputs. PyTorch's global, CUDA-matmul and cuDNN FP32 precision settings are all \texttt{ieee}. All three custom modes produce the same 13-token trajectory, including EOS, and exact decoded text as PyTorch. Each comparison covers all 59,264 vocabulary entries at all 13 positions: 770,432 logits and 770,432 probabilities.
 
 For candidate $x$ and PyTorch output $y$, we compute maximum absolute discrepancy $e_\infty=\max_i|x_i-y_i|$ and relative L2 discrepancy $e_{\rm rel}=\|x-y\|_2/\|y\|_2$ in float64. All reference norms are nonzero.
 
 \begin{table}[h]
 \centering
-\caption{Complete-pipeline discrepancies against PyTorch in the IEEE FP32 run. $z$ denotes logits and $p$ probabilities. Partial modes also enable supplied CUDA kernels. Token mismatches count the 13 generated positions.}
+\caption{Historical H200 single-fixture discrepancies against PyTorch under IEEE FP32. $z$ denotes logits and $p$ probabilities. Partial modes also enable supplied CUDA kernels. Token mismatches count the 13 generated positions.}
 \label{tab:asr-error}
 \begin{tabular}{lrrrr}
 \toprule
@@ -256,6 +256,10 @@ All four & $5.245\times10^{-5}$ & $1.788\times10^{-6}$ & $7.128\times10^{-7}$ & 
 \end{table}
 
 The all-CUDA projected-audio maximum discrepancy is $9.537\times10^{-6}$ across 90,112 values. One repeat each of PyTorch and all CUDA gives zero within-mode discrepancy in saved logits, probabilities and audio projections. CPU audit 3727120 independently recomputes all 145 global/per-position metric blocks from GPU run 3727116. These numerical measurements use a separate instrumented run from the historical timing ablation.
+
+\clearpage
+\input{asr-full-e2e.tex}
+\clearpage
 
 \subsection{CUDA design questions}
 

@@ -148,23 +148,34 @@ report omits interval numbers as requested. No causal effect is claimed.
 
 ## Kernel numerical correctness
 
-Section 4.4 now lists the largest recorded absolute errors for RoPE, RMSNorm,
-LayerNorm, softmax, GEMM and attention, alongside the supplied atol/rtol values.
-Sources are `../task1-rope-results.md`, `../task2-reductions-results.md` and
-`../task34-kernels-results.md`. These compare against supplied CPU implementations
-and cuBLAS for large GEMM, **not direct PyTorch tensor differences**. Large
-attention checks sample output rows. The integrated PyTorch/custom comparison
-now includes the audited E2E results in `../asr-e2e-error-results.md` and
-`../asr-e2e-error-audit.json` (remote commit `41f272f`, GPU job 3727116,
-CPU audit 3727120). Main Section 4.4 Table 3 now includes a separate GLM-ASR end-to-end block, alongside the operator checks, reporting all-CUDA maximum discrepancies of
-5.245209e-5 in logits and 1.788139e-6 in probabilities, with 0/13 token
-mismatches and exact decoded-text agreement on one 3.505-second clip. Appendix A
-contains all three custom modes, relative L2 probability discrepancy, audio
-projection errors, repeat controls and the independent audit. Each comparison
-covers 770,432 logits and probabilities. This separate instrumented IEEE FP32
-run adds numerical results; historical timing/memory results remain unchanged.
-The detailed ASR timing table stays in Appendix A, with 4.26x runtime and
-0.34 GiB lower peak memory summarized in the main text.
+Section 4.4 Table 3 retains the historical H200 operator tests and now reports
+all-CUDA versus PyTorch on all **475 recordings**, using an RTX A6000 and IEEE
+FP32. Maximum absolute differences are **0.003749847 in logits**,
+**0.000266075 in probabilities**, and **0.016044259 in audio projections**.
+Independent greedy sequences and decoded texts agree on **475/475 queries**;
+all **7,660 token positions** including EOS match. Token, character and word
+edit distances are zero on every query, with no formatting normalization.
+
+Each primary field covers **453,962,240 full-vocabulary values**. Appendix A
+includes per-query median/p95 maxima, distinct macro/pooled statistics,
+termination accounting and four complete-history replay controls (51 positions,
+zero replay discrepancy). CPU job **3728059** independently audited all 475
+lossless traces and 1,425 edit distances; all checks passed. This is observed
+implementation agreement on the supplied finite corpus, not WER/CER or a bound
+on other inputs.
+
+Full artifacts: [results](../asr-full-e2e-results.md),
+[aggregate CSV](../asr-full-e2e.csv), [summary](../asr-full-e2e-summary.json),
+[audit](../asr-full-e2e-audit.json), [protocol](../asr-full-e2e-protocol.md),
+[execution record](../asr-full-e2e-execution.md) and
+[SM86 build proof](../asr-full-e2e-library-build.json).
+
+The older H200 one-clip numerical results remain in
+`../asr-e2e-error-results.md` and Appendix A. The historical H200 timing/memory
+ablation still reports 4.26x runtime and 0.34 GiB lower peak memory. Both the
+input coverage and GPU differ in the new full-set check, so the larger extrema
+are not an isolated sample-size or cross-device comparison. Instrumented
+full-set jobs are not used for latency comparisons.
 
 ## Build
 
@@ -183,4 +194,4 @@ From the repository root, the supplied checker can inspect the resulting PDF:
 python report/format_checker/check_report_format.py report/draft/report.pdf --json report/draft/format-check.json
 ```
 
-The five supplied style/support files are unchanged from `report/latex_template`. The final checker output records the main-body count, 10 pt body text, required header and review line numbers. Earlier top-50 figures and the prior report are retained for review, but the current source archive includes only the revised report's required files.
+The five supplied style/support files are unchanged from `report/latex_template`. The final checker output records the main-body count, 10 pt body text, required header and review line numbers. Earlier top-50 figures and the prior report are retained for review, but the current source archive includes all LaTeX modules and only the figure PDFs used by the revised report.

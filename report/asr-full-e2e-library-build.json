@@ -1,0 +1,21 @@
+{
+  "status": "complete",
+  "library_sha256": "f4914777a519c5a6029da698e6440c0e4067b3e5dcf0a1dc2b450319db26a008",
+  "sm": 86,
+  "kernel_tests_log_sha256": "831619831fe399f6a5b054192efb4ac47c36e57396a5007dac21dbe89fbd2e82",
+  "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0\n",
+  "compiler_version": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "source_sha256": {
+    "hw1-asr/Makefile": "42941e1e0fb40a46d8cfd6e33f9fff60d26a44ba70e3291bc07f4d43cd4ffaff",
+    "hw1-asr/csrc/asr_kernels.h": "41ab732721576e45e9463dfc608ced9ecdda4796702db462ae1d2dfeb55f127f",
+    "hw1-asr/csrc/common.cuh": "adddccbeba9058d2b2904fc5bd172e5d02595e3d1cd2c9600153049139ffe4ce",
+    "hw1-asr/csrc/provided.cu": "d9084f2898b953dedaede136b77d4b32f45b609b7e84eb07cb78946b9cd060d2",
+    "hw1-asr/csrc/task1_rope.cu": "f5c63b00b606ac5d17583033ae27085bcbc2f29f30c6bfcde5be8892a9b6d0a9",
+    "hw1-asr/csrc/task2_reduce.cu": "e6abcaeac38a642114626227965ce34519c2d16e25b017f4ccfc16717349b796",
+    "hw1-asr/csrc/task2_reduce.cuh": "29dc47f65038539c76c2ba54dbb1831f5e29f1f5008ab6168759e6c14534bfdb",
+    "hw1-asr/csrc/task3_gemm.cu": "e235a0882bcd4fd134e7bc5061b6e3f95f46ab9cd9bf606cfa10fed3636e204a",
+    "hw1-asr/csrc/task4_attention.cu": "4800be3f1584e800bef2d73bee349873700b26ba97bad3ceeb75897240ca8745"
+  },
+  "slurm_job_id": "3727935",
+  "hostname": "landonia11.inf.ed.ac.uk"
+}
